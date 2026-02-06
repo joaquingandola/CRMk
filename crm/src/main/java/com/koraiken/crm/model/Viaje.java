@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Viaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_viaje;
 
     private String destino;
     private LocalDateTime fecha_salida;
@@ -23,7 +23,7 @@ public class Viaje {
     @Enumerated(EnumType.STRING)
     private EstadoViaje estado;
     @ManyToOne(optional = false)
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "id_cliente")
     private Cliente cliente;
 
     public Viaje(){

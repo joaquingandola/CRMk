@@ -12,9 +12,9 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_cliente;
 
-    @OneToMany(mappedBy = "id_cliente")
+    @OneToMany(mappedBy = "cliente")
     private List<Viaje> viajes = new ArrayList<>();
 
     private String nombre;
