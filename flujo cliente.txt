@@ -1,0 +1,19 @@
+Nuevo cliente
+Llega mensaje por WPP
+Busco cliente
+Si no existe lo creo
+Creo un viaje
+Cambio estado con el tiempo 
+
+Llega mensaje por WPP 
+Busco cliente
+Existe, entonces le creo un viaje
+Cambio estado con el tiempo
+
+Llega mensaje por WPP 
+Cliente paga vuelo
+Modifico estado
+
+
+Al comenzar el dia (a futuro igual)
+Me fijo que clientes estan actualmente viajando

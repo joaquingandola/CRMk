@@ -1,0 +1,23 @@
+Backend
+
+Java + Spring Boot
+
+REST API
+
+JPA / Hibernate
+
+Seguridad básica (Spring Security)
+
+Base de datos
+
+PostgreSQL o MySQL
+
+Frontend
+
+React
+o
+
+HTML + CSS + Bootstrap (si querés ir más rápido)
+
+
+
