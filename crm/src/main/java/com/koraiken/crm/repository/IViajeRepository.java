@@ -6,5 +6,5 @@ import com.koraiken.crm.model.Cliente;
 
 
 public interface IViajeRepository extends JpaRepository<Viaje, Long> {
-    List<Viaje> findByClienteId(Long id_cliente);
+    List<Viaje> findByClienteIdCliente(Long id);
 }

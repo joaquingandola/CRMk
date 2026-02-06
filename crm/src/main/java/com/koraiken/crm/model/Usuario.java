@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_usuario;
+    private Long idUsuario;
     private String nombre;
     private String apellido;
     private String email;
