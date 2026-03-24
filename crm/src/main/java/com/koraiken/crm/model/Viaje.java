@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.cglib.core.Local;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,15 +18,18 @@ public class Viaje {
     private Long idViaje;
 
     private String destino;
-    private LocalDateTime fecha_salida;
-    private LocalDateTime fecha_llegada;
-    private LocalDateTime fecha_actualizacion;
-    private LocalDateTime fecha_creacion = LocalDateTime.now();
-    private Integer pasajeros;
+    private LocalDateTime fechaSalida;
+    private LocalDateTime fechaLlegada;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
     private Double precio;
+    private Boolean activo;
 
-    @Enumerated(EnumType.STRING)
-    private EstadoViaje estado;
+    @ManyToOne @JoinColumn(name = "idAerolinea", foreignKey = @ForeignKey(name = "AEROLINEA_ID_FK"))
+    private Aerolinea aerolinea;
+
+    @OneToMany(mappedBy = "viaje")
+    private EstadoViaje estadoViaje;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
