@@ -15,6 +15,4 @@ public class EstadoViaje {
 
     @LastModifiedDate
     private LocalDateTime fechaActualizacion;
-
-
 }

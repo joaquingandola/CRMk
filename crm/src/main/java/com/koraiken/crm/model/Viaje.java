@@ -17,12 +17,11 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idViaje;
 
-    private String destino;
     private LocalDateTime fechaSalida;
     private LocalDateTime fechaLlegada;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     private Double precio;
-    private Boolean activo;
+    private Boolean activo = false;
 
     @ManyToOne @JoinColumn(name = "idAerolinea", foreignKey = @ForeignKey(name = "AEROLINEA_ID_FK"))
     private Aerolinea aerolinea;

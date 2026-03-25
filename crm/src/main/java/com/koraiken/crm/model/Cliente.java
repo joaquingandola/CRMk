@@ -25,21 +25,16 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Imagen> imagenes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cliente")
+    private List<Observacion> observaciones = new ArrayList<>();
+
     private String nombre;
     private String apellido;
-    private String email;
     private Boolean activo = true;
     private Boolean enViaje;
     private Integer dni;
     private LocalDate fechaNacimiento;
-
-    @Column(unique = true, nullable = false)
-    private String telefono;
-
-    @Column(length = 500)
-    private String observaciones;
-
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDateTime fechaAlta = LocalDateTime.now();
 
     public Cliente(){
 

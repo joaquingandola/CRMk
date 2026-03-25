@@ -4,14 +4,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-public class Aerolinea {
+import java.time.LocalDateTime;
+
+public class Observacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAerolinea;
+    private Long idObservacion;
 
-    private String aerolinea;
+    private String observacion;
+    private LocalDateTime fechaCreacion;
 
-    public Aerolinea() {
-
-    }
 }
