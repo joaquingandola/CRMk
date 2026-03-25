@@ -1,11 +1,14 @@
 package com.koraiken.crm.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Setter
+@Entity
+@Table(name = "Observacion")
 public class Observacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

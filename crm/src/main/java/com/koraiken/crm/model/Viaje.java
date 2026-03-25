@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -32,6 +34,22 @@ public class Viaje {
     @ManyToOne(optional = false)
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
+
+    @ManyToMany
+    @JoinTable(
+            name = "viajeDestino",
+            joinColumns = @JoinColumn(name = "idViaje"),
+            inverseJoinColumns = @JoinColumn(name = "idDestino")
+    )
+    private List<Destino> destinos = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "viajeAcompanante",
+            joinColumns = @JoinColumn(name = "idViaje"),
+            inverseJoinColumns = @JoinColumn(name = "idAcompanante")
+    )
+    private List<Acompanante> acompanantes = new ArrayList<>();
 
     public Viaje(){
 

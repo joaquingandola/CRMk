@@ -7,7 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
 @Entity
 @Table(name = "Cliente")
 public class Cliente {
