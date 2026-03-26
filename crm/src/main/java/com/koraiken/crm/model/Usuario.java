@@ -18,8 +18,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
-    private String nombre;
-    private String apellido;
+    private String username;
     private String email;
     private String password;
     private boolean activo = true;
@@ -28,13 +27,12 @@ public class Usuario {
     @Column(name = "tipo_rol")
     private TipoRol tipoRol;
 
-    public static Usuario con(String nombre, String apellido, String email, String password, TipoRol rol){
+    public static Usuario con(String username, String email, String password, TipoRol rol){
         return Usuario
                 .builder()
-                .nombre(nombre)
                 .password(password)
+                .username(username)
                 .email(email)
-                .apellido(apellido)
                 .tipoRol(rol)
                 .build();
     }
