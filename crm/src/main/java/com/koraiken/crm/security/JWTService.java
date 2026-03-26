@@ -22,7 +22,7 @@ public class JWTService {
     private long expirationMS;
 
     //GENERO TOKEN A PARTIR DE USUARIODETAILS
-    private String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
@@ -39,7 +39,7 @@ public class JWTService {
     // Valida que el token sea de ese usuario y no esté expirado
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String email = extractEmail(token);
-        return email.equals(userDetails.getUsername()) && isTokenExpired(token);
+        return email.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
