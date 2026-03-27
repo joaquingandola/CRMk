@@ -18,15 +18,14 @@ public interface IClienteRepository extends JpaRepository<Cliente, Long>{
     List<Cliente> findByActivoTrue();
 
     //busqueda de clientes por nombre o apellido
-    List<Cliente> findByNombreContainingIgnoreCaseorApellidoContainingIgnoreCase(
+    List<Cliente> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(
             String nombre, String apellido
     );
 
     //solo clientes que estan viajando
     List<Cliente> findByEnViajeTrue();
 
-    //verificar si existe email o telefono antes de crear, para validaciones
-    boolean existsByMail(String mail);
-    boolean existsByTelefono(String telefono);
+    //verificar si existe email o telefono antes de crear, para validaciones - navegacion de propiedades de Spring Data
+    boolean existsByContactoDetalle(String detalle);
     boolean existsByDni(Integer dni);
 }

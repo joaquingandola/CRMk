@@ -24,9 +24,15 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+            );
+        } catch (Exception e) {
+            System.out.println(">>> ERROR EN AUTENTICACION: " + e.getClass().getName());
+            System.out.println(">>> MENSAJE: " + e.getMessage());
+            throw e;
+        }
 
         Usuario usuario = iUsuarioRepository.findByEmail(request.getEmail())
                 .orElseThrow();

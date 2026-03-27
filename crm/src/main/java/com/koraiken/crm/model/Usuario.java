@@ -1,9 +1,7 @@
 package com.koraiken.crm.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.cglib.core.Local;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +15,8 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Usuario")
 public class Usuario implements UserDetails {
@@ -26,6 +26,7 @@ public class Usuario implements UserDetails {
     private String username;
     private String email;
     private String password;
+    @Builder.Default
     private boolean activo = true;
 
     @Enumerated(EnumType.STRING)
@@ -57,5 +58,4 @@ public class Usuario implements UserDetails {
     @Override public boolean isAccountNonLocked() { return activo; }
     @Override public boolean isCredentialsNonExpired() { return true; }
     @Override public boolean isEnabled() { return activo; }
-
 }
