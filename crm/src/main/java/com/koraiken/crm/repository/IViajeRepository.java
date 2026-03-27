@@ -16,7 +16,7 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
     List<Viaje> findByClienteIdClienteAndActivoTrue(Long id);
 
     // Buscar por estado (COTIZADO, PAGADO, CANCELADO, CONFIRMADO)
-    List<Viaje> findByEstadoViaje_EstadoConcretoViaje(EstadoViaje estado);
+    List<Viaje> findByEstadosViaje_EstadoConcretoViaje(EstadoViaje estado);
 
     // Viajes en un rango de fechas (útil para reportes)
     List<Viaje> findByFechaSalidaBetween(LocalDateTime desde, LocalDateTime hasta);

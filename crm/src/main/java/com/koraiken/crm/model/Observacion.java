@@ -17,4 +17,7 @@ public class Observacion {
     private String observacion;
     private LocalDateTime fechaCreacion;
 
+    @ManyToOne
+    @JoinColumn(name = "idCliente")
+    private Cliente cliente;
 }

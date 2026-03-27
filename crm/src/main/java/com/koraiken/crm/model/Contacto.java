@@ -17,4 +17,8 @@ public class Contacto {
 
     @Enumerated(EnumType.STRING)
     private Medio medio;
+
+    @ManyToOne
+    @JoinColumn(name = "idCliente")
+    private Cliente cliente;
 }

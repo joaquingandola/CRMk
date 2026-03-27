@@ -20,4 +20,8 @@ public class EstadoViaje {
 
     @LastModifiedDate
     private LocalDateTime fechaActualizacion;
+
+    @ManyToOne
+    @JoinColumn(name = "idViaje")
+    private Viaje viaje;
 }

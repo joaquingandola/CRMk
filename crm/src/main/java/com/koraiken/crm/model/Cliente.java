@@ -23,7 +23,7 @@ public class Cliente {
     private List<Viaje> viajes = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente")
-    private Contacto contacto;
+    private List<Contacto> contacto = new ArrayList<>();
 
     @OneToMany(mappedBy = "cliente")
     private List<Imagen> imagenes = new ArrayList<>();

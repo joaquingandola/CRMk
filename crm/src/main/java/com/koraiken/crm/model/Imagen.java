@@ -14,4 +14,8 @@ public class Imagen {
 
     private String path;
     private String alt;
+
+    @ManyToOne
+    @JoinColumn(name = "idCliente")
+    private Cliente cliente;
 }

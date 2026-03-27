@@ -15,7 +15,7 @@ public class Destino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDestino;
 
-    private String destino;
+    private String nombre;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPais", nullable = false)

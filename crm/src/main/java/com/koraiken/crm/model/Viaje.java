@@ -29,7 +29,7 @@ public class Viaje {
     private Aerolinea aerolinea;
 
     @OneToMany(mappedBy = "viaje")
-    private EstadoViaje estadoViaje;
+    private List<EstadoViaje> estadosViaje;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "idCliente")
