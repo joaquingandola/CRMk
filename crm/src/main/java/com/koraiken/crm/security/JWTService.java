@@ -24,7 +24,7 @@ public class JWTService {
     //GENERO TOKEN A PARTIR DE USUARIODETAILS
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(userDetails.getUsername()) // en realidad se manda el email
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMS))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
