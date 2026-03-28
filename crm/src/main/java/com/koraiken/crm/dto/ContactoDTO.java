@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ContactoDTO {
     private Long idContacto;
     private Medio medio;
