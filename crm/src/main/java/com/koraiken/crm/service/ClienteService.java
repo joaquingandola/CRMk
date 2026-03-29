@@ -143,7 +143,7 @@ public class ClienteService {
     }
 
 
-
+    //metodo interno
     public Cliente obtenerClienteOExcepcion(Long id) {
         return iClienteRepository.findByIdCliente(id)
                 .orElseThrow(() -> new ClienteNotFoundException(id));

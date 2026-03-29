@@ -3,8 +3,8 @@ package com.koraiken.crm.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,12 +15,14 @@ public class Destino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDestino;
 
-    private String nombre;
+    private LocalDateTime fechaLlegada;
+    private LocalDateTime fechaSalida;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idPais", nullable = false)
-    private Pais pais;
+    @JoinColumn(name = "idCiudad", nullable = false)
+    private Ciudad ciudad;
 
-    @ManyToMany(mappedBy = "destinos")
-    private List<Viaje> viajes = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idViaje", nullable = false)
+    private Viaje viaje;
 }

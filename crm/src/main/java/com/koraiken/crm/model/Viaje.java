@@ -2,10 +2,7 @@ package com.koraiken.crm.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
-import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +32,7 @@ public class Viaje {
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(
-            name = "viajeDestino",
-            joinColumns = @JoinColumn(name = "idViaje"),
-            inverseJoinColumns = @JoinColumn(name = "idDestino")
-    )
+    @OneToMany(mappedBy = "viaje")
     private List<Destino> destinos = new ArrayList<>();
 
     @ManyToMany
@@ -50,8 +42,4 @@ public class Viaje {
             inverseJoinColumns = @JoinColumn(name = "idAcompanante")
     )
     private List<Acompanante> acompanantes = new ArrayList<>();
-
-    public Viaje(){
-
-    }
 }

@@ -17,3 +17,9 @@ Modifico estado
 
 Al comenzar el dia (a futuro igual)
 Me fijo que clientes estan actualmente viajando
+
+
+
+Viaje tiene varios destinos
+Viaje tiene fechaLlegada fechaSalida
+pero cada destino tambien deberia tenerlo...
