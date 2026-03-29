@@ -1,0 +1,13 @@
+package com.koraiken.crm.dto;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class CiudadCreateDTO {
+    private String nombre;
+    private Long idPais;
+    private Double latitud;
+    private Double longitud;
+}
