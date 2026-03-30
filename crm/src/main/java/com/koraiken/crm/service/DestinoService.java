@@ -107,7 +107,8 @@ public class DestinoService {
 
     // Para el widget de ciudades más visitadas del dashboard
     // Devuelve una proyección limpia en lugar de Object[]
-    
+    @Transactional(readOnly = true)
+    public List<CiudadV>
 
     public Destino obtenerDestinoOExcepcion(Long id) {
         return destinoRepository.findById(id)
