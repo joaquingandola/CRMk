@@ -137,6 +137,14 @@ public class DestinoService {
         return DestinoMapper.toCiudadDTO(ciudadRepository.save(ciudad));
     }
 
+    @Transactional(readOnly = true)
+    public List<CiudadResponseDTO> buscarCiudadPorNombre(String nombre) {
+        return ciudadRepository.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(DestinoMapper::toCiudadDTO)
+                .toList();
+    }
+
     public Destino obtenerDestinoOExcepcion(Long id) {
         return destinoRepository.findById(id)
                 .orElseThrow(()->new ClienteNotFoundException(id));
