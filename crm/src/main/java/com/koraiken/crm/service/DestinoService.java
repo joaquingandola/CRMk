@@ -1,13 +1,11 @@
 package com.koraiken.crm.service;
 
-import com.koraiken.crm.dto.DestinoCreateDTO;
-import com.koraiken.crm.dto.DestinoResponseDTO;
-import com.koraiken.crm.exception.CiudadNotFoundException;
-import com.koraiken.crm.exception.ClienteNotFoundException;
-import com.koraiken.crm.exception.DestinoFechaInvalidaException;
+import com.koraiken.crm.dto.*;
+import com.koraiken.crm.exception.*;
 import com.koraiken.crm.mapper.DestinoMapper;
 import com.koraiken.crm.model.Ciudad;
 import com.koraiken.crm.model.Destino;
+import com.koraiken.crm.model.Pais;
 import com.koraiken.crm.model.Viaje;
 import com.koraiken.crm.repository.ICiudadRepository;
 import com.koraiken.crm.repository.IDestinoRepository;
@@ -108,7 +106,36 @@ public class DestinoService {
     // Para el widget de ciudades más visitadas del dashboard
     // Devuelve una proyección limpia en lugar de Object[]
     @Transactional(readOnly = true)
-    public List<CiudadV>
+    public List<CiudadVisitadaDTO> ciudadesMasVisitadas() {
+        return destinoRepository.findCiudadesMasVisitadas()
+                .stream()
+                .map(row -> CiudadVisitadaDTO.builder()
+                        .idCiudad((Long) row[0])
+                        .nombre((String) row[1])
+                        .pais((String) row[2])
+                        .cantidadVisitas((Long) row[3])
+                        .build()
+                ).toList();
+    }
+
+    //CIUDADES
+    @Transactional
+    public CiudadResponseDTO crearCiudad(CiudadCreateDTO dto) {
+        Pais pais = paisRepository.findById(dto.getIdPais())
+                .orElseThrow(() -> new PaisNotFoundException(dto.getIdPais()));
+
+        if(ciudadRepository.existsByNombreAndPaisIdPais(dto.getNombre(), dto.getIdPais())) {
+            throw new CiudadYaExisteException(dto.getNombre(), pais.getNombre());
+        }
+
+        Ciudad ciudad = new Ciudad();
+        ciudad.setNombre(dto.getNombre());
+        ciudad.setPais(pais);
+        ciudad.setLatitud(ciudad.getLatitud());
+        ciudad.setLongitud(ciudad.getLongitud());
+
+        return DestinoMapper.toCiudadDTO(ciudadRepository.save(ciudad));
+    }
 
     public Destino obtenerDestinoOExcepcion(Long id) {
         return destinoRepository.findById(id)
