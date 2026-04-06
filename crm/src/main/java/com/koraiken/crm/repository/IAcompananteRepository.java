@@ -9,7 +9,7 @@ public interface IAcompananteRepository extends JpaRepository<Acompanante, Long>
     Optional<Acompanante> findByDni(Integer dni);
 
     //buscar por nombre completo
-    Optional<Acompanante> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(
+    List<Acompanante> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(
             String nombre, String apellido
     );
 
