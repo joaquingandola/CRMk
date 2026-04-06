@@ -19,6 +19,6 @@ public class ViajeResponseDTO {
 
     private AerolineaResponseDTO aerolinea;
     private EstadoViajeResponseDTO estadoActual;
-    private List<DestinoResponseDTO> destinos;
+    private List<DestinoEnViajeDTO> destinos;
     private List<AcompananteResponseDTO> acompanantes;
 }

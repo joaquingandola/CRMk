@@ -11,9 +11,9 @@ import java.util.List;
 public class ViajeMapper {
 
     public static ViajeResponseDTO toDTO(Viaje viaje, EstadoViaje estadoActual) {
-        List<DestinoResponseDTO> destinos = viaje.getDestinos()
+        List<DestinoEnViajeDTO> destinos = viaje.getDestinos()
                 .stream()
-                .map(DestinoMapper::toDTO)
+                .map(DestinoMapper::toEnViajeDTO)
                 .toList();
 
         List<AcompananteResponseDTO> acompanantes = viaje.getAcompanantes()
