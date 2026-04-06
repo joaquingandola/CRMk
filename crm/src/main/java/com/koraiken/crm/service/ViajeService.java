@@ -16,5 +16,5 @@ public class ViajeService {
     private final ClienteService clienteService;
     private final AerolineaService aerolineaService;
     private final AcompananteService acompananteService;
-    private final DestinoService destinoService; 
+    private final DestinoService destinoService;
 }
