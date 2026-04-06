@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Aerolinea;
 
 public class AerolineaCreateDTO {
     private String aerolinea;

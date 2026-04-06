@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.EstadoViaje;
 
 import com.koraiken.crm.model.EstadoConcretoViaje;
 

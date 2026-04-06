@@ -1,5 +1,6 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Cliente;
 
+import com.koraiken.crm.dto.Contacto.ContactoDTO;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,9 @@
 package com.koraiken.crm.service;
 
-import com.koraiken.crm.dto.*;
+import com.koraiken.crm.dto.Cliente.ClienteCreateDTO;
+import com.koraiken.crm.dto.Cliente.ClienteResponseDTO;
+import com.koraiken.crm.dto.Cliente.ClienteUpdateDTO;
+import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
 import com.koraiken.crm.exception.ClienteConViajesActivosException;
 import com.koraiken.crm.exception.ClienteExisteException;
 import com.koraiken.crm.exception.ClienteNotFoundException;
@@ -11,7 +14,6 @@ import com.koraiken.crm.repository.IClienteRepository;
 import com.koraiken.crm.repository.IContactoRepository;
 import com.koraiken.crm.repository.IViajeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

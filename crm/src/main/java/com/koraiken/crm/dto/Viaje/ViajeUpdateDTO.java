@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Viaje;
 
 import java.time.LocalDateTime;
 

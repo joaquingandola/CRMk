@@ -1,8 +1,8 @@
 package com.koraiken.crm.service;
 
-import com.koraiken.crm.dto.AuthResponse;
-import com.koraiken.crm.dto.LoginRequest;
-import com.koraiken.crm.dto.RegisterRequest;
+import com.koraiken.crm.dto.Auth.AuthResponse;
+import com.koraiken.crm.dto.Auth.LoginRequest;
+import com.koraiken.crm.dto.Auth.RegisterRequest;
 import com.koraiken.crm.model.TipoRol;
 import com.koraiken.crm.model.Usuario;
 import com.koraiken.crm.repository.IUsuarioRepository;
@@ -10,7 +10,6 @@ import com.koraiken.crm.security.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

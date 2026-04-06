@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Acompanante;
 
 import java.util.Date;
 

@@ -1,5 +1,6 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Destino;
 
+import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 

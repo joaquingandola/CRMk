@@ -1,16 +1,18 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Cliente;
 
-import lombok.Builder;
+import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-@Builder
-public class ClienteUpdateDTO {
+public class ClienteCreateDTO {
+
     private String nombre;
     private String apellido;
+    private Integer dni;
     private LocalDate fechaNacimiento;
     private List<ContactoInputDTO> contactos;
 }
+

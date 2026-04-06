@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Contacto;
 
 import com.koraiken.crm.model.Medio;
 import lombok.Builder;

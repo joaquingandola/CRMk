@@ -1,9 +1,9 @@
 package com.koraiken.crm.controller;
 
 
-import com.koraiken.crm.dto.AuthResponse;
-import com.koraiken.crm.dto.LoginRequest;
-import com.koraiken.crm.dto.RegisterRequest;
+import com.koraiken.crm.dto.Auth.AuthResponse;
+import com.koraiken.crm.dto.Auth.LoginRequest;
+import com.koraiken.crm.dto.Auth.RegisterRequest;
 import com.koraiken.crm.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

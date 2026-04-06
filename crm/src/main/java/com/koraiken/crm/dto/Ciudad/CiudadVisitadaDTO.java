@@ -1,4 +1,4 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Ciudad;
 
 import lombok.Builder;
 import lombok.Getter;

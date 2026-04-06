@@ -1,7 +1,7 @@
 package com.koraiken.crm.mapper;
 
-import com.koraiken.crm.dto.ClienteResponseDTO;
-import com.koraiken.crm.dto.ContactoDTO;
+import com.koraiken.crm.dto.Cliente.ClienteResponseDTO;
+import com.koraiken.crm.dto.Contacto.ContactoDTO;
 import com.koraiken.crm.model.Cliente;
 import com.koraiken.crm.model.Contacto;
 

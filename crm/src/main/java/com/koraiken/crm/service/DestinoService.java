@@ -1,6 +1,10 @@
 package com.koraiken.crm.service;
 
-import com.koraiken.crm.dto.*;
+import com.koraiken.crm.dto.Ciudad.CiudadCreateDTO;
+import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
+import com.koraiken.crm.dto.Ciudad.CiudadVisitadaDTO;
+import com.koraiken.crm.dto.Destino.DestinoCreateDTO;
+import com.koraiken.crm.dto.Destino.DestinoResponseDTO;
 import com.koraiken.crm.exception.*;
 import com.koraiken.crm.mapper.DestinoMapper;
 import com.koraiken.crm.model.Ciudad;

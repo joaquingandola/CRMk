@@ -1,6 +1,10 @@
 package com.koraiken.crm.mapper;
 
-import com.koraiken.crm.dto.*;
+import com.koraiken.crm.dto.Acompanante.AcompananteResponseDTO;
+import com.koraiken.crm.dto.Aerolinea.AerolineaResponseDTO;
+import com.koraiken.crm.dto.Destino.DestinoEnViajeDTO;
+import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
+import com.koraiken.crm.dto.Viaje.ViajeResponseDTO;
 import com.koraiken.crm.model.Acompanante;
 import com.koraiken.crm.model.Aerolinea;
 import com.koraiken.crm.model.EstadoViaje;

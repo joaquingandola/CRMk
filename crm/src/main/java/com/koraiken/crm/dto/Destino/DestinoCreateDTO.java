@@ -1,5 +1,6 @@
-package com.koraiken.crm.dto;
+package com.koraiken.crm.dto.Destino;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
