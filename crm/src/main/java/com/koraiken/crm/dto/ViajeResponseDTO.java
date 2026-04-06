@@ -1,8 +1,11 @@
 package com.koraiken.crm.dto;
 
+import lombok.Builder;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 public class ViajeResponseDTO {
     private Long idViaje;
     private LocalDateTime fechaSalida;
