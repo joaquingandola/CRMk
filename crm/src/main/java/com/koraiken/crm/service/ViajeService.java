@@ -62,8 +62,9 @@ public class ViajeService {
             for(DestinoCreateDTO destinoDTO : dto.getDestinos()) {
 
                 // Validar fecha de cada escala dentro del rango del viaje
-                if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaFinViaje()) ||
-                destinoDTO.getFechaSalida().isAfter(dto.getFechaInicioViaje())) {
+                if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaInicioViaje()) ||
+                destinoDTO.getFechaLlegada().isAfter(dto.getFechaFinViaje())    ||
+                destinoDTO.getFechaSalida().isAfter(dto.getFechaFinViaje())) {
                     throw new RuntimeException(
                             "Las fechas del destino deben estar dentro del rango del viaje"
                     );
