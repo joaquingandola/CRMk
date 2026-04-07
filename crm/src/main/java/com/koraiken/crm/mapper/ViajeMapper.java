@@ -27,8 +27,8 @@ public class ViajeMapper {
 
         return ViajeResponseDTO.builder()
                 .idViaje(viaje.getIdViaje())
-                .fechaSalida(viaje.getFechaSalida())
-                .fechaLlegada(viaje.getFechaLlegada())
+                .fechaFinViaje(viaje.getFechaFinViaje())
+                .fechaInicioViaje(viaje.getFechaInicioViaje())
                 .fechaCreacion(viaje.getFechaCreacion())
                 .precio(viaje.getPrecio())
                 .activo(viaje.getActivo())

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class ViajeUpdateDTO {
 
     private Long idAerolinea;
-    private LocalDateTime fechaSalida;
-    private LocalDateTime fechaLlegada;
+    private LocalDateTime fechaInicioViaje;
+    private LocalDateTime fechaFinViaje;
     private Double precio;
 }

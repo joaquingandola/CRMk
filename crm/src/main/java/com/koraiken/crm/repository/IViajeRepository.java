@@ -19,7 +19,7 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
     List<Viaje> findByEstadosViaje_EstadoConcretoViaje(EstadoViaje estado);
 
     // Viajes en un rango de fechas (útil para reportes)
-    List<Viaje> findByFechaSalidaBetween(LocalDateTime desde, LocalDateTime hasta);
+    List<Viaje> findByFechaInicioViajeBetween(LocalDateTime desde, LocalDateTime hasta);
 
     // Viajes por aerolinea
     List<Viaje> findByAerolineaIdAerolinea(Long idAerolinea);

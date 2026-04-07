@@ -16,8 +16,8 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idViaje;
 
-    private LocalDateTime fechaSalida;
-    private LocalDateTime fechaLlegada;
+    private LocalDateTime fechaFinViaje;
+    private LocalDateTime fechaInicioViaje;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     private Double precio;
     private Boolean activo = false;

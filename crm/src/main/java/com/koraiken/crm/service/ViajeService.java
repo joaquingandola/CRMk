@@ -8,8 +8,6 @@ import com.koraiken.crm.exception.ViajeNotFoundException;
 import com.koraiken.crm.exception.ViajeTransicionInvalidaException;
 import com.koraiken.crm.mapper.ViajeMapper;
 import com.koraiken.crm.model.*;
-import com.koraiken.crm.repository.IClienteRepository;
-import com.koraiken.crm.repository.IDestinoRepository;
 import com.koraiken.crm.repository.IEstadoViajeRepository;
 import com.koraiken.crm.repository.IViajeRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,7 @@ public class ViajeService {
     @Transactional
     public ViajeResponseDTO crearViaje(ViajeCreateDTO dto) {
 
-        if(!dto.getFechaSalida().isBefore(dto.getFechaLlegada())) {
+        if(!dto.getFechaInicioViaje().isBefore(dto.getFechaFinViaje())) {
             throw new RuntimeException("La fecha de salida es anterior a la de llegada");
         }
 
@@ -44,8 +42,8 @@ public class ViajeService {
         Viaje viaje = new Viaje();
         viaje.setCliente(cliente);
         viaje.setAerolinea(aerolinea);
-        viaje.setFechaSalida(dto.getFechaSalida());
-        viaje.setFechaLlegada(dto.getFechaLlegada());
+        viaje.setFechaFinViaje(dto.getFechaFinViaje());
+        viaje.setFechaInicioViaje(dto.getFechaInicioViaje());
         viaje.setPrecio(dto.getPrecio());
 
         if(dto.getIdAcompanantes() != null) {
@@ -64,8 +62,8 @@ public class ViajeService {
             for(DestinoCreateDTO destinoDTO : dto.getDestinos()) {
 
                 // Validar fecha de cada escala dentro del rango del viaje
-                if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaSalida()) ||
-                destinoDTO.getFechaSalida().isAfter(dto.getFechaLlegada())) {
+                if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaFinViaje()) ||
+                destinoDTO.getFechaSalida().isAfter(dto.getFechaInicioViaje())) {
                     throw new RuntimeException(
                             "Las fechas del destino deben estar dentro del rango del viaje"
                     );
@@ -115,7 +113,7 @@ public class ViajeService {
 
     @Transactional(readOnly = true)
     public List<ViajeResponseDTO> listarPorRangoFechas(LocalDateTime desde, LocalDateTime hasta) {
-        return viajeRepository.findByFechaSalidaBetween(desde, hasta)
+        return viajeRepository.findByFechaInicioViajeBetween(desde, hasta)
                 .stream()
                 .map(v-> ViajeMapper.toDTO(v,
                             estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
@@ -128,8 +126,8 @@ public class ViajeService {
     public ViajeResponseDTO actualizarViaje(Long id, ViajeUpdateDTO dto) {
         Viaje viaje = obtenerViajeOExcepcion(id);
 
-        if(dto.getFechaLlegada() != null) viaje.setFechaLlegada(dto.getFechaLlegada());
-        if(dto.getFechaSalida() != null) viaje.setFechaSalida(dto.getFechaSalida());
+        if(dto.getFechaInicioViaje() != null) viaje.setFechaInicioViaje(dto.getFechaInicioViaje());
+        if(dto.getFechaFinViaje() != null) viaje.setFechaFinViaje(dto.getFechaFinViaje());
         if(dto.getPrecio() != null) viaje.setPrecio(dto.getPrecio());
 
         if(dto.getIdAerolinea() != null) {

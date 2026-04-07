@@ -5,15 +5,17 @@ import com.koraiken.crm.dto.Aerolinea.AerolineaResponseDTO;
 import com.koraiken.crm.dto.Destino.DestinoEnViajeDTO;
 import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
 @Builder
 public class ViajeResponseDTO {
     private Long idViaje;
-    private LocalDateTime fechaSalida;
-    private LocalDateTime fechaLlegada;
+    private LocalDateTime fechaInicioViaje;
+    private LocalDateTime fechaFinViaje;
     private LocalDateTime fechaCreacion;
     private Double precio;
     private Boolean activo;
