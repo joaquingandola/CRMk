@@ -4,6 +4,7 @@ import com.koraiken.crm.service.UsuarioDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -31,6 +32,10 @@ public class SecurityConfig {
                 csrf(csrf -> csrf.disable()) //desactivamos CSRF porque usamos JWT
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() //LOGIN ES PUBLICO
+                        .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/aerolineas").hasRole("ADMIN") //SOLO POST
+                        .requestMatchers(HttpMethod.POST, "api/v1/aerolineas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/v1/destinos/ciudades").hasRole("ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN") //SOLO ADMINS
                         .anyRequest().authenticated() //todo lo demas requiere token
                 )
