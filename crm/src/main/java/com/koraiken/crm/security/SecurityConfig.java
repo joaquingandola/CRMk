@@ -34,10 +34,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll() //LOGIN ES PUBLICO
                         // solo admin
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIM")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/clientes/*/baja").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/aerolineas/**").hasRole("ADMIN") //SOLO POST
-                        .requestMatchers(HttpMethod.POST, "api/v1/destinos/ciudades").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/destinos/ciudades").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated() //todo lo demas requiere token
                 )
                 .sessionManagement(session -> session
@@ -65,4 +65,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
