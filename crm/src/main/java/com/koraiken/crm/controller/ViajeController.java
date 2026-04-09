@@ -72,5 +72,11 @@ public class ViajeController {
     }
 
     //------------acompanantes -------------------
-    
+    @PostMapping("{id}/acompanantes/{idAcompanante}")
+    public ResponseEntity<Void> quitarAcompanante(
+            @PathVariable Long id,
+            @PathVariable Long idAcompanante) {
+        viajeService.quitarAcompanante(id, idAcompanante);
+        return ResponseEntity.noContent().build();
+    }
 }
