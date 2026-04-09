@@ -53,14 +53,6 @@ public class DestinoController {
 
     //------------------------------------------------------ciudades-------------------------------------------------
 
-    // Solo ADMIN — la restricción está en SecurityConfig
-    @PostMapping("/ciudades")
-    public ResponseEntity<CiudadResponseDTO> crearCiudad(@RequestBody CiudadCreateDTO dto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(destinoService.crearCiudad(dto));
-    }
-
     // GET /api/v1/destinos/ciudades/buscar?nombre=Bue
     @GetMapping("/ciudades/buscar")
     public ResponseEntity<List<CiudadResponseDTO>> buscarCiudad(@RequestParam String nombre) {

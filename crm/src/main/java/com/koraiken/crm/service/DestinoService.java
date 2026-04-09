@@ -123,23 +123,6 @@ public class DestinoService {
     }
 
     //CIUDADES
-    @Transactional
-    public CiudadResponseDTO crearCiudad(CiudadCreateDTO dto) {
-        Pais pais = paisRepository.findById(dto.getIdPais())
-                .orElseThrow(() -> new PaisNotFoundException(dto.getIdPais()));
-
-        if(ciudadRepository.existsByNombreAndPaisIdPais(dto.getNombre(), dto.getIdPais())) {
-            throw new CiudadYaExisteException(dto.getNombre(), pais.getNombre());
-        }
-
-        Ciudad ciudad = new Ciudad();
-        ciudad.setNombre(dto.getNombre());
-        ciudad.setPais(pais);
-        ciudad.setLatitud(ciudad.getLatitud());
-        ciudad.setLongitud(ciudad.getLongitud());
-
-        return DestinoMapper.toCiudadDTO(ciudadRepository.save(ciudad));
-    }
 
     @Transactional(readOnly = true)
     public List<CiudadResponseDTO> buscarCiudadPorNombre(String nombre) {
