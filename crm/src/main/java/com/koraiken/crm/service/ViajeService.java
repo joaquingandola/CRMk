@@ -1,6 +1,7 @@
 package com.koraiken.crm.service;
 
 import com.koraiken.crm.dto.Destino.DestinoCreateDTO;
+import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeCreateDTO;
 import com.koraiken.crm.dto.Viaje.ViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeUpdateDTO;
@@ -173,6 +174,21 @@ public class ViajeService {
         }
 
         return ViajeMapper.toDTO(viaje, nuevoEstadoViaje);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EstadoViajeResponseDTO> historialEstados(Long id) {
+        obtenerViajeOExcepcion(id);
+        return estadoViajeRepository
+                .findByViajeIdViajeOrderByFechaActualizacionDesc(id)
+                .stream()
+                .map(e-> EstadoViajeResponseDTO.builder()
+                        .idEstadoViaje(e.getIdEstadoViaje())
+                        .estadoConcretoViaje(e.getEstadoConcretoViaje())
+                        .fechaActualizacion(e.getFechaActualizacion())
+                        .build()
+                )
+                .toList();
     }
 
     //gestion acompanantes
