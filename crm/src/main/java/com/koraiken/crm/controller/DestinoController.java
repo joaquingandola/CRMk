@@ -63,7 +63,7 @@ public class DestinoController {
 
     // GET /api/v1/destinos/ciudades/buscar?nombre=Bue
     @GetMapping("/ciudades/buscar")
-    public ResponseEntity<List<CiudadResponseDTO>> buscarCiudad(@PathVariable String nombre) {
+    public ResponseEntity<List<CiudadResponseDTO>> buscarCiudad(@RequestParam String nombre) {
         return ResponseEntity.ok(destinoService.buscarCiudadPorNombre(nombre));
     }
 

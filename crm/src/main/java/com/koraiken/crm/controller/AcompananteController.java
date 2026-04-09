@@ -25,8 +25,7 @@ public class AcompananteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AcompananteResponseDTO> buscarPorId(
-            @PathVariable Long id) {
+    public ResponseEntity<AcompananteResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(acompananteService.buscarPorId(id));
     }
 
