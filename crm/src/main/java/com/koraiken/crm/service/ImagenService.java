@@ -4,7 +4,9 @@ package com.koraiken.crm.service;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.koraiken.crm.dto.Imagen.ImagenResponseDTO;
+import com.koraiken.crm.exception.AcompananteNotFoundException;
 import com.koraiken.crm.exception.ClienteNotFoundException;
+import com.koraiken.crm.model.Acompanante;
 import com.koraiken.crm.model.Cliente;
 import com.koraiken.crm.model.Imagen;
 import com.koraiken.crm.model.TipoDocumento;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,8 +49,50 @@ public class ImagenService {
 
     //subir imagen de acompanante
     @Transactional
-    public ImagenResponseDTO subirImagenAcompanante() {
-        return ImagenResponseDTO;
+    public ImagenResponseDTO subirImagenAcompanante(Long idAcompanante,
+                                                    MultipartFile archivo,
+                                                    TipoDocumento tipoDocumento,
+                                                    String alt) {
+        Acompanante acompanante = acompananteRepository.findById(idAcompanante)
+                .orElseThrow(()-> new AcompananteNotFoundException(idAcompanante));
+        Map resultado = subirACloud(archivo, "acompanantes/" +idAcompanante);
+        Imagen imagen = new Imagen();
+        imagen.setPublicId((String) resultado.get("public_id"));
+        imagen.setUrl((String) resultado.get("secure_url"));
+        imagen.setAlt(alt);
+        imagen.setTipoDocumento(tipoDocumento);
+        imagen.setAcompanante(acompanante);
+        return toDTO(imagenRepository.save(imagen));
+    }
+
+    //listar por cliente y luego x acompanante
+    @Transactional(readOnly = true)
+    public List<ImagenResponseDTO> listarImagenesPorCliente(Long idCliente) {
+        return imagenRepository.findByClienteIdCliente(idCliente)
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ImagenResponseDTO> listarImagenesPorAcompanante(Long idAcompanante) {
+        return imagenRepository.findByAcompananteIdAcompanante(idAcompanante)
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    //eliminar
+    @Transactional
+    public void eliminarImagen(Long idImagen) {
+        Imagen imagen = imagenRepository.findById(idImagen)
+                .orElseThrow(() -> new RuntimeException("Imagen no encontrada: " + idImagen));
+        try {
+            cloudinary.uploader().destroy(imagen.getPublicId(), ObjectUtils.emptyMap());
+        } catch (IOException e) {
+            throw new RuntimeException("Error al eliminar la imagen: " + e.getMessage());
+        }
+        imagenRepository.delete(imagen);
     }
 
     //metodos internos
@@ -84,7 +129,7 @@ public class ImagenService {
                     )
             );
         } catch (IOException e) {
-            throw new RuntimeException("ERROR AL SUBIR EL ARCHIVO: " e.getMessage());
+            throw new RuntimeException("ERROR AL SUBIR EL ARCHIVO: " + e.getMessage());
         }
     }
 }
