@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             ClienteExisteException.class,
             CiudadYaExisteException.class
+            //aerolineayaexisteexception
     })
     public ResponseEntity<ErrorResponseDTO> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return build(HttpStatus.CONFLICT, ex.getMessage(), request);
