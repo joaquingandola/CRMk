@@ -47,4 +47,17 @@ public class ImagenController {
                 .body(imagenService.subirImagenAcompanante(idAcompanante, archivo, tipoDocumento, alt));
     }
 
+    @GetMapping("acompanantes/{idAcompanante}")
+    public ResponseEntity<List<ImagenResponseDTO>> listardeAcompanante(
+            @PathVariable Long idAcompanante) {
+        return ResponseEntity
+                .ok(imagenService.listarImagenesPorAcompanante(idAcompanante));
+    }
+
+    //eliminar
+    @DeleteMapping("/{idImagen}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long idImagen) {
+        imagenService.eliminarImagen(idImagen);
+        return ResponseEntity.noContent().build();
+    }
 }
