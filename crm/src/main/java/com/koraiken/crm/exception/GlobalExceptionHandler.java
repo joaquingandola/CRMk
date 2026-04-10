@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -66,13 +68,30 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.UNAUTHORIZED, "Credenciales Incorrectas", request);
     }
 
+
     //403 forbidden
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccessDenied(
+            AccessDeniedException ex, HttpServletRequest request) {
+        return build(HttpStatus.FORBIDDEN,
+                "No tenes permisos para realizar esta operacion", request);
+    }
+
+    //413 content too large
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponseDTO> handleFileTooLarge(
+            MaxUploadSizeExceededException ex, HttpServletRequest request) {
+        return build(HttpStatus.CONTENT_TOO_LARGE, "El archivo supera el tamano maximo permitido", request);
+    }
 
 
-    //413 payload too large
-
-
-    // 500 fallback
+    // 500 fallback - aca no tengo que llegar en produccion
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
+        //aca logueo el stack trace completo para debuggear pero no lo veo re necesario
+        ex.printStackTrace();
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "OcurriO un error inesperado", request);
+    }
 
     //m,etodo interno
     private ResponseEntity<ErrorResponseDTO> build(HttpStatus status, String mensaje, HttpServletRequest request) {
