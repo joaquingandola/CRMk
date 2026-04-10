@@ -10,10 +10,18 @@ import lombok.Setter;
 public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idImagen;
 
-    private String path;
+    private String publicId;
+    private String url;
     private String alt;
+
+    @Enumerated(EnumType.STRING)
+    private TipoDocumento tipoDocumento;
+
+    @ManyToOne
+    @JoinColumn(name = "idAcompanante")
+    private Acompanante acompanante;
 
     @ManyToOne
     @JoinColumn(name = "idCliente")

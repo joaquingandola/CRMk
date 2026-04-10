@@ -22,4 +22,7 @@ public class Acompanante {
 
     @ManyToMany(mappedBy = "acompanantes")
     private List<Viaje> viajes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "acompanante", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Imagen> imagenes = new ArrayList<>();
 }
