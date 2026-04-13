@@ -35,3 +35,6 @@ build/
 #Postman metadata
 .postman/
 postman/
+
+frontend/node_modules/
+frontend/dist/
