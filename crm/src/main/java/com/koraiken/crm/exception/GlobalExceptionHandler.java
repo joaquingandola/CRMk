@@ -32,8 +32,8 @@ public class GlobalExceptionHandler {
     // 409 conflict
     @ExceptionHandler({
             ClienteExisteException.class,
-            CiudadYaExisteException.class
-            //aerolineayaexisteexception
+            CiudadYaExisteException.class,
+            AerolineaYaExisteException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return build(HttpStatus.CONFLICT, ex.getMessage(), request);

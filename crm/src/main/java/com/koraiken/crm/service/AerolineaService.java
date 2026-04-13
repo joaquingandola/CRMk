@@ -4,6 +4,7 @@ package com.koraiken.crm.service;
 import com.koraiken.crm.dto.Aerolinea.AerolineaCreateDTO;
 import com.koraiken.crm.dto.Aerolinea.AerolineaResponseDTO;
 import com.koraiken.crm.exception.AerolineaNotFoundException;
+import com.koraiken.crm.exception.AerolineaYaExisteException;
 import com.koraiken.crm.model.Aerolinea;
 import com.koraiken.crm.repository.IAerolineaRepository;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class AerolineaService {
     @Transactional
     public AerolineaResponseDTO crearAeroliena(AerolineaCreateDTO dto) {
         if (aerolineaRepository.existsByAerolinea(dto.getAerolinea())) {
-            throw new RuntimeException("Ya existe la aerolinea: " + dto.getAerolinea());
+            throw new AerolineaYaExisteException(dto.getAerolinea());
         }
         Aerolinea aerolinea = new Aerolinea();
         aerolinea.setAerolinea(dto.getAerolinea());
