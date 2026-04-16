@@ -17,7 +17,7 @@ export default function App() {
                         <Route element={<Layout/>}>
                             <Route index element={<Navigate to="/clientes" replace />} />
                             <Route path="/clientes" element={<ClientesPage />} />
-                            {/* <Route path="/clientes/:id" element={<ClientesDetalle />} /> */}
+                            <Route path="/clientes/:id" element={<ClientesDetalle />} />
                         </Route>
                     </Route>
                 </Routes>

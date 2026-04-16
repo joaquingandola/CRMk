@@ -20,7 +20,7 @@ export function Login() {
             login(data.access_token)
             navigate('/clientes')
         } catch {
-            setError('Credenciais inválidas')
+            setError('Credenciales inválidas')
         } finally {
             setLoading(false)
         }
