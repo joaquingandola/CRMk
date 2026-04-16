@@ -30,6 +30,8 @@ public class UsuarioService {
         return toDTO(obtenerUsuarioOExcepcion(id));
     }
 
+    //crear transactional readonly de buscarpormail y delegarlo al service
+
     //update
     @Transactional
     public UsuarioResponseDTO actualizarUsuario(Long id, UsuarioUpdateDTO dto) {
@@ -61,7 +63,7 @@ public class UsuarioService {
                 .orElseThrow(()-> new UserNotFoundException(id));
     }
 
-    private UsuarioResponseDTO toDTO(Usuario u) {
+    public UsuarioResponseDTO toDTO(Usuario u) {
         return UsuarioResponseDTO.builder()
                 .idUsuario(u.getIdUsuario())
                 .username(u.getUsername())
