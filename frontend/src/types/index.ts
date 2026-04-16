@@ -15,6 +15,7 @@ export interface LoginRequest {
 
 //contacto
 export interface ContactoDTO {
+    idContacto: number
     medio: Medio
     detalle: string
 }

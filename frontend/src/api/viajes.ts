@@ -7,7 +7,7 @@ import type {
     EstadoViajeResponseDTO
 } from '../types'
 
-export const getViajePorCliente = (idCliente: number) => 
+export const getViajesPorCliente = (idCliente: number) => 
     api.get<ViajeResponseDTO[]>(`api/v1/viajes/cliente/${idCliente}`)
 
 export const getViajePorId = (id : number) =>
