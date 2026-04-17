@@ -123,6 +123,13 @@ export interface ViajeCreateDTO {
     }[]
 }
 
+export interface UsuarioResponseDTO {
+    idUsuario: number
+    username: string
+    email: string
+    tipoRol: TipoRol
+    activo: boolean
+}
 
 //error api
 export interface ApiError {
