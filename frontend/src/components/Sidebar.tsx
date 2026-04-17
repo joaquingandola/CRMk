@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
-const links = [
+const agentLinks = [
     {to : '/clientes', label: 'Clientes'},
     {to: '/viajes', label: 'Viajes'},
 ]
@@ -16,10 +16,13 @@ export function Sidebar() {
     const { logout, usuario, isAdmin } = useAuth()
     const navigate = useNavigate()
      
+    const links = isAdmin ? adminLinks : agentLinks
+
     const handleLogout = () => {
         logout()
         navigate('/login')
     }
+    
     return (
     <aside className="w-56 min-h-screen bg-white border-r border-gray-200 flex flex-col">
       <div className="px-5 py-5 border-b border-gray-100">
@@ -46,15 +49,29 @@ export function Sidebar() {
           </NavLink>
         ))}
     </nav>
-
-    <div className="px-3 py-4 border-t border-gray-100">
-        <button 
-            onClick={handleLogout}
-            className="w-full flex items-center px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors"
-        >
-            Cerrar sesión
-        </button>
+      
+    <div className="px-4 py-3 border-t border-gray-100">
+      {usuario && (
+        <div className = "mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium text-gray-800 truncate">
+              {usuario.username} 
+            </span>
+            {isAdmin && (
+              <span className="text-xs font-medium bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">
+                Admin
+              </span>
+            )}
+          </div>
+          <span className = "text-xs text-gray-400 truncate block">{usuario.email}</span>
+        </div>
+      )}
+    <button
+      onClick={handleLogout}
+      className="w-full flex items-center px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+        Cerrar sesión
+      </button>
     </div>
   </aside>
-    )
+  )
 }
