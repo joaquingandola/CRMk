@@ -6,8 +6,14 @@ const links = [
     {to: '/viajes', label: 'Viajes'},
 ]
 
+const adminLinks = [
+  { to: '/clientes', label: 'Clientes'},
+  {to: '/viajes', label: 'Viajes'},
+  {to: '/usuarios', label: 'Usuarios'},
+]
+
 export function Sidebar() {
-    const { logout } = useAuth()
+    const { logout, usuario, isAdmin } = useAuth()
     const navigate = useNavigate()
      
     const handleLogout = () => {
