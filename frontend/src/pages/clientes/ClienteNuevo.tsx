@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { crearCliente } from "../../api/clientes"
 import type { ContactoInputDTO, Medio } from "../../types"
 
-const MEDIOS: Medio[] = ["MAIL", "TELEFONO", "WHATSAPP"]
+const MEDIOS: Medio[] = ["MAIL", "TELEFONO", "WHATSAPP", "TELEGRAM"]
 
 export function ClienteNuevo() {
     const navigate = useNavigate()
