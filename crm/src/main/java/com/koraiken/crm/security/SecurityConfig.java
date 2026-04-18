@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() //LOGIN ES PUBLICO
                         // solo admin
+                        .requestMatchers("/api/v1/usuarios/me").authenticated()
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/v1/clientes/*/baja").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/aerolineas/**").hasRole("ADMIN") //SOLO POST

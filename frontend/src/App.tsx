@@ -7,6 +7,8 @@ import { ClientesPage } from "./pages/clientes/ClientesPage"
 import { ClienteDetalle } from "./pages/clientes/ClienteDetalle"
 import { UsuariosPage } from "./pages/usuarios/UsuariosPage"
 import { ClienteNuevo } from "./pages/clientes/ClienteNuevo"
+import { ClienteEditar } from "./pages/clientes/ClienteEditar"
+
 export default function App() {
     return (
         <AuthProvider>
@@ -21,6 +23,7 @@ export default function App() {
                             <Route path="/clientes/:id" element={<ClienteDetalle />} />
                             <Route path="/usuarios" element={<UsuariosPage />} />
                             <Route path="/clientes/nuevo" element={<ClienteNuevo />} />
+                            <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
                         </Route>
                     </Route>
                 </Routes>
