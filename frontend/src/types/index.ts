@@ -139,3 +139,17 @@ export interface ApiError {
     path: string
     timestamp: string
 }
+
+//formulario viaje
+export interface AcompananteFormData {
+    nombre: string
+    apellido: string
+    dni: string
+    fechaNacimiento: string
+}
+
+export interface DestinoFormData {
+    ciudad : CiudadResponseDTO | null
+    fechaLlegada : string
+    fechaSalida : string
+}
