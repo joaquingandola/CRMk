@@ -24,19 +24,10 @@ export function ViajesPage() {
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-6">
-                <div>
-                <h1 className="text-xl font-semibold text-gray-900">Viajes</h1>
-                <p className="text-sm text-gray-500 mt-0.5">{viajes.length} viajes registrados</p>
-                </div>
-                <button
-                onClick={() => navigate('/viajes/nuevo')}
-                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-                >
-                + Nuevo viaje
-                </button>
+            <div className="mb-6">
+            <h1 className="text-xl font-semibold text-gray-900">Viajes</h1>
+            <p className="text-sm text-gray-500 mt-0.5">{viajes.length} viajes registrados</p>
             </div>
-
             {loading ? <Spinner /> : viajes.length === 0 ? (
                 <EmptyState message="No hay viajes registrados." />
             ) : (

@@ -26,7 +26,8 @@ export function ViajeNuevo() {
 
     //res
     const[aerolineas, setAerolineas] = useState<AerolineaResponseDTO[]>([])
-    const[clientes, setClientes] = useState<ClienteResponseDTO[]>([])
+
+    //const[clientes, setClientes] = useState<ClienteResponseDTO[]>([]) -=- por ahora afuera, porque se crea viaje desde cliente
 
     //form principal
     const [idCliente, setIdCliente] = useState<string>(clienteIdParam ?? '')
@@ -44,12 +45,13 @@ export function ViajeNuevo() {
     const [error, setError] = useState('')
     const [guardando, setGuardando] = useState(false)
 
+    /* ---- corto por lo mismo que arriba
     useEffect(() => {
         getAerolineas().then(({ data }) => setAerolineas(data))
         if(!clienteIdParam) {
             getClientesActivos().then(({data}) => setClientes(data))
         }
-    }, [])
+    }, [])*/
 
     //destinos
     const actualizarDestino = (
@@ -123,6 +125,8 @@ export function ViajeNuevo() {
             setGuardando(false)
         }
     }
+
+    
     return (
         <div className="max-w-2xl">
         <button
@@ -145,7 +149,8 @@ export function ViajeNuevo() {
             <h2 className="text-sm font-semibold text-gray-700 mb-4">Datos generales</h2>
             <div className="space-y-4">
 
-                {/* Cliente — solo si no viene por param */}
+                {/* Cliente — solo si no viene por param  ---------------- por ahora queda afuera, se crea el viaje desde el cliente
+
                 {!clienteIdParam && (
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -166,7 +171,8 @@ export function ViajeNuevo() {
                     </select>
                 </div>
                 )}
-
+                */}
+                
                 {/* Aerolínea */}
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
