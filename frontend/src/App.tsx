@@ -9,7 +9,7 @@ import { UsuariosPage } from "./pages/usuarios/UsuariosPage"
 import { ClienteNuevo } from "./pages/clientes/ClienteNuevo"
 import { ClienteEditar } from "./pages/clientes/ClienteEditar"
 import { ViajesPage } from "./pages/viajes/ViajesPage"
-
+import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
 
 
 export default function App() {
@@ -28,6 +28,7 @@ export default function App() {
                             <Route path="/clientes/nuevo" element={<ClienteNuevo />} />
                             <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
                             <Route path="/viajes" element={<ViajesPage/>} />
+                            <Route path="/viajes/:id" element={<ViajeDetalle/>} />
                         </Route>
                     </Route>
                 </Routes>
