@@ -234,7 +234,7 @@ export function ViajeNuevo() {
 
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Precio (ARS) <span className="text-red-500">*</span>
+                    Precio (USD) <span className="text-red-500">*</span>
                 </label>
                 <input
                     type="number"
