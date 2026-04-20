@@ -8,6 +8,9 @@ import { ClienteDetalle } from "./pages/clientes/ClienteDetalle"
 import { UsuariosPage } from "./pages/usuarios/UsuariosPage"
 import { ClienteNuevo } from "./pages/clientes/ClienteNuevo"
 import { ClienteEditar } from "./pages/clientes/ClienteEditar"
+import { ViajesPage } from "./pages/viajes/ViajesPage"
+
+
 
 export default function App() {
     return (
@@ -24,6 +27,7 @@ export default function App() {
                             <Route path="/usuarios" element={<UsuariosPage />} />
                             <Route path="/clientes/nuevo" element={<ClienteNuevo />} />
                             <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
+                            <Route path="/viajes" element={<ViajesPage/>} />
                         </Route>
                     </Route>
                 </Routes>
