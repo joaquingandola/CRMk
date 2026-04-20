@@ -10,7 +10,7 @@ import { ClienteNuevo } from "./pages/clientes/ClienteNuevo"
 import { ClienteEditar } from "./pages/clientes/ClienteEditar"
 import { ViajesPage } from "./pages/viajes/ViajesPage"
 import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
-
+import { ViajeNuevo } from "./pages/viajes/ViajeNuevo"
 
 export default function App() {
     return (
@@ -29,6 +29,7 @@ export default function App() {
                             <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
                             <Route path="/viajes" element={<ViajesPage/>} />
                             <Route path="/viajes/:id" element={<ViajeDetalle/>} />
+                            <Route path= "/viajes/nuevo" element={<ViajeNuevo/>} />
                         </Route>
                     </Route>
                 </Routes>

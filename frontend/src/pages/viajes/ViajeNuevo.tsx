@@ -4,6 +4,8 @@ import { crearViaje } from "../../api/viajes"
 import { getAerolineas } from "../../api/aerolineas"
 import { getClientesActivos } from "../../api/clientes"
 import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
+import { crearAcompanante } from "../../api/acompanantes"
+
 import type {
     AerolineaResponseDTO,
     ClienteResponseDTO,
@@ -98,6 +100,21 @@ export function ViajeNuevo() {
 
         setGuardando(true)
         try {
+            const acompanantesValidos = acompanantes.filter(
+                (a) => a.nombre && a.apellido && a.dni
+            )
+
+            const idsAcompanantes = await Promise.all(
+                acompanantesValidos.map((a) =>
+                    crearAcompanante({
+                        nombre : a.nombre,
+                        apellido : a.apellido, 
+                        dni: Number(a.dni),
+                        fechaNacimiento: a.fechaNacimiento || undefined, 
+                    }).then(({ data }) => data.idAcompanante)
+                )
+            ) 
+
             const { data } = await crearViaje({
                 idCliente: Number(idCliente),
                 idAerolinea: Number(idAerolinea),
@@ -109,14 +126,7 @@ export function ViajeNuevo() {
                 fechaLlegada: d.fechaLlegada,
                 fechaSalida: d.fechaSalida,
                 })),
-                acompanantes: acompanantes
-                .filter((a) => a.nombre && a.apellido && a.dni)
-                .map((a) => ({
-                    nombre: a.nombre,
-                    apellido: a.apellido,
-                    dni: Number(a.dni),
-                    fechaNacimiento: a.fechaNacimiento || undefined,
-                })),
+                idAcompanantes: idsAcompanantes
             })
             navigate(`/viajes.${data.idViaje}`)
         } catch (err: any) {
