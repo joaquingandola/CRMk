@@ -75,6 +75,13 @@ export interface CiudadResponseDTO {
     longitud: number
 }
 
+export interface CiudadVisitadaDTO {
+    idCiudad: number
+    nombre: string
+    pais: string
+    cantidadVisitas: number
+}
+
 //destino
 export interface DestinoEnViajeDTO {
     idDestino: number

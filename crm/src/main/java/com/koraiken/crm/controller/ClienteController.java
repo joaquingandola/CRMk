@@ -3,6 +3,8 @@ package com.koraiken.crm.controller;
 import com.koraiken.crm.dto.Cliente.ClienteCreateDTO;
 import com.koraiken.crm.dto.Cliente.ClienteResponseDTO;
 import com.koraiken.crm.dto.Cliente.ClienteUpdateDTO;
+import com.koraiken.crm.mapper.ClienteMapper;
+import com.koraiken.crm.repository.IClienteRepository;
 import com.koraiken.crm.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,16 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final IClienteRepository clienteRepository;
+
+    @GetMapping("/en-viaje")
+    public ResponseEntity<ClienteResponseDTO> listarEnViaje() {
+        return clienteRepository.findByEnViajeTrue()
+                .stream()
+                .map(ClienteMapper::toDTO)
+                .toList();
+    }
+
 
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> crear(@RequestBody ClienteCreateDTO dto) {
