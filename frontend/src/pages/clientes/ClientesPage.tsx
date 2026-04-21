@@ -41,28 +41,28 @@ export function ClientesPage() {
     }
 
     return (
+    <div className="space-y-6">
+        <div className="flex items-center justify-between">
             <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-xl font-semibold text-gray-900">Clientes</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{clientes.length} clientes activos</p>
+            <h1 className="text-2xl font-bold text-white tracking-light">Clientes</h1>
+            <p className="text-sm text-slate-400">{clientes.length} clientes activos</p>
+            </div>
+            <button
+                onClick={() => navigate('/clientes/nuevo')}
+            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-blue-600/20"
+                >
+                    + Nuevo cliente
+            </button>
         </div>
-        <button
-          onClick={() => navigate('/clientes/nuevo')}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-        >
-          + Nuevo cliente
-        </button>
-      </div>
 
-      <div className="mb-4">
-        <input 
-            type="text"
-            value={busqueda}
-            onChange={handleBusqueda}
-            placeholder="Buscar por nombre o apellido..."
-            className="w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="mb-4">
+            <input 
+                type="text"
+                value={busqueda}
+                onChange={handleBusqueda}
+                placeholder="Buscar por nombre o apellido..."
+                className="w-full max-w-sm bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+            />
         </div>
 
         {loading ? (
@@ -70,43 +70,43 @@ export function ClientesPage() {
         ) : clientes.length === 0 ? (
             <EmptyState message="No se encuentran clientes" />
         ) : (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="bg-slate-800/30 border border-slate-800 rounded-2xl overflow-hidden backdrop-blur-sm">
                 <table className="w-full text-sm">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-slate-800/60 border-b border-slate-800">
                         <tr>
-                            <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Nombre</th>
-                            <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">DNI</th>
-                            <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Contacto principal</th>
-                            <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Estado</th>
-                            <th className="px-5 py-3" />
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Nombre</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">DNI</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Contacto principal</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Estado</th>
+                            <th className="px-6 py-4" />
                         </tr>
                     </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-slate-800/50">
                     {clientes.map((c) => (
                         <tr 
                             key={c.idCliente}
                             onClick={() => navigate(`/clientes/${c.idCliente}`)}
-                            className="hover:bg-gray-50 cursor-pointer transition-colors"
+                            className="hover:bg-blue-600/5 cursor-pointer transition-colors group"
                         >
-                            <td className="px-5 py-3.5 font-medium text-gray-900">
+                            <td className="px-6 py-4 font-medium text-slate-100 group-hover:text-blue-400 transition-colors">
                                 {c.nombre} {c.apellido}
                             </td>
-                            <td className="px-5 py-3.5 text-gray-500">{c.dni}</td>
-                            <td className="px-5 py-3.5 text-gray-500">
+                            <td className="px-6 py-4 text-slate-400">{c.dni}</td>
+                            <td className="px-6 py-4 text-slate-400">
                                 {c.contactos?.[0]?.detalle ?? '—'}
                             </td>
-                            <td className="px-5 py-3.5">
+                            <td className="px-6 py-4">
                                 {c.enViaje ? (
-                                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-800">
+                                <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
                                     En viaje
                                 </span>
                             ) : (
-                                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
+                                <span className="py-1 px-2.5 rounded-full text-xs font-medium bg-slate-700/50 text-slate-400 border border-slate-700">
                                     No esta en viaje
                                 </span>
                             )}
                             </td>
-                            <td className="px-5 py-3.5 text-right text-gray-400 text-xs"> Ver detalles</td>
+                            <td className="px-6 py-4 text-right text-slate-500 group-hover:text-slate-300 text-xs"> Ver detalles</td>
                         </tr>
                     ))}
                 </tbody>

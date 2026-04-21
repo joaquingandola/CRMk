@@ -24,11 +24,11 @@ export function Sidebar() {
     }
     
     return (
-    <aside className="w-56 min-h-screen bg-white border-r border-gray-200 flex flex-col">
-      <div className="px-5 py-5 border-b border-gray-100">
-        <span className="text-base font-semibold text-gray-900">CRM</span> 
+    <aside className="w-56 min-h-screen bg-slate-900/50 border-r border-slate-800 flex flex-col">
+      <div className="px-5 py-5 border-b border-slate-800">
+        <span className="text-base font-semibold text-white tracking-tight">CRM</span> 
         {/* deberia pensarse capaz como si se pusiera el nombre de la empresa del agente */}
-        <span className="block text-xs text-gray-400 mt-0.5">Panel de gestión</span>
+        <span className="block text-xs text-slate-500 mt-0.5 font-medium">Panel de gestión</span>
       </div>
       
       
@@ -38,10 +38,10 @@ export function Sidebar() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center px-3 py-2 rounded-lg text-sm transition-colors ${
+              `flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
                 isActive
-                  ? 'bg-blue-50 text-blue-700 font-medium'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-blue-600/10 text-blue-400 border border-blue-600/20'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
               }`
             }
           >
@@ -50,25 +50,25 @@ export function Sidebar() {
         ))}
     </nav>
       
-    <div className="px-4 py-3 border-t border-gray-100">
+    <div className="px-4 py-3 border-t border-slate-800">
       {usuario && (
         <div className = "mb-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-gray-800 truncate">
+            <span className="text-sm font-medium text-slate-200 truncate">
               {usuario.username} 
             </span>
             {isAdmin && (
-              <span className="text-xs font-medium bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-medium bg-violet-900/30 text-violet-400 border border-violet-800 px-2 py-0.5 rounded-full">
                 Admin
               </span>
             )}
           </div>
-          <span className = "text-xs text-gray-400 truncate block">{usuario.email}</span>
+          <span className = "text-xs text-slate-500 truncate block">{usuario.email}</span>
         </div>
       )}
     <button
       onClick={handleLogout}
-      className="w-full flex items-center px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors">
+      className="w-full flex items-center px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-red-900/20 hover:text-red-400 transition-colors">
         Cerrar sesión
       </button>
     </div>
