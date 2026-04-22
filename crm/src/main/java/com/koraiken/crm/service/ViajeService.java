@@ -221,6 +221,17 @@ public class ViajeService {
         return ViajeMapper.toDTO(viajeRepository.save(viaje), estadoActual);
     }
 
+    //listar todos
+    @Transactional(readOnly = true)
+    public List<ViajeResponseDTO> listarTodos() {
+        return viajeRepository.findAll()
+                .stream()
+                .map(v -> ViajeMapper.toDTO(v,
+                        estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
+                ))
+                .toList();
+    }
+
 
     //metodos internos
     public Viaje obtenerViajeOExcepcion(Long id) {

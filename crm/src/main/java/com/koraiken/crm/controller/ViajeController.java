@@ -56,6 +56,11 @@ public class ViajeController {
         return ResponseEntity.ok(viajeService.actualizarViaje(id, dto));
     }
 
+    //viajes totales,para listar todos
+    public ResponseEntity<List<ViajeResponseDTO>> listarTodos() {
+        return ResponseEntity.ok(viajeService.listarTodos());
+    }
+
     //------------------------------estado-----------------------------
     // PATCH /api/v1/viajes/1/estado?nuevo=CONFIRMADO
     //nuevo estado viene como String en url

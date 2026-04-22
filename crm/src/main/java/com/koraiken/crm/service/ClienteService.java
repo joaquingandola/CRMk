@@ -144,6 +144,13 @@ public class ClienteService {
         iClienteRepository.save(cliente);
     }
 
+    @Transactional(readOnly = true)
+    public List<ClienteResponseDTO> listarEnViaje() {
+        return iClienteRepository.findByEnViajeTrue()
+                .stream()
+                .map(ClienteMapper::toDTO)
+                .toList();
+    }
 
     //metodo interno
     public Cliente obtenerClienteOExcepcion(Long id) {

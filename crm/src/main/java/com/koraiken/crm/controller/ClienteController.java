@@ -19,14 +19,10 @@ import java.util.List;
 public class ClienteController {
 
     private final ClienteService clienteService;
-    private final IClienteRepository clienteRepository;
 
     @GetMapping("/en-viaje")
-    public ResponseEntity<ClienteResponseDTO> listarEnViaje() {
-        return clienteRepository.findByEnViajeTrue()
-                .stream()
-                .map(ClienteMapper::toDTO)
-                .toList();
+    public ResponseEntity<List<ClienteResponseDTO>> listarEnViaje() {
+        return ResponseEntity.ok(clienteService.listarEnViaje());
     }
 
 
