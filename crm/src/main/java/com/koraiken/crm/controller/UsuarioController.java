@@ -19,8 +19,6 @@ import java.util.List;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    //solo es un parcheo, hay que delegarlo al service
-    private final IUsuarioRepository usuarioRepository;
 
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>> listar() {
@@ -53,10 +51,6 @@ public class UsuarioController {
 
     @GetMapping("/me")
     public ResponseEntity<UsuarioResponseDTO> me(Authentication authentication) {
-        String email = authentication.getName();
-        //delegar lo de abajo al service
-        Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException(0L));
-        return ResponseEntity.ok(usuarioService.toDTO(usuario));
+        return ResponseEntity.ok(usuarioService.getUsuarioActual(authentication.getName()));
     }
 }

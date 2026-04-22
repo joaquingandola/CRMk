@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
             CiudadNotFoundException.class,
             PaisNotFoundException.class,
             UserNotFoundException.class,
+            UserMailNotFoundException.class,
             ViajeNotFoundException.class,
             ClienteNotFoundException.class
             //faltaria un exception  de destino not found

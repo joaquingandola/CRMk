@@ -3,6 +3,7 @@ package com.koraiken.crm.service;
 
 import com.koraiken.crm.dto.Usuario.UsuarioResponseDTO;
 import com.koraiken.crm.dto.Usuario.UsuarioUpdateDTO;
+import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.exception.UserNotFoundException;
 import com.koraiken.crm.model.Usuario;
 import com.koraiken.crm.repository.IUsuarioRepository;
@@ -55,6 +56,13 @@ public class UsuarioService {
         Usuario usuario = obtenerUsuarioOExcepcion(id);
         usuario.setActivo(true);
         usuarioRepository.save(usuario);
+    }
+
+    @Transactional(readOnly = true)
+    public UsuarioResponseDTO getUsuarioActual(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UserMailNotFoundException(email));
+        return toDTO(usuario);
     }
 
 
