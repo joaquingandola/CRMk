@@ -71,7 +71,7 @@ export function DashboardPage() {
         {/* Header */}
         <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Dashboard</h1>
-            <p className="text-sm text-slate-400 mt-0.5">Resumen general del sistema</p>
+            <p className="text-sm text-slate-400 mt-0.5">Resumen general</p>
         </div>
 
         {/* Metric cards */}
@@ -109,7 +109,7 @@ export function DashboardPage() {
 
             {clientesEnViaje.length === 0 ? (
                 <div className="px-6 py-10 text-center text-slate-500 text-sm">
-                    Ningún cliente está viajando en este momento.
+                    Ningun cliente está viajando en este momento.
                 </div>
             ) : (
           <table className="w-full text-sm">
@@ -274,7 +274,7 @@ function MetricCard({ label, value, color, sublabel }: MetricCardProps) {
         <div className={`rounded-2xl border p-5 backdrop-blur-sm ${colorMap[color]}`}>
             <p className="text-xs font-medium text-slate-400 mb-1">{label}</p>
             <p className="text-3xl font-bold">{value}</p>
-            {sublabel} && <p className="text-xs text-slate-500 mt-0.5">{sublabel}</p>
+            {sublabel && <p className="text-xs text-slate-500 mt-0.5">{sublabel}</p>}
         </div>
     )
 }

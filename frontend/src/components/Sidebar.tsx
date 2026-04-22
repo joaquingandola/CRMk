@@ -2,17 +2,17 @@ import { NavLink, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
 
 const agentLinks = [
+    {to: '/dashboard', label: 'Dashboard'},
     {to : '/clientes', label: 'Clientes'},
-    {to: '/viajes', label: 'Viajes'},
-    {to: '/dashboard', label: 'Dashboard'}
+    {to: '/viajes', label: 'Viajes'}
 
 ]
 
 const adminLinks = [
-  { to: '/clientes', label: 'Clientes'},
+  {to: '/dashboard', label: 'Dashboard'},
+  {to: '/clientes', label: 'Clientes'},
   {to: '/viajes', label: 'Viajes'},
-  {to: '/usuarios', label: 'Usuarios'},
-  {to: '/dashboard', label: 'Dashboard'}
+  {to: '/usuarios', label: 'Usuarios'}
 ]
 
 
