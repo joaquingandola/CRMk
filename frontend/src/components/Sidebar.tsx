@@ -4,13 +4,17 @@ import { useAuth } from "../hooks/useAuth"
 const agentLinks = [
     {to : '/clientes', label: 'Clientes'},
     {to: '/viajes', label: 'Viajes'},
+    {to: '/dashboard', label: 'Dashboard'}
+
 ]
 
 const adminLinks = [
   { to: '/clientes', label: 'Clientes'},
   {to: '/viajes', label: 'Viajes'},
   {to: '/usuarios', label: 'Usuarios'},
+  {to: '/dashboard', label: 'Dashboard'}
 ]
+
 
 export function Sidebar() {
     const { logout, usuario, isAdmin } = useAuth()

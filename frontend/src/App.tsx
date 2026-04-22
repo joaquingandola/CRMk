@@ -11,6 +11,7 @@ import { ClienteEditar } from "./pages/clientes/ClienteEditar"
 import { ViajesPage } from "./pages/viajes/ViajesPage"
 import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
 import { ViajeNuevo } from "./pages/viajes/ViajeNuevo"
+import { DashboardPage } from "./pages/Dashboard"
 
 export default function App() {
     return (
@@ -30,6 +31,7 @@ export default function App() {
                             <Route path="/viajes" element={<ViajesPage/>} />
                             <Route path="/viajes/:id" element={<ViajeDetalle/>} />  
                             <Route path= "/viajes/nuevo" element={<ViajeNuevo/>} />
+                            <Route path = "/dashboard" element={<DashboardPage/>} />
                         </Route>
                     </Route>
                 </Routes>
