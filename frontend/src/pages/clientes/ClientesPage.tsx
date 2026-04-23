@@ -44,7 +44,7 @@ export function ClientesPage() {
     <div className="space-y-6">
         <div className="flex items-center justify-between">
             <div>
-            <h1 className="text-2xl font-bold text-white tracking-light">Clientes</h1>
+            <h1 className="text-sm text-slate-400 hover:text-blue-400 mb-2 flex items-center gap-1 transition-colors group">Clientes</h1>
             <p className="text-sm text-slate-400">{clientes.length} clientes activos</p>
             </div>
             <button
