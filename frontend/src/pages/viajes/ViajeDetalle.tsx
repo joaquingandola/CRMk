@@ -77,145 +77,144 @@ export function ViajeDetalle() {
     const siguientes = estadoActual ? TRANSICIONES[estadoActual] : []
 
     return (
-        <div className="max-w-4xl">
+        <div className="max-w-4xl space-y-6">
             <button
                 onClick={() => navigate(`/clientes/${viaje.idCliente}`)}
-                className="text-sm text-gray-500 hover:text-gray-700 mb-5 flex items-center gap-1"
+                className="text-sm text-slate-400 hover:text-blue-400 mb-2 flex items-center gap-1 transition-colors group"
             >
-                ← {viaje.nombreCliente}
+                <span className="group-hover:-translate-x-1 transition-transform">←</span> {viaje.nombreCliente}
             </button>
 
             {/* Header */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                <h1 className="text-2xl font-semibold text-gray-900">
-                    {viaje.destinos.length > 0
-                    ? viaje.destinos.map((d) => d.ciudad.nombre).join(' → ')
-                    : 'Viaje sin destinos'}
-                </h1>
-                <p className="text-sm text-gray-500 mt-1">
-                    {formatFecha(viaje.fechaInicioViaje)} → {formatFecha(viaje.fechaFinViaje)}
-                    {viaje.aerolinea && ` · ${viaje.aerolinea.aerolinea}`}
-                </p>
+                    <h1 className="text-2xl font-bold text-white tracking-light">
+                        {viaje.destinos.length > 0
+                            ? viaje.destinos.map((d) => d.ciudad.nombre).join(' → ')
+                            : 'Viaje sin destinos'}
+                    </h1>
+                    <p className="text-sm text-slate-400 mt-2">
+                        {formatFecha(viaje.fechaInicioViaje)} → {formatFecha(viaje.fechaFinViaje)}
+                        {viaje.aerolinea && ` · ${viaje.aerolinea.aerolinea}`}
+                    </p>
                 </div>
-                <div className="flex items-center gap-3">
-                <Badge estado={estadoActual} />
-                <span className="text-lg font-semibold text-gray-800">
-                    {formatMonto(viaje.precio)}
-                </span>
+                <div className="flex items-center gap-4">
+                    <Badge estado={estadoActual} />
+                    <span className="text-xl font-bold text-white">
+                        {formatMonto(viaje.precio)}
+                    </span>
                 </div>
             </div>
 
             {error && (
-                <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                {error}
+                <div className="mb-4 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 animate-pulse">
+                    {error}
                 </div>
             )}
 
             {/* Cambio de estado */}
             {siguientes.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-200 p-5 mb-4">
-                <h2 className="text-sm font-semibold text-gray-700 mb-3">Cambiar estado</h2>
-                <div className="flex gap-2">
-                    {siguientes.map((s) => (
-                    <button
-                        key={s}
-                        onClick={() => handleCambiarEstado(s)}
-                        disabled={cambiandoEstado}
-                        className={`text-sm font-medium px-4 py-2 rounded-lg border transition-colors disabled:opacity-50 ${
-                        s === 'CANCELADO'
-                            ? 'border-red-200 text-red-600 hover:bg-red-50'
-                            : 'border-blue-200 text-blue-700 hover:bg-blue-50'
-                        }`}
-                    >
-                        {cambiandoEstado ? 'Procesando...' : `Marcar como ${s}`}
-                    </button>
-                    ))}
-                </div>
+                <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm mb-6">
+                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-4">Cambiar estado</h2>
+                    <div className="flex gap-3">
+                        {siguientes.map((s) => (
+                            <button
+                                key={s}
+                                onClick={() => handleCambiarEstado(s)}
+                                disabled={cambiandoEstado}
+                                className={`text-sm font-semibold px-4 py-2.5 rounded-xl border transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                                    s === 'CANCELADO'
+                                        ? 'border-red-500/20 text-red-400 bg-red-500/10 hover:bg-red-500/20'
+                                        : 'border-blue-500/20 text-blue-400 bg-blue-600/10 hover:bg-blue-600/20'
+                                }`}
+                            >
+                                {cambiandoEstado ? 'Procesando...' : `Marcar como ${s}`}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4 mb-4">
-
+            <div className="grid grid-cols-2 gap-5 mb-6">
                 {/* Info general */}
-                <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-4">Información</h2>
-                <dl className="space-y-3">
-                    <Row label="Cliente" value={viaje.nombreCliente} />
-                    <Row label="Aerolínea" value={viaje.aerolinea?.aerolinea ?? '—'} />
-                    <Row label="Inicio" value={formatFecha(viaje.fechaInicioViaje)} />
-                    <Row label="Fin" value={formatFecha(viaje.fechaFinViaje)} />
-                    <Row label="Precio" value={formatMonto(viaje.precio)} />
-                    <Row label="Creado" value={formatFecha(viaje.fechaCreacion)} />
-                </dl>
+                <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">Información</h2>
+                    <dl className="space-y-4">
+                        <Row label="Cliente" value={viaje.nombreCliente} />
+                        <Row label="Aerolínea" value={viaje.aerolinea?.aerolinea ?? '—'} />
+                        <Row label="Inicio" value={formatFecha(viaje.fechaInicioViaje)} />
+                        <Row label="Fin" value={formatFecha(viaje.fechaFinViaje)} />
+                        <Row label="Precio" value={formatMonto(viaje.precio)} />
+                        <Row label="Creado" value={formatFecha(viaje.fechaCreacion)} />
+                    </dl>
                 </div>
 
                 {/* Destinos */}
-                <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-4">
-                    Destinos
-                    <span className="ml-1 text-xs font-normal text-gray-400">
-                    ({viaje.destinos.length})
-                    </span>
-                </h2>
-                {viaje.destinos.length === 0 ? (
-                    <p className="text-sm text-gray-400">Sin destinos cargados.</p>
-                ) : (
-                    <ol className="space-y-3">
-                    {viaje.destinos.map((d, i) => (
-                        <li key={d.idDestino} className="flex gap-3 text-sm">
-                        <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 text-xs font-medium flex items-center justify-center flex-shrink-0 mt-0.5">
-                            {i + 1}
+                <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">
+                        Destinos
+                        <span className="ml-2 text-xs font-normal text-slate-500">
+                            ({viaje.destinos.length})
                         </span>
-                        <div>
-                            <div className="font-medium text-gray-900">
-                            {d.ciudad.nombre}
-                            <span className="text-gray-400 font-normal ml-1">{d.ciudad.pais}</span>
-                            </div>
-                            <div className="text-xs text-gray-400 mt-0.5">
-                            {formatFecha(d.fechaLlegada)} → {formatFecha(d.fechaSalida)}
-                            </div>
-                        </div>
-                        </li>
-                    ))}
-                    </ol>
-                )}
+                    </h2>
+                    {viaje.destinos.length === 0 ? (
+                        <p className="text-sm text-slate-500">Sin destinos cargados.</p>
+                    ) : (
+                        <ol className="space-y-4">
+                            {viaje.destinos.map((d, i) => (
+                                <li key={d.idDestino} className="flex gap-4 text-sm bg-slate-900/30 border border-slate-800 rounded-xl p-3">
+                                    <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        {i + 1}
+                                    </span>
+                                    <div>
+                                        <div className="font-medium text-slate-100">
+                                            {d.ciudad.nombre}
+                                            <span className="text-slate-500 font-normal ml-1 border-l border-slate-700 pl-1">{d.ciudad.pais}</span>
+                                        </div>
+                                        <div className="text-xs text-slate-400 mt-1">
+                                            {formatFecha(d.fechaLlegada)} → {formatFecha(d.fechaSalida)}
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ol>
+                    )}
                 </div>
             </div>
 
             {/* Acompañantes */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-4">
-                Acompañantes
-                <span className="ml-1 text-xs font-normal text-gray-400">
-                    ({viaje.acompanantes.length})
-                </span>
+            <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+                <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">
+                    Acompañantes
+                    <span className="ml-2 text-xs font-normal text-slate-500">
+                        ({viaje.acompanantes.length})
+                    </span>
                 </h2>
                 {viaje.acompanantes.length === 0 ? (
-                <p className="text-sm text-gray-400">Sin acompañantes registrados.</p>
+                    <p className="text-sm text-slate-500">Sin acompañantes registrados.</p>
                 ) : (
-                <div className="overflow-hidden rounded-lg border border-gray-100">
-                    <table className="w-full text-sm">
-                    <thead className="bg-gray-50">
-                        <tr>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500">Nombre</th>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500">DNI</th>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500">Nacimiento</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {viaje.acompanantes.map((a) => (
-                        <tr key={a.idAcompanante}>
-                            <td className="px-4 py-3 font-medium text-gray-900">
-                            {a.nombre} {a.apellido}
-                            </td>
-                            <td className="px-4 py-3 text-gray-500">{a.dni}</td>
-                            <td className="px-4 py-3 text-gray-500">{formatFecha(a.fechaNacimiento)}</td>
-                        </tr>
-                        ))}
-                    </tbody>
-                    </table>
-                </div>
+                    <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden">
+                        <table className="w-full text-sm">
+                            <thead className="bg-slate-800/60 border-b border-slate-800">
+                                <tr>
+                                    <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Nombre</th>
+                                    <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">DNI</th>
+                                    <th className="text-left px-5 py-3.5 text-xs font-semibold text-slate-400 uppercase tracking-wider">Nacimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-800/50">
+                                {viaje.acompanantes.map((a) => (
+                                    <tr key={a.idAcompanante} className="hover:bg-slate-800/30 transition-colors">
+                                        <td className="px-5 py-3 font-medium text-slate-200">
+                                            {a.nombre} {a.apellido}
+                                        </td>
+                                        <td className="px-5 py-3 text-slate-400">{a.dni}</td>
+                                        <td className="px-5 py-3 text-slate-400">{formatFecha(a.fechaNacimiento)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>
@@ -225,8 +224,8 @@ export function ViajeDetalle() {
 function Row({label, value}: {label : string, value: string}) {
     return (
         <div className="flex justify-between text-sm">
-            <dt className="text-gray-500">{label}</dt>
-            <dd className="text-gray-900 font-medium">{value}</dd>
+            <dt className="text-slate-400">{label}</dt>
+            <dd className="text-slate-100 font-medium text-right">{value}</dd>
         </div>  
     )
 }
