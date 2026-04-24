@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useAuth } from "../../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 import { getUsuarios, registrarAgente, desactivarUsuario } from "../../api/usuarios"
@@ -69,70 +69,70 @@ export function UsuariosPage() {
     if(loading) return <Spinner />
     
       return (
-        <div className="max-w-3xl">
-        <div className="flex items-center justify-between mb-6">
+        <div className="max-w-4xl space-y-6">
+        <div className="flex items-center justify-between">
             <div>
-            <h1 className="text-xl font-semibold text-gray-900">Usuarios</h1>
-            <p className="text-sm text-gray-500 mt-0.5">{usuarios.length} usuarios registrados</p>
+            <h1 className="text-2xl font-bold text-white tracking-light">Usuarios</h1>
+            <p className="text-sm text-slate-400 mt-1">{usuarios.length} usuarios registrados</p>
             </div>
             <button
             onClick={() => setMostrarForm(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20"
             >
             + Nuevo agente
             </button>
         </div>
 
         {error && (
-            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 animate-pulse">
             {error}
             </div>
         )}
 
         {/* Tabla usuarios */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-slate-800/30 border border-slate-800 rounded-2xl overflow-hidden backdrop-blur-sm">
             <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-slate-800/60 border-b border-slate-800">
                 <tr>
-                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Usuario</th>
-                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Email</th>
-                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Rol</th>
-                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500 uppercase tracking-wide">Estado</th>
-                <th className="px-5 py-3" />
+                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Usuario</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Email</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Rol</th>
+                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Estado</th>
+                <th className="px-6 py-4" />
                 </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-800/50">
                 {usuarios.map((u) => (
-                <tr key={u.idUsuario} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-5 py-3.5 font-medium text-gray-900">{u.username}</td>
-                    <td className="px-5 py-3.5 text-gray-500">{u.email}</td>
-                    <td className="px-5 py-3.5">
+                <tr key={u.idUsuario} className="hover:bg-blue-600/5 transition-colors group">
+                    <td className="px-6 py-4 font-medium text-slate-100 group-hover:text-blue-400 transition-colors">{u.username}</td>
+                    <td className="px-6 py-4 text-slate-400">{u.email}</td>
+                    <td className="px-6 py-4">
                     {u.tipoRol === 'ADMIN' ? (
-                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-violet-100 text-violet-700">
+                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/20">
                         Admin
                         </span>
                     ) : (
-                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
+                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-700/60 text-slate-300 border border-slate-700">
                         Agente
                         </span>
                     )}
                     </td>
-                    <td className="px-5 py-3.5">
+                    <td className="px-6 py-4">
                     {u.activo ? (
-                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-green-100 text-green-700">
+                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
                         Activo
                         </span>
                     ) : (
-                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-red-100 text-red-700">
+                        <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">
                         Inactivo
                         </span>
                     )}
                     </td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="px-6 py-4 text-right">
                     {u.activo && u.tipoRol !== 'ADMIN' && (
                         <button
                         onClick={() => handleDesactivar(u.idUsuario, u.username)}
-                        className="text-xs text-red-500 hover:text-red-700 transition-colors"
+                        className="text-xs text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
                         >
                         Desactivar
                         </button>
@@ -146,15 +146,15 @@ export function UsuariosPage() {
 
         {/* Modal nuevo agente */}
         {mostrarForm && (
-            <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-sm mx-4">
-                <h3 className="text-base font-semibold text-gray-900 mb-5">
+            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl shadow-slate-950/40 p-6 w-full max-w-sm mx-4">
+                <h3 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">
                 Registrar nuevo agente
                 </h3>
 
                 <form onSubmit={handleRegistrar} className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="space-y-1.5">
+                    <label className="block text-sm font-medium text-slate-300">
                     Nombre de usuario
                     </label>
                     <input
@@ -163,12 +163,12 @@ export function UsuariosPage() {
                     onChange={(e) => setForm({ ...form, username: e.target.value })}
                     required
                     placeholder="juan.perez"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                     />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="space-y-1.5">
+                    <label className="block text-sm font-medium text-slate-300">
                     Email
                     </label>
                     <input
@@ -177,12 +177,12 @@ export function UsuariosPage() {
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     required
                     placeholder="agente@email.com"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                     />
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                <div className="space-y-1.5">
+                    <label className="block text-sm font-medium text-slate-300">
                     Contraseña inicial
                     </label>
                     <input
@@ -191,12 +191,12 @@ export function UsuariosPage() {
                     onChange={(e) => setForm({ ...form, password: e.target.value })}
                     required
                     placeholder="••••••••"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                     />
                 </div>
 
                 {formError && (
-                    <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                    <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2">
                     {formError}
                     </p>
                 )}
@@ -209,14 +209,14 @@ export function UsuariosPage() {
                         setFormError('')
                         setForm({ username: '', email: '', password: '' })
                     }}
-                    className="flex-1 border border-gray-300 text-gray-700 text-sm font-medium py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold py-2.5 rounded-xl transition-all border border-slate-700"
                     >
                     Cancelar
                     </button>
                     <button
                     type="submit"
                     disabled={guardando}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-sm font-medium py-2 rounded-lg transition-colors"
+                    className="flex-1 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800/50 disabled:text-slate-400 text-white text-sm font-semibold py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20"
                     >
                     {guardando ? 'Registrando...' : 'Registrar'}
                     </button>
