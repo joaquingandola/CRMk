@@ -1,0 +1,56 @@
+services: 
+  db:
+    image: postgres:17-alpine
+    container_name: crm-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-crm_db}
+      POSTGRES_USER: ${DB_USER:-crm_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-crm_password}
+    ports:
+      - "5433:5432"
+    volumes: 
+    - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-crm_user} -d ${DB_NAME:-crm_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend: 
+    build:
+      context: ./crm
+      dockerfile: Dockerfile
+    container_name: crm_backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL:      jdbc:postgresql://db:5432/${DB_NAME:-crm_db}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER:-crm_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-crm_password}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${DDL_AUTO:-update}
+      JWT_SECRET: ${JWT_SECRET:-cambia_este_secreto_en_produccion}
+      # Variables de Cloudinary (si las usas)
+      CLOUDINARY_CLOUD_NAME:  ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY:     ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET:  ${CLOUDINARY_API_SECRET:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend: 
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crm-frontend
+    restart: unless-stopped
+    ports: 
+      - "80:80"
+    depends_on: 
+      - backend
+
+volumes:
+  postgres_data:
