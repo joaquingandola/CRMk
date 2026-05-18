@@ -29,7 +29,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-crm_password}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${DDL_AUTO:-update}
       JWT_SECRET: ${JWT_SECRET:-cambia_este_secreto_en_produccion}
-      # Variables de Cloudinary (si las usas)
       CLOUDINARY_CLOUD_NAME:  ${CLOUDINARY_CLOUD_NAME:-}
       CLOUDINARY_API_KEY:     ${CLOUDINARY_API_KEY:-}
       CLOUDINARY_API_SECRET:  ${CLOUDINARY_API_SECRET:-}
