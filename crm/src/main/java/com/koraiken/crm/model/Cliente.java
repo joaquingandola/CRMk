@@ -41,7 +41,4 @@ public class Cliente {
     private LocalDate fechaNacimiento;
     private LocalDateTime fechaAlta = LocalDateTime.now();
 
-    public Cliente(){
-
-    }
 }

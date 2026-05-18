@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +27,7 @@ public class Destino {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idViaje", nullable = false)
     private Viaje viaje;
+
+    @OneToMany(mappedBy = "destino")
+    private List<Hotel> hoteles = new ArrayList<>();
 }
