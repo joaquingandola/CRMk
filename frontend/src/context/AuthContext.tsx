@@ -1,7 +1,6 @@
 import {createContext, useState, useEffect, type ReactNode} from 'react'
 import { getMe } from '../api/usuarios'
 import type { UsuarioResponseDTO } from '../types'
-import { data } from 'react-router-dom'
 
 
 interface AuthContextType {

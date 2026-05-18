@@ -1,5 +1,5 @@
 import api from "./axios"
-import type { ClienteResponseDTO, ViajeResponseDTO,  CiudadResponseDTO, CiudadVisitadaDTO } from "../types"
+import type { ClienteResponseDTO, ViajeResponseDTO, CiudadVisitadaDTO } from "../types"
 
 export const getClientesEnViaje = () => 
     api.get<ClienteResponseDTO[]>('/api/v1/clientes/en-viaje')

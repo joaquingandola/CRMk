@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react"
-import { data, useNavigate, useSearchParams } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { crearViaje } from "../../api/viajes"
-import { getAerolineas } from "../../api/aerolineas"
-import { getClientesActivos } from "../../api/clientes"
 import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
 import { crearAcompanante } from "../../api/acompanantes"
 
 import type {
     AerolineaResponseDTO,
-    ClienteResponseDTO,
     AcompananteFormData,
     DestinoFormData,
 } from '../../types'
@@ -27,12 +24,12 @@ export function ViajeNuevo() {
     const clienteIdParam = searchParams.get('clienteId')
 
     //res
-    const[aerolineas, setAerolineas] = useState<AerolineaResponseDTO[]>([])
+    const[aerolineas] = useState<AerolineaResponseDTO[]>([])
 
     //const[clientes, setClientes] = useState<ClienteResponseDTO[]>([]) -=- por ahora afuera, porque se crea viaje desde cliente
 
     //form principal
-    const [idCliente, setIdCliente] = useState<string>(clienteIdParam ?? '')
+    const [idCliente] = useState<string>(clienteIdParam ?? '')
     const [idAerolinea, setIdAerolinea] = useState<string>('')
     const [fechaInicio, setFechaInicio] = useState('')
     const [fechaFin, setFechaFin] = useState('')
@@ -43,7 +40,6 @@ export function ViajeNuevo() {
 
     //acompanantes
     const [acompanantes, setAcompanantes] = useState<AcompananteFormData[]>([])
-
     const [error, setError] = useState('')
     const [guardando, setGuardando] = useState(false)
 
@@ -67,7 +63,7 @@ export function ViajeNuevo() {
     }
 
     const agregarDestinos = () => setDestinos([...destinos, destinoVacio()])
-    const quitarDestino = (i: number) => setDestinos(destinos.filter((_, idx) => idx !== 1))
+    const quitarDestino = (i: number) => setDestinos(destinos.filter((_, idx) => idx !== i))
 
     //acompanantes
     const actualizarAcompanante = (
@@ -83,8 +79,8 @@ export function ViajeNuevo() {
     const agregarAcompanante = () => 
         setAcompanantes([...acompanantes, acompananteVacio()])
 
-    const quitarAcompanante = (I:number) =>
-        setAcompanantes(acompanantes.filter((_, idx) => idx !== 1))
+    const quitarAcompanante = (i:number) =>
+        setAcompanantes(acompanantes.filter((_, idx) => idx !== i))
 
 
     //submit

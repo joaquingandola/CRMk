@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { buscarClientes, getClientesActivos } from "../../api/clientes"
 import type { ClienteResponseDTO } from "../../types"
