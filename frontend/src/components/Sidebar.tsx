@@ -12,7 +12,8 @@ const adminLinks = [
   {to: '/dashboard', label: 'Dashboard'},
   {to: '/clientes', label: 'Clientes'},
   {to: '/viajes', label: 'Viajes'},
-  {to: '/usuarios', label: 'Usuarios'}
+  {to: '/usuarios', label: 'Usuarios'},
+  {to: '/aerolineas', label: 'Cargar Aerolíneas'}
 ]
 
 
