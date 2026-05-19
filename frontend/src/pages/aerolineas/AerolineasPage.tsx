@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, Navigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { crearAerolinea, getAerolineas } from "../../api/aerolineas"
 import type { AerolineaResponseDTO } from "../../types"
 import { useAuth } from "../../hooks/useAuth"
@@ -7,22 +7,17 @@ import { Spinner } from "../../components/ui/Spinner"
 import { EmptyState } from "../../components/ui/EmptyState"
 
 export function AerolineasPage() {
-    const { isAdmin, authLoading } = useAuth()
+    const { usuario, isAdmin } = useAuth()
     const [aerolineas, setAerolineas] = useState<AerolineaResponseDTO[]>([])
     const [nombre, setNombre] = useState('')
     const [loading, setLoading] = useState(true)
     const [guardando, setGuardando] = useState(false)
     const [error, setError] = useState('')
     const [exito, setExito] = useState('')
-    const navigate = useNavigate()
 
     useEffect(() => {
-        if(!isAdmin) {
-            navigate('/dashboard')
-            return
-        }
-        cargarAerolineas()
-    }, [])
+        if(isAdmin) cargarAerolineas()
+    }, [isAdmin])
 
     const cargarAerolineas = async () => {
         setLoading(true)
@@ -60,7 +55,7 @@ export function AerolineasPage() {
         }
     }
 
-    if (authLoading) return <Spinner />
+    if (!usuario) return <Spinner />
     if (!isAdmin) return <Navigate to="/dashboard" replace />
     
     return (
