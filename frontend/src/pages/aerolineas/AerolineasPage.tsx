@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Navigate } from "react-router-dom"
 import { crearAerolinea, getAerolineas } from "../../api/aerolineas"
 import type { AerolineaResponseDTO } from "../../types"
 import { useAuth } from "../../hooks/useAuth"
@@ -7,7 +7,7 @@ import { Spinner } from "../../components/ui/Spinner"
 import { EmptyState } from "../../components/ui/EmptyState"
 
 export function AerolineasPage() {
-    const { isAdmin } = useAuth()
+    const { isAdmin, authLoading } = useAuth()
     const [aerolineas, setAerolineas] = useState<AerolineaResponseDTO[]>([])
     const [nombre, setNombre] = useState('')
     const [loading, setLoading] = useState(true)
@@ -60,8 +60,9 @@ export function AerolineasPage() {
         }
     }
 
-    if (loading) return <Spinner />
-
+    if (authLoading) return <Spinner />
+    if (!isAdmin) return <Navigate to="/dashboard" replace />
+    
     return (
         <div className="space-y-6">
             <div>

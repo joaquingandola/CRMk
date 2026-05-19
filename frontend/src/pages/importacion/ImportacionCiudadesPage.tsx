@@ -2,9 +2,10 @@ import { useRef, useState } from "react"
 import { Navigate } from "react-router-dom"
 import { importarCiudades, type ImportacionResultadoDTO } from "../../api/importacionCiudades"
 import { useAuth } from "../../hooks/useAuth"
+import { Spinner } from "../../components/ui/Spinner"
 
 export function ImportacionCiudadesPage() {
-    const { isAdmin } = useAuth()
+    const { isAdmin, authLoading } = useAuth()
     const inputRef = useRef<HTMLInputElement | null>(null)
 
     const [archivo, setArchivo] = useState<File | null>(null)
@@ -54,8 +55,9 @@ export function ImportacionCiudadesPage() {
         }
     }
 
+    if (authLoading) return <Spinner />
     if (!isAdmin) return <Navigate to="/dashboard" replace />
-
+    
     return (
         <div className="space-y-6">
             <div>

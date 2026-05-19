@@ -8,6 +8,7 @@ interface AuthContextType {
     usuario: UsuarioResponseDTO | null
     isAuth: boolean
     isAdmin: boolean
+    authLoading: boolean
     login: (token: string) => void
     logout: () => void
 }
@@ -20,8 +21,11 @@ export function AuthProvider({children}: {children: ReactNode}) {
     )
     const [usuario, setUsuario] = useState<UsuarioResponseDTO | null > (null)
 
+    const [authLoading, setAuthLoading] = useState(!!token)
+    
     useEffect(() => {
         if(token) {
+            setAuthLoading(true)
             getMe()
                 .then(({data}) => setUsuario(data))
                 .catch(() => {
@@ -33,6 +37,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
             setUsuario(null)
         }
     }, [token])
+
 
     const login = (newToken: string) => {
         localStorage.setItem('token', newToken)
@@ -51,6 +56,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
             usuario,
             isAuth: !!token,
             isAdmin: usuario?.tipoRol === 'ADMIN',
+            authLoading,
             login,
             logout,
         }}>
