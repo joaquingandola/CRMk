@@ -44,14 +44,14 @@ export function ClientesPage() {
     <div className="space-y-6">
         <div className="flex items-center justify-between">
             <div>
-            <h1 className="text-sm text-slate-400 hover:text-blue-400 mb-2 flex items-center gap-1 transition-colors group">Clientes</h1>
-            <p className="text-sm text-slate-400">{clientes.length} clientes activos</p>
+                <h1 className="text-2xl font-bold text-white tracking-tight">Clientes</h1>
+                <p className="text-sm text-slate-400 mt-0.5">{clientes.length} clientes activos</p>
             </div>
             <button
                 onClick={() => navigate('/clientes/nuevo')}
-            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-blue-600/20"
-                >
-                    + Nuevo cliente
+                className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-blue-600/20"
+            >
+                + Nuevo cliente
             </button>
         </div>
 
@@ -74,44 +74,44 @@ export function ClientesPage() {
                 <table className="w-full text-sm">
                     <thead className="bg-slate-800/60 border-b border-slate-800">
                         <tr>
-                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Nombre</th>
-                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">DNI</th>
-                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Contacto principal</th>
-                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase">Estado</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Nombre</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">DNI</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Contacto principal</th>
+                            <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Estado</th>
                             <th className="px-6 py-4" />
                         </tr>
                     </thead>
-                <tbody className="divide-y divide-slate-800/50">
-                    {clientes.map((c) => (
-                        <tr 
-                            key={c.idCliente}
-                            onClick={() => navigate(`/clientes/${c.idCliente}`)}
-                            className="hover:bg-blue-600/5 cursor-pointer transition-colors group"
-                        >
-                            <td className="px-6 py-4 font-medium text-slate-100 group-hover:text-blue-400 transition-colors">
-                                {c.nombre} {c.apellido}
-                            </td>
-                            <td className="px-6 py-4 text-slate-400">{c.dni}</td>
-                            <td className="px-6 py-4 text-slate-400">
-                                {c.contactos?.[0]?.detalle ?? '—'}
-                            </td>
-                            <td className="px-6 py-4">
-                                {c.enViaje ? (
-                                <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                    En viaje
-                                </span>
-                            ) : (
-                                <span className="py-1 px-2.5 rounded-full text-xs font-medium bg-slate-700/50 text-slate-400 border border-slate-700">
-                                    No esta en viaje
-                                </span>
-                            )}
-                            </td>
-                            <td className="px-6 py-4 text-right text-slate-500 group-hover:text-slate-300 text-xs"> Ver detalles</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    <tbody className="divide-y divide-slate-800/50">
+                        {clientes.map((c) => (
+                            <tr 
+                                key={c.idCliente}
+                                onClick={() => navigate(`/clientes/${c.idCliente}`)}
+                                className="hover:bg-blue-600/5 cursor-pointer transition-colors group"
+                            >
+                                <td className="px-6 py-4 font-medium text-slate-100 group-hover:text-blue-400 transition-colors">
+                                    {c.nombre} {c.apellido}
+                                </td>
+                                <td className="px-6 py-4 text-slate-400">{c.dni}</td>
+                                <td className="px-6 py-4 text-slate-400">
+                                    {c.contactos?.[0]?.detalle ?? '—'}
+                                </td>
+                                <td className="px-6 py-4">
+                                    {c.enViaje ? (
+                                        <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                            En viaje
+                                        </span>
+                                    ) : (
+                                        <span className="py-1 px-2.5 rounded-full text-xs font-medium bg-slate-700/50 text-slate-400 border border-slate-700">
+                                            No está en viaje
+                                        </span>
+                                    )}
+                                </td>
+                                <td className="px-6 py-4 text-right text-slate-500 group-hover:text-slate-300 text-xs">Ver detalles</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         )}
     </div>
     )
