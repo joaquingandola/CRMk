@@ -13,6 +13,7 @@ import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
 import { ViajeNuevo } from "./pages/viajes/ViajeNuevo"
 import { DashboardPage } from "./pages/Dashboard"
 import { AerolineasPage } from "./pages/aerolineas/AerolineasPage"
+import { ImportacionCiudadesPage } from "./pages/importacion/ImportacionCiudadesPage"
 
 export default function App() {
     return (
@@ -28,6 +29,7 @@ export default function App() {
                             <Route path="/clientes/:id" element={<ClienteDetalle />} />
                             <Route path="/usuarios" element={<UsuariosPage />} />
                             <Route path="/aerolineas" element={<AerolineasPage />} />
+                            <Route path="/importacion-ciudades" element={<ImportacionCiudadesPage />} />
                             <Route path="/clientes/nuevo" element={<ClienteNuevo />} />
                             <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
                             <Route path="/viajes" element={<ViajesPage/>} />
