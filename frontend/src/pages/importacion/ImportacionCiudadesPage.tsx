@@ -5,16 +5,15 @@ import { useAuth } from "../../hooks/useAuth"
 import { Spinner } from "../../components/ui/Spinner"
 
 export function ImportacionCiudadesPage() {
-    const { isAdmin, authLoading } = useAuth()
+    const { usuario, isAdmin } = useAuth()
     const inputRef = useRef<HTMLInputElement | null>(null)
-
     const [archivo, setArchivo] = useState<File | null>(null)
     const [importando, setImportando] = useState(false)
     const [error, setError] = useState('')
     const [resultado, setResultado] = useState<ImportacionResultadoDTO | null>(null)
 
     const handleArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const seleccionado = e.target.files?.[0] ?? null
+        const seleccionado = e.target.files?[0] ?? null
         setArchivo(seleccionado)
         setError('')
         setResultado(null)
@@ -55,7 +54,7 @@ export function ImportacionCiudadesPage() {
         }
     }
 
-    if (authLoading) return <Spinner />
+    if (!usuario) return <Spinner />
     if (!isAdmin) return <Navigate to="/dashboard" replace />
     
     return (
@@ -67,7 +66,7 @@ export function ImportacionCiudadesPage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-[minmax(0,460px)_1fr] gap-5 items-start">
+            <div className="grid grid-cols[[minmax(0,460px)_1fr]] gap-5 items-start">
                 <form
                     onSubmit={handleSubmit}
                     className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm space-y-5"
@@ -99,7 +98,7 @@ export function ImportacionCiudadesPage() {
                             <div className="min-w-0">
                                 <p className="text-sm font-medium text-slate-200 truncate">{archivo.name}</p>
                                 <p className="text-xs text-slate-500 mt-0.5">
-                                    {(archivo.size / 1024 / 1024).toFixed(2)} MB
+                                ((archivo.size / 1024 / 1024).toFixed(2))} MB
                                 </p>
                             </div>
                             <button
@@ -114,7 +113,7 @@ export function ImportacionCiudadesPage() {
 
                     {error && (
                         <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
-                            {error}
+                          {error}
                         </div>
                     )}
 
@@ -139,7 +138,8 @@ export function ImportacionCiudadesPage() {
                                 <thead className="bg-slate-800/60 border-b border-slate-800">
                                     <tr>
                                         <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Campo</th>
-                                        <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Descripción</th>
+                                        <th className="text-left px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">Descripción
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-800/50">
