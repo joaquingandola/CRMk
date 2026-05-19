@@ -13,7 +13,7 @@ export function ImportacionCiudadesPage() {
     const [resultado, setResultado] = useState<ImportacionResultadoDTO | null>(null)
 
     const handleArchivo = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const seleccionado = e.target.files?[0] ?? null
+        const seleccionado = e.target.files?.[0] ?? null
         setArchivo(seleccionado)
         setError('')
         setResultado(null)
@@ -75,9 +75,6 @@ export function ImportacionCiudadesPage() {
                         <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
                             Subir CSV
                         </h2>
-                        <p className="text-xs text-slate-500 mt-1">
-                            El archivo se procesa en el backend y crea países/ciudades automáticamente.
-                        </p>
                     </div>
 
                     <div className="space-y-1.5">
@@ -98,7 +95,7 @@ export function ImportacionCiudadesPage() {
                             <div className="min-w-0">
                                 <p className="text-sm font-medium text-slate-200 truncate">{archivo.name}</p>
                                 <p className="text-xs text-slate-500 mt-0.5">
-                                ((archivo.size / 1024 / 1024).toFixed(2))} MB
+                                {(archivo.size / 1024 / 1024).toFixed(2)} MB
                                 </p>
                             </div>
                             <button
@@ -130,7 +127,7 @@ export function ImportacionCiudadesPage() {
                     <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                         <h2 className="text-sm font-semibold text-white">Formato esperado</h2>
                         <p className="text-xs text-slate-500 mt-1">
-                            El CSV debe tener encabezados compatibles con el importador del backend.
+                            El formato del CSV tiene que ser compatible al del Backend.
                         </p>
 
                         <div className="mt-5 bg-slate-950/50 border border-slate-800 rounded-xl overflow-hidden">

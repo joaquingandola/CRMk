@@ -27,14 +27,19 @@ export function AuthProvider({children}: {children: ReactNode}) {
         if(token) {
             setAuthLoading(true)
             getMe()
-                .then(({data}) => setUsuario(data))
+                .then(({data}) => {setUsuario(data)})
                 .catch(() => {
                     //token invalido o expirado
                     localStorage.removeItem('token')
                     setToken(null)
+                    setUsuario(null)
                 })
+                .finally(() => {
+                    setAuthLoading(false)
+        })
         } else {
             setUsuario(null)
+            setAuthLoading(false)
         }
     }, [token])
 
@@ -48,6 +53,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
         localStorage.removeItem('token')
         setToken(null)
         setUsuario(null)
+        setAuthLoading(false)
     }
 
     return (
