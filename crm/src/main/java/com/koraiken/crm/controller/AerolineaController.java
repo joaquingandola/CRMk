@@ -27,4 +27,8 @@ public class AerolineaController {
         return ResponseEntity.ok(aerolineaService.listarTodas());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AerolineaResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(aerolineaService.buscarPorId(id));
+    }
 }

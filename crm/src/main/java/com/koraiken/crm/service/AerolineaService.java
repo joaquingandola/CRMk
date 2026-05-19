@@ -37,6 +37,11 @@ public class AerolineaService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public AerolineaResponseDTO buscarPorId(Long id) {
+        return toDTO(obtenerAerolineaOExcepcion(id));
+    }
+
     //reutilizable desde viajeservice
     public Aerolinea obtenerAerolineaOExcepcion(Long idAerolinea) {
         return aerolineaRepository.findById(idAerolinea)
