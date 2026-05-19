@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { crearViaje } from "../../api/viajes"
+import { getAerolineas } from "../../api/aerolineas"
 import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
 import { crearAcompanante } from "../../api/acompanantes"
 
@@ -28,7 +29,7 @@ export function ViajeNuevo() {
     const [searchParams] = useSearchParams()
     const clienteIdParam = searchParams.get('clienteId')
 
-    const[aerolineas] = useState<AerolineaResponseDTO[]>([])
+    const [aerolineas, setAerolineas] = useState<AerolineaResponseDTO[]>([])
 
     const [idCliente] = useState<string>(clienteIdParam ?? '')
     const [idAerolinea, setIdAerolinea] = useState<string>('')
@@ -41,6 +42,12 @@ export function ViajeNuevo() {
     const [acompanantes, setAcompanantes] = useState<AcompananteFormData[]>([])
     const [error, setError] = useState('')
     const [guardando, setGuardando] = useState(false)
+
+    useEffect(() => {
+        getAerolineas()
+            .then(({ data }) => setAerolineas(data))
+            .catch(() => setError('No se pudieron cargar las aerolíneas.'))
+    }, [])
 
     const actualizarDestino = (
         index: number,
