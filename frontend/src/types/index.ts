@@ -82,10 +82,27 @@ export interface CiudadVisitadaDTO {
     cantidadVisitas: number
 }
 
+//hotel
+export interface HotelCreateDTO {
+    idHotel?: number
+    nombre: string
+    direccion?: string
+}
+
 //destino
 export interface DestinoEnViajeDTO {
     idDestino: number
     ciudad: CiudadResponseDTO
+    fechaLlegada: string
+    fechaSalida: string
+    idHotel?: number | null
+}
+
+export interface DestinoCreateDTO {
+    idCiudad: number
+    idViaje?: number
+    idHotel?: number
+    hotel?: HotelCreateDTO
     fechaLlegada: string
     fechaSalida: string
 }
@@ -122,12 +139,7 @@ export interface ViajeCreateDTO {
     fechaFinViaje: string
     precio: number
     idAcompanantes?: number[]
-    destinos?: {
-        idCiudad: number
-        idViaje?: number
-        fechaLlegada: string
-        fechaSalida: string
-    }[]
+    destinos?: DestinoCreateDTO[]
 }
 
 export interface UsuarioResponseDTO {
@@ -159,4 +171,7 @@ export interface DestinoFormData {
     ciudad : CiudadResponseDTO | null
     fechaLlegada : string
     fechaSalida : string
+    idHotel : string
+    hotelNombre : string
+    hotelDireccion : string
 }

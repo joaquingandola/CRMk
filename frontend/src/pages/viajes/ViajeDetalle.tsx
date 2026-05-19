@@ -37,7 +37,6 @@ export function ViajeDetalle() {
         }
     }
 
-
     const handleCambiarEstado = async (nuevo: EstadoConcretoViaje) => {
         if (!id || !viaje) return 
         setCambiandoEstado(true) 
@@ -85,7 +84,6 @@ export function ViajeDetalle() {
                 <span className="group-hover:-translate-x-1 transition-transform">←</span> {viaje.nombreCliente}
             </button>
 
-            {/* Header */}
             <div className="flex items-start justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-white tracking-light">
@@ -112,7 +110,6 @@ export function ViajeDetalle() {
                 </div>
             )}
 
-            {/* Cambio de estado */}
             {siguientes.length > 0 && (
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm mb-6">
                     <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-4">Cambiar estado</h2>
@@ -136,7 +133,6 @@ export function ViajeDetalle() {
             )}
 
             <div className="grid grid-cols-2 gap-5 mb-6">
-                {/* Info general */}
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                     <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">Información</h2>
                     <dl className="space-y-4">
@@ -149,7 +145,6 @@ export function ViajeDetalle() {
                     </dl>
                 </div>
 
-                {/* Destinos */}
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                     <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">
                         Destinos
@@ -162,17 +157,31 @@ export function ViajeDetalle() {
                     ) : (
                         <ol className="space-y-4">
                             {viaje.destinos.map((d, i) => (
-                                <li key={d.idDestino} className="flex gap-4 text-sm bg-slate-900/30 border border-slate-800 rounded-xl p-3">
-                                    <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        {i + 1}
-                                    </span>
-                                    <div>
-                                        <div className="font-medium text-slate-100">
-                                            {d.ciudad.nombre}
-                                            <span className="text-slate-500 font-normal ml-1 border-l border-slate-700 pl-1">{d.ciudad.pais}</span>
-                                        </div>
-                                        <div className="text-xs text-slate-400 mt-1">
-                                            {formatFecha(d.fechaLlegada)} → {formatFecha(d.fechaSalida)}
+                                <li key={d.idDestino} className="text-sm bg-slate-900/30 border border-slate-800 rounded-xl p-4">
+                                    <div className="flex gap-4">
+                                        <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            {i + 1}
+                                        </span>
+
+                                        <div className="space-y-2 w-full">
+                                            <div>
+                                                <div className="font-medium text-slate-100">
+                                                    {d.ciudad.nombre}
+                                                    <span className="text-slate-500 font-normal ml-1 border-l border-slate-700 pl-1">
+                                                        {d.ciudad.pais}
+                                                    </span>
+                                                </div>
+
+                                                <div className="text-xs text-slate-400 mt-1">
+                                                    {formatFecha(d.fechaLlegada)} → {formatFecha(d.fechaSalida)}
+                                                </div>
+                                            </div>
+
+                                            {d.idHotel && (
+                                                <div className="text-xs text-blue-300 bg-blue-500/10 border border-blue-500/20 rounded-lg px-3 py-2 inline-block">
+                                                    Hotel asociado · ID #{d.idHotel}
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </li>
@@ -182,7 +191,6 @@ export function ViajeDetalle() {
                 </div>
             </div>
 
-            {/* Acompañantes */}
             <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                 <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-5">
                     Acompañantes
