@@ -13,7 +13,8 @@ const adminLinks = [
   {to: '/clientes', label: 'Clientes'},
   {to: '/viajes', label: 'Viajes'},
   {to: '/usuarios', label: 'Usuarios'},
-  {to: '/aerolineas', label: 'Cargar Aerolíneas'}
+  {to: '/aerolineas', label: 'Cargar Aerolíneas'},
+  {to: '/importacion-ciudades', label: 'Importar Ciudades'}
 ]
 
 
