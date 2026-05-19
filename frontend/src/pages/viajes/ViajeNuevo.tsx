@@ -332,7 +332,7 @@ return (
                                             type="text"
                                             value={d.hotelDireccion}
                                             onChange={(e) => actualizarDestino(i, 'hotelDireccion', e.target.value)}
-                                            placeholder="Av. Siempre Viva 123"
+                                            placeholder="Macacha Güemes 351"
                                             className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
                                         />
                                     </div>
