@@ -13,4 +13,5 @@ public class DestinoEnViajeDTO {
     private CiudadResponseDTO ciudad;
     private LocalDateTime fechaLlegada;
     private LocalDateTime fechaSalida;
+    private Long idHotel;
 }

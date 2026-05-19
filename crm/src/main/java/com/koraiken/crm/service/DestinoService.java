@@ -5,16 +5,11 @@ import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
 import com.koraiken.crm.dto.Ciudad.CiudadVisitadaDTO;
 import com.koraiken.crm.dto.Destino.DestinoCreateDTO;
 import com.koraiken.crm.dto.Destino.DestinoResponseDTO;
+import com.koraiken.crm.dto.Hotel.HotelCreateDTO;
 import com.koraiken.crm.exception.*;
 import com.koraiken.crm.mapper.DestinoMapper;
-import com.koraiken.crm.model.Ciudad;
-import com.koraiken.crm.model.Destino;
-import com.koraiken.crm.model.Pais;
-import com.koraiken.crm.model.Viaje;
-import com.koraiken.crm.repository.ICiudadRepository;
-import com.koraiken.crm.repository.IDestinoRepository;
-import com.koraiken.crm.repository.IPaisRepository;
-import com.koraiken.crm.repository.IViajeRepository;
+import com.koraiken.crm.model.*;
+import com.koraiken.crm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +26,6 @@ public class DestinoService {
     private final IViajeRepository viajeRepository;
     private final IPaisRepository paisRepository;
 
-
     // destinos
     @Transactional
     public DestinoResponseDTO agregarDestino(DestinoCreateDTO dto) {
@@ -41,7 +35,7 @@ public class DestinoService {
         }
 
         Ciudad ciudad = obtenerCiudadOExcepcion(dto.getIdCiudad());
-
+        
         Viaje viaje = viajeRepository.findById(dto.getIdViaje())
                 .orElseThrow(() -> new RuntimeException(
                         "No existe un viaje con id: " + dto.getIdViaje()
@@ -52,7 +46,6 @@ public class DestinoService {
         destino.setViaje(viaje);
         destino.setFechaLlegada(dto.getFechaLlegada());
         destino.setFechaSalida(dto.getFechaSalida());
-
         return DestinoMapper.toDTO(destinoRepository.save(destino));
     }
 

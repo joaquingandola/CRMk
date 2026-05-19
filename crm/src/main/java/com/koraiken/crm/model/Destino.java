@@ -28,6 +28,7 @@ public class Destino {
     @JoinColumn(name = "idViaje", nullable = false)
     private Viaje viaje;
 
-    @OneToMany(mappedBy = "destino")
-    private List<Hotel> hoteles = new ArrayList<>();
+    @OneToOne()
+    @JoinColumn(name = "idHotel")
+    private Hotel hotel;
 }

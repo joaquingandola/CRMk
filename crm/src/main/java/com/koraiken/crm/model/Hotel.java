@@ -1,7 +1,11 @@
 package com.koraiken.crm.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "Hotel")
 public class Hotel {
@@ -13,7 +17,6 @@ public class Hotel {
     private String nombre;
     private String direccion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idDestino", nullable = false)
+    @OneToOne(mappedBy = "hotel")
     private Destino destino;
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class DestinoCreateDTO {
     private Long idCiudad;
     private Long idViaje;
+    private Long idHotel;
     private LocalDateTime fechaLlegada;
     private LocalDateTime fechaSalida;
 }
