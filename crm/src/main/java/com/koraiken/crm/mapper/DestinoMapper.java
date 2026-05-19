@@ -15,6 +15,7 @@ public class DestinoMapper {
                 .fechaLlegada(destino.getFechaLlegada())
                 .fechaSalida(destino.getFechaSalida())
                 .idViaje(destino.getViaje().getIdViaje())
+                .idHotel(destino.getHotel() != null ? destino.getHotel().getIdHotel() : null)
                 .build();
     }
 
@@ -24,6 +25,7 @@ public class DestinoMapper {
                 .ciudad(toCiudadDTO(destino.getCiudad()))
                 .fechaLlegada(destino.getFechaLlegada())
                 .fechaSalida(destino.getFechaSalida())
+                .idHotel(destino.getHotel() != null ? destino.getHotel().getIdHotel() : null)
                 .build();
     }
     public static CiudadResponseDTO toCiudadDTO(Ciudad ciudad) {

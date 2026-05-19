@@ -25,6 +25,7 @@ public class DestinoService {
     private final ICiudadRepository ciudadRepository;
     private final IViajeRepository viajeRepository;
     private final IPaisRepository paisRepository;
+    private final HotelService hotelService;
 
     // destinos
     @Transactional
@@ -35,17 +36,20 @@ public class DestinoService {
         }
 
         Ciudad ciudad = obtenerCiudadOExcepcion(dto.getIdCiudad());
-        
+
         Viaje viaje = viajeRepository.findById(dto.getIdViaje())
                 .orElseThrow(() -> new RuntimeException(
                         "No existe un viaje con id: " + dto.getIdViaje()
                 ));
+
+        Hotel hotel = hotelService.resolverHotel(dto.getIdHotel(), dto.getHotel());
 
         Destino destino = new Destino();
         destino.setCiudad(ciudad);
         destino.setViaje(viaje);
         destino.setFechaLlegada(dto.getFechaLlegada());
         destino.setFechaSalida(dto.getFechaSalida());
+        destino.setHotel(hotel);
         return DestinoMapper.toDTO(destinoRepository.save(destino));
     }
 

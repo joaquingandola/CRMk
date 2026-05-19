@@ -28,6 +28,7 @@ public class ViajeService {
     private final AerolineaService aerolineaService;
     private final AcompananteService acompananteService;
     private final DestinoService destinoService;
+    private final HotelService hotelService;
 
     //crear
     @Transactional
@@ -62,7 +63,7 @@ public class ViajeService {
         if(dto.getDestinos() != null) {
             for(DestinoCreateDTO destinoDTO : dto.getDestinos()) {
 
-                // Validar fecha de cada escala dentro del rango del viaje
+                // Validacion de fechas - viaje vs escalas
                 if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaInicioViaje()) ||
                 destinoDTO.getFechaLlegada().isAfter(dto.getFechaFinViaje())    ||
                 destinoDTO.getFechaSalida().isAfter(dto.getFechaFinViaje()) ||
@@ -74,11 +75,14 @@ public class ViajeService {
 
                 Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
 
+                Hotel hotel = hotelService.resolverHotel(destinoDTO.getIdHotel(), destinoDTO.getHotel());
+
                 Destino destino = new Destino();
                 destino.setViaje(guardado);
                 destino.setCiudad(ciudad);
                 destino.setFechaSalida(destinoDTO.getFechaSalida());
                 destino.setFechaLlegada(destinoDTO.getFechaLlegada());
+                destino.setHotel(hotel);
                 guardado.getDestinos().add(destino);
             }
         }

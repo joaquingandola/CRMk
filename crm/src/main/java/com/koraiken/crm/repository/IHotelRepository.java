@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface IHotelRepository extends JpaRepository<Hotel, Long> {
     Optional<Hotel> findByNombreContainsIgnoreCase(String nombre);
 
+    Optional<Hotel> findByIdHotel(Long id);
+
     //Todos los hoteles dentro de un viaje especifico.
     //TODO
 
