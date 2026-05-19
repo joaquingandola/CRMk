@@ -5,7 +5,6 @@ const agentLinks = [
     {to: '/dashboard', label: 'Dashboard'},
     {to : '/clientes', label: 'Clientes'},
     {to: '/viajes', label: 'Viajes'}
-
 ]
 
 const adminLinks = [
