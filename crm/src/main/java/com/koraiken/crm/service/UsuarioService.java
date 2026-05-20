@@ -39,7 +39,7 @@ public class UsuarioService {
         Usuario usuario = obtenerUsuarioOExcepcion(id);
         if(dto.getUsername() != null) usuario.setUsername(dto.getUsername());
         if(dto.getTipoRol() != null) usuario.setTipoRol(dto.getTipoRol());
-
+        if(dto.getEmail() != null) usuario.setEmail(dto.getEmail());
         return toDTO(usuarioRepository.save(usuario));
     }
 
@@ -74,11 +74,10 @@ public class UsuarioService {
     public UsuarioResponseDTO toDTO(Usuario u) {
         return UsuarioResponseDTO.builder()
                 .idUsuario(u.getIdUsuario())
-                .username(u.getUsername())
+                .username(u.getNombreUsuario())
                 .email(u.getEmail())
                 .tipoRol(u.getTipoRol())
                 .activo(u.isActivo())
                 .build();
     }
-
 }

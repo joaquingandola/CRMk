@@ -44,7 +44,9 @@ public class Usuario implements UserDetails {
     }
 
     @Override
-    public String getUsername() {return email;}
+    public String getUsername() {return email;} // por lo que me pide spring security (validacion x mail) esto tiene que ser asi
+
+    public String getNombreUsuario() {return username;}
 
     @Override
     public String getPassword() {return password;}
