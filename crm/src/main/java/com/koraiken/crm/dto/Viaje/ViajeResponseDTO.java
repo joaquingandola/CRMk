@@ -7,6 +7,7 @@ import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,8 +15,8 @@ import java.util.List;
 @Builder
 public class ViajeResponseDTO {
     private Long idViaje;
-    private LocalDateTime fechaInicioViaje;
-    private LocalDateTime fechaFinViaje;
+    private LocalDate fechaInicioViaje;
+    private LocalDate fechaFinViaje;
     private LocalDateTime fechaCreacion;
     private Double precio;
     private Boolean activo;

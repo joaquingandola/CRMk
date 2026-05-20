@@ -198,7 +198,7 @@ export function ClienteDetalle() {
                     className="flex items-center justify-between border border-slate-700/50 bg-slate-900/20 rounded-xl px-5 py-4 hover:bg-slate-800/50 cursor-pointer transition-colors group"
                 >
                     <div>
-                    <div className="text-sm font-medium text-gray-900">
+                    <div className="text-base font-semibold text-white">
                         {v.destinos?.length > 0
                         ? v.destinos.map((d) => d.ciudad?.nombre).join(' → ')
                         : 'Sin destinos cargados'}

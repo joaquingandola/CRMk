@@ -3,6 +3,7 @@ import com.koraiken.crm.model.EstadoViaje;
 import com.koraiken.crm.model.Viaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.koraiken.crm.model.Cliente;
@@ -19,7 +20,7 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
     List<Viaje> findByEstadosViaje_EstadoConcretoViaje(EstadoViaje estado);
 
     // Viajes en un rango de fechas (útil para reportes)
-    List<Viaje> findByFechaInicioViajeBetween(LocalDateTime desde, LocalDateTime hasta);
+    List<Viaje> findByFechaInicioViajeBetween(LocalDate desde, LocalDate hasta);
 
     // Viajes por aerolinea
     List<Viaje> findByAerolineaIdAerolinea(Long idAerolinea);

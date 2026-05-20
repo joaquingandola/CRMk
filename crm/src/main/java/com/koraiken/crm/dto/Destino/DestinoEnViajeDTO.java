@@ -4,6 +4,7 @@ import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 public class DestinoEnViajeDTO {
     private Long idDestino;
     private CiudadResponseDTO ciudad;
-    private LocalDateTime fechaLlegada;
-    private LocalDateTime fechaSalida;
+    private LocalDate fechaLlegada;
+    private LocalDate fechaSalida;
     private Long idHotel;
 }

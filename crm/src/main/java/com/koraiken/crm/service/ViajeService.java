@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -119,7 +120,7 @@ public class ViajeService {
     }
 
     @Transactional(readOnly = true)
-    public List<ViajeResponseDTO> listarPorRangoFechas(LocalDateTime desde, LocalDateTime hasta) {
+    public List<ViajeResponseDTO> listarPorRangoFechas(LocalDate desde, LocalDate hasta) {
         return viajeRepository.findByFechaInicioViajeBetween(desde, hasta)
                 .stream()
                 .map(v-> ViajeMapper.toDTO(v,

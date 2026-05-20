@@ -50,10 +50,21 @@ export function ViajeDetalle() {
         }
     }
 
-    const formatFecha = (iso: string | null) => 
+    const formatFechaInicioFin = (iso: string | null) => {
+        if (!iso) return '—'
+        const [year, month, day] = iso.split('-')
+
+        return `${day}/${month}/${year}`
+    }
+
+    const FormatFechaCreacion = (iso: string | null) => 
         iso ? new Date(iso).toLocaleDateString('es-AR', {
-            day: '2-digit', month: 'short', year: 'numeric',    
-        }) : '-'
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+    }) : '—'
 
     const formatMonto = (n: number) => 
         `$${Number(n).toLocaleString('es-AR')}`
@@ -92,7 +103,7 @@ export function ViajeDetalle() {
                             : 'Viaje sin destinos'}
                     </h1>
                     <p className="text-sm text-slate-400 mt-2">
-                        {formatFecha(viaje.fechaInicioViaje)} → {formatFecha(viaje.fechaFinViaje)}
+                        {formatFechaInicioFin(viaje.fechaInicioViaje)} → {formatFechaInicioFin(viaje.fechaFinViaje)}
                         {viaje.aerolinea && ` · ${viaje.aerolinea.aerolinea}`}
                     </p>
                 </div>
@@ -138,10 +149,10 @@ export function ViajeDetalle() {
                     <dl className="space-y-4">
                         <Row label="Cliente" value={viaje.nombreCliente} />
                         <Row label="Aerolínea" value={viaje.aerolinea?.aerolinea ?? '—'} />
-                        <Row label="Inicio" value={formatFecha(viaje.fechaInicioViaje)} />
-                        <Row label="Fin" value={formatFecha(viaje.fechaFinViaje)} />
+                        <Row label="Inicio" value={formatFechaInicioFin(viaje.fechaInicioViaje)} />
+                        <Row label="Fin" value={formatFechaInicioFin(viaje.fechaFinViaje)} />
                         <Row label="Precio" value={formatMonto(viaje.precio)} />
-                        <Row label="Creado" value={formatFecha(viaje.fechaCreacion)} />
+                        <Row label="Creado" value={FormatFechaCreacion(viaje.fechaCreacion)} />
                     </dl>
                 </div>
 
@@ -153,7 +164,7 @@ export function ViajeDetalle() {
                         </span>
                     </h2>
                     {viaje.destinos.length === 0 ? (
-                        <p className="text-sm text-slate-500">Sin destinos cargados.</p>
+                        <p className="text-base font-semibold text-white">Sin destinos cargados.</p>
                     ) : (
                         <ol className="space-y-4">
                             {viaje.destinos.map((d, i) => (
@@ -173,7 +184,7 @@ export function ViajeDetalle() {
                                                 </div>
 
                                                 <div className="text-xs text-slate-400 mt-1">
-                                                    {formatFecha(d.fechaLlegada)} → {formatFecha(d.fechaSalida)}
+                                                    {formatFechaInicioFin(d.fechaLlegada)} → {formatFechaInicioFin(d.fechaSalida)}
                                                 </div>
                                             </div>
 
@@ -217,7 +228,7 @@ export function ViajeDetalle() {
                                             {a.nombre} {a.apellido}
                                         </td>
                                         <td className="px-5 py-3 text-slate-400">{a.dni}</td>
-                                        <td className="px-5 py-3 text-slate-400">{formatFecha(a.fechaNacimiento)}</td>
+                                        <td className="px-5 py-3 text-slate-400">{formatFechaInicioFin(a.fechaNacimiento)}</td>
                                     </tr>
                                 ))}
                             </tbody>

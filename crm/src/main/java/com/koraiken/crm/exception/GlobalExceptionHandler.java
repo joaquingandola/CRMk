@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
         //aca logueo el stack trace completo para debuggear pero no lo veo re necesario
         ex.printStackTrace();
-        return build(HttpStatus.INTERNAL_SERVER_ERROR, "OcurriO un error inesperado", request);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrio un error inesperado", request);
     }
 
     //m,etodo interno

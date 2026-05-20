@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,8 +45,8 @@ public class ViajeController {
     // @DateTimeFormat indica a Spring cómo parsear el LocalDateTime que viene como String en la URL
     @GetMapping("/rango")
     public ResponseEntity<List<ViajeResponseDTO>> listarPorRango(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime desde,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime hasta) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDate desde,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDate hasta) {
         return ResponseEntity.ok(viajeService.listarPorRangoFechas(desde,hasta));
     }
 

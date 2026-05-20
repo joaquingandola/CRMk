@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,8 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idViaje;
 
-    private LocalDateTime fechaFinViaje;
-    private LocalDateTime fechaInicioViaje;
+    private LocalDate fechaFinViaje;
+    private LocalDate fechaInicioViaje;
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     private Double precio;
     private Boolean activo = false;

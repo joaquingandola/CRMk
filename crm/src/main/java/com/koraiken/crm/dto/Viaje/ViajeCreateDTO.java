@@ -5,6 +5,7 @@ import com.koraiken.crm.dto.Destino.DestinoCreateDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 public class ViajeCreateDTO {
     private Long idCliente;
     private Long idAerolinea;
-    private LocalDateTime fechaInicioViaje;
-    private LocalDateTime fechaFinViaje;
+    private LocalDate fechaInicioViaje;
+    private LocalDate fechaFinViaje;
     private Double precio;
 
     private List<Long> idAcompanantes;
