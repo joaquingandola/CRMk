@@ -229,6 +229,95 @@ return (
                 </div>
             </div>
 
+            {/* Acompañantes */}
+            <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-5">
+                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                        Acompañantes
+                        <span className="ml-2 text-xs font-normal text-slate-500 normal-case tracking-normal">(opcional)</span>
+                    </h2>
+                    <button
+                        type="button"
+                        onClick={agregarAcompanante}
+                        className="text-xs bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 border border-blue-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
+                    >
+                        + Agregar acompañante
+                    </button>
+                </div>
+
+                {acompanantes.length === 0 ? (
+                    <p className="text-sm text-slate-500 text-center py-4 border border-slate-800 border-dashed rounded-xl">
+                        Sin acompañantes. Hacé clic en "+ Agregar acompañante" para sumar uno.
+                    </p>
+                ) : (
+                    <div className="space-y-4">
+                        {acompanantes.map((a, i) => (
+                            <div key={i} className="border border-slate-700/50 bg-slate-900/30 rounded-xl p-5 space-y-4 animate-in fade-in slide-in-from-top-2">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                        Acompañante {i + 1}
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => quitarAcompanante(i)}
+                                        className="text-xs text-slate-500 hover:text-red-400 transition-colors"
+                                    >
+                                        Quitar
+                                    </button>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-medium text-slate-400">Nombre</label>
+                                        <input
+                                            type="text"
+                                            value={a.nombre}
+                                            onChange={(e) => actualizarAcompanante(i, 'nombre', e.target.value)}
+                                            placeholder="Juan"
+                                            className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-medium text-slate-400">Apellido</label>
+                                        <input
+                                            type="text"
+                                            value={a.apellido}
+                                            onChange={(e) => actualizarAcompanante(i, 'apellido', e.target.value)}
+                                            placeholder="García"
+                                            className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-medium text-slate-400">DNI</label>
+                                        <input
+                                            type="number"
+                                            value={a.dni}
+                                            onChange={(e) => actualizarAcompanante(i, 'dni', e.target.value)}
+                                            placeholder="30123456"
+                                            className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-medium text-slate-400">Nacimiento</label>
+                                        <input
+                                            type="date"
+                                            value={a.fechaNacimiento}
+                                            onChange={(e) => actualizarAcompanante(i, 'fechaNacimiento', e.target.value)}
+                                            className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white [color-scheme:dark] focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
             <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                 <div className="flex items-center justify-between mb-5">
                     <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
