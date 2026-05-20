@@ -54,10 +54,12 @@ export function ClienteDetalle() {
         }
     }
 
-    const formatFecha = (iso: string | null) =>
-        iso ? new Date(iso).toLocaleDateString('es-AR', {
-        day: '2-digit', month: 'short', year: 'numeric',
-        }) : '—'
+    const formatFechaNacimiento = (iso: string | null) => {
+        if (!iso) return '—'
+        const [year, month, day] = iso.split('-')
+
+        return `${day}/${month}/${year}`
+    }
     
     const formatMonto = (n: number | null) =>
         n != null ? `$${Number(n).toLocaleString('es-AR')}` : '—'
@@ -134,8 +136,8 @@ export function ClienteDetalle() {
                 <dl className="space-y-4">
                     <Row label="Nombre completo" value={`${cliente.nombre} ${cliente.apellido}`} />
                     <Row label="DNI" value={String(cliente.dni)} />
-                    <Row label="Fecha de nacimiento" value={formatFecha(cliente.fechaNacimiento)} />
-                    <Row label="Alta en sistema" value={formatFecha(cliente.fechaCreacion)} />
+                    <Row label="Fecha de nacimiento" value={formatFechaNacimiento(cliente.fechaNacimiento)} />
+                    <Row label="Alta en sistema" value={formatFechaNacimiento(cliente.fechaCreacion)} />
                 </dl>
             </div>
 
@@ -192,7 +194,7 @@ export function ClienteDetalle() {
                         : 'Sin destinos cargados'}
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
-                        {formatFecha(v.fechaInicioViaje)} → {formatFecha(v.fechaFinViaje)}
+                        {formatFechaNacimiento(v.fechaInicioViaje)} → {formatFechaNacimiento(v.fechaFinViaje)}
                         {v.aerolinea?.aerolinea && ` · ${v.aerolinea.aerolinea}`}
                     </div>
                     </div>
