@@ -112,6 +112,12 @@ export function ViajeDetalle() {
                     <span className="text-xl font-bold text-white">
                         {formatMonto(viaje.precio)}
                     </span>
+                    <button
+                        onClick={() => navigate(`/viajes/${viaje.idViaje}/editar`)}
+                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border border-slate-700"
+                    >
+                        Editar
+                    </button>
                 </div>
             </div>
 
