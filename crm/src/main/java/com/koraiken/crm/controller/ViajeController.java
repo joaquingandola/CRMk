@@ -58,6 +58,7 @@ public class ViajeController {
     }
 
     //viajes totales,para listar todos
+    @GetMapping
     public ResponseEntity<List<ViajeResponseDTO>> listarTodos() {
         return ResponseEntity.ok(viajeService.listarTodos());
     }

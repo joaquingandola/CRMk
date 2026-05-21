@@ -165,16 +165,6 @@ export function ViajeEditar() {
                     </div>
                 </div>
 
-                <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
-                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider mb-3">
-                        Campos no incluidos en esta edición
-                    </h2>
-                    <p className="text-sm text-slate-400 leading-relaxed">
-                        Esta pantalla actualiza aerolínea, fechas y precio porque son los campos disponibles en el DTO de actualización actual del backend.
-                        Destinos, hoteles y acompañantes quedan visibles en el detalle, pero no se editan desde esta propuesta.
-                    </p>
-                </div>
-
                 {error && (
                     <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 animate-pulse">
                         {error}

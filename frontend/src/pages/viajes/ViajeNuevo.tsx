@@ -61,6 +61,8 @@ export function ViajeNuevo() {
 
     const agregarDestinos = () => setDestinos([...destinos, destinoVacio()])
     const quitarDestino = (i: number) => setDestinos(destinos.filter((_, idx) => idx !== i))
+    const nombreCliente = idCliente //TODO 
+    
 
     const actualizarAcompanante = (
         index: number,
@@ -159,7 +161,7 @@ return (
             <span className="group-hover:-translate-x-1 transition-transform">←</span> Volver
         </button>
 
-        <h1 className="text-2xl font-bold text-white tracking-light">Nuevo viaje</h1>
+        <h1 className="text-2xl font-bold text-white tracking-light">Nuevo viaje para {nombreCliente}</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
             <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
