@@ -3,6 +3,7 @@ import api from "./axios"
 import type {
     ViajeResponseDTO, 
     ViajeCreateDTO,
+    ViajeUpdateDTO,
     EstadoConcretoViaje,
     EstadoViajeResponseDTO
 } from '../types'
@@ -15,6 +16,9 @@ export const getViajePorId = (id : number) =>
 
 export const crearViaje = (data: ViajeCreateDTO) =>
     api.post<ViajeResponseDTO>(`api/v1/viajes`, data)
+
+export const actualizarViaje = (id: number, data: ViajeUpdateDTO) =>
+    api.put<ViajeResponseDTO>(`api/v1/viajes/${id}`, data)
 
 export const cambiarEstadoViaje = (id: number, nuevo: EstadoConcretoViaje) => 
     api.patch<ViajeResponseDTO>(`api/v1/viajes/${id}/estado?nuevo=${nuevo}`)

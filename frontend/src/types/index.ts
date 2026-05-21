@@ -142,6 +142,13 @@ export interface ViajeCreateDTO {
     destinos?: DestinoCreateDTO[]
 }
 
+export interface ViajeUpdateDTO {
+    idAerolinea?: number
+    fechaInicioViaje?: string
+    fechaFinViaje?: string
+    precio?: number
+}
+
 export interface UsuarioResponseDTO {
     idUsuario: number
     username: string

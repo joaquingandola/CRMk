@@ -11,6 +11,7 @@ import { ClienteEditar } from "./pages/clientes/ClienteEditar"
 import { ViajesPage } from "./pages/viajes/ViajesPage"
 import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
 import { ViajeNuevo } from "./pages/viajes/ViajeNuevo"
+import { ViajeEditar } from "./pages/viajes/ViajeEditar"
 import { DashboardPage } from "./pages/Dashboard"
 import { AerolineasPage } from "./pages/aerolineas/AerolineasPage"
 import { ImportacionCiudadesPage } from "./pages/importacion/ImportacionCiudadesPage"
@@ -34,6 +35,7 @@ export default function App() {
                             <Route path="/clientes/:id/editar" element={<ClienteEditar/>} />
                             <Route path="/viajes" element={<ViajesPage/>} />
                             <Route path="/viajes/:id" element={<ViajeDetalle/>} />  
+                            <Route path="/viajes/:id/editar" element={<ViajeEditar/>} />
                             <Route path= "/viajes/nuevo" element={<ViajeNuevo/>} />
                             <Route path = "/dashboard" element={<DashboardPage/>} />
                         </Route>
