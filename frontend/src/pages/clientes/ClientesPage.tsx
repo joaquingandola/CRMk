@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { buscarClientes, getClientesActivos } from "../../api/clientes"
 import type { ClienteResponseDTO } from "../../types"
 import { Spinner } from "../../components/ui/Spinner"
+import { useAuth } from "../../hooks/useAuth"
 import { EmptyState } from "../../components/ui/EmptyState"
 
 export function ClientesPage() {
@@ -10,10 +11,12 @@ export function ClientesPage() {
     const [busqueda, setBusqueda] = useState("")
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+    const { isAdmin } = useAuth()
 
     useEffect(() => {
         cargarClientes()
     }, [])
+
 
     const cargarClientes = async () => {
         setLoading(true)
@@ -78,6 +81,11 @@ export function ClientesPage() {
                             <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">DNI</th>
                             <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Contacto principal</th>
                             <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Estado</th>
+                            {isAdmin && (
+                                <th className="text-left px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                    Agente
+                                </th>
+                            )}
                             <th className="px-6 py-4" />
                         </tr>
                     </thead>
@@ -106,6 +114,11 @@ export function ClientesPage() {
                                         </span>
                                     )}
                                 </td>
+                                {isAdmin && (
+                                    <td className="px-6 py-4 text-slate-400">
+                                        {c.nombreAgente ?? '—'}
+                                    </td>
+                                )}
                                 <td className="px-6 py-4 text-right text-slate-500 group-hover:text-slate-300 text-xs">Ver detalles</td>
                             </tr>
                         ))}

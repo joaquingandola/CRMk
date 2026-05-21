@@ -36,6 +36,8 @@ export interface ClienteResponseDTO {
     activo: boolean
     enViaje: boolean
     contactos: ContactoDTO[]
+    idAgente?: number
+    nombreAgente?: string
 }
 
 export interface ClienteCreateDTO {
