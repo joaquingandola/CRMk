@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 public class ClienteCreateDTO {
-
     private String nombre;
     private String apellido;
     private Integer dni;

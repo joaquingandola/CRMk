@@ -5,13 +5,17 @@ import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeCreateDTO;
 import com.koraiken.crm.dto.Viaje.ViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeUpdateDTO;
+import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.exception.ViajeNotFoundException;
 import com.koraiken.crm.exception.ViajeTransicionInvalidaException;
 import com.koraiken.crm.mapper.ViajeMapper;
 import com.koraiken.crm.model.*;
 import com.koraiken.crm.repository.IEstadoViajeRepository;
+import com.koraiken.crm.repository.IUsuarioRepository;
 import com.koraiken.crm.repository.IViajeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +34,16 @@ public class ViajeService {
     private final AcompananteService acompananteService;
     private final DestinoService destinoService;
     private final HotelService hotelService;
+    private final IUsuarioRepository usuarioRepository;
 
-    //crear
+    private Usuario obtenerUsuarioAuth() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UserMailNotFoundException(email));
+    }
+
     @Transactional
     public ViajeResponseDTO crearViaje(ViajeCreateDTO dto) {
 
@@ -41,6 +53,12 @@ public class ViajeService {
 
         Cliente cliente = clienteService.obtenerClienteOExcepcion(dto.getIdCliente());
         Aerolinea aerolinea = aerolineaService.obtenerAerolineaOExcepcion(dto.getIdAerolinea());
+
+        Usuario usuario = obtenerUsuarioAuth();
+        if(!usuario.getTipoRol().isAdmin() &&
+            !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No podes crear un viaje para un cliente de otro agente");
+        }
 
         Viaje viaje = new Viaje();
         viaje.setCliente(cliente);
@@ -103,36 +121,54 @@ public class ViajeService {
     @Transactional(readOnly = true)
     public ViajeResponseDTO buscarPorId(Long id) {
         Viaje viaje = obtenerViajeOExcepcion(id);
+        validarOwnership(viaje, obtenerUsuarioAuth());
+
         EstadoViaje estadoViaje = estadoViajeRepository
                 .findEstadoActual(id)
                 .orElse(null);
         return ViajeMapper.toDTO(viaje, estadoViaje);
     }
 
+    //viajes de un cliente
     @Transactional(readOnly = true)
     public List<ViajeResponseDTO> listarPorCliente(Long idCliente) {
+        Usuario usuario = obtenerUsuarioAuth();
+
+        if(!usuario.getTipoRol().isAdmin()) {
+            Cliente cliente = clienteService.obtenerClienteOExcepcion(idCliente);
+            if(!cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
+                throw new AccessDeniedException("No tenes permisos para ver los viajes del cliente");
+            }
+        }
         return viajeRepository.findByClienteIdCliente(idCliente)
                 .stream()
-                .map(v->ViajeMapper.toDTO(v,
+                .map(v -> ViajeMapper.toDTO(v,
                         estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
-                ))
-                .toList();
+                )).toList();
     }
 
     @Transactional(readOnly = true)
     public List<ViajeResponseDTO> listarPorRangoFechas(LocalDate desde, LocalDate hasta) {
-        return viajeRepository.findByFechaInicioViajeBetween(desde, hasta)
-                .stream()
-                .map(v-> ViajeMapper.toDTO(v,
-                            estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
-                        ))
-                .toList();
+        Usuario usuario = obtenerUsuarioAuth();
+
+        List<Viaje> viajes = usuario.getTipoRol().isAdmin()
+                ? viajeRepository.findByFechaInicioViajeBetween(desde, hasta)
+                : viajeRepository.findByFechaInicioViajeBetweenAndClienteAgenteIdUsuario(
+                        desde, hasta, usuario.getIdUsuario()
+        );
+
+        return viajes.stream()
+                .map(v -> ViajeMapper.toDTO(v,
+                        estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
+                )).toList();
     }
 
     //actualizar
     @Transactional
     public ViajeResponseDTO actualizarViaje(Long id, ViajeUpdateDTO dto) {
         Viaje viaje = obtenerViajeOExcepcion(id);
+        validarOwnership(viaje, obtenerUsuarioAuth());
+
 
         if(dto.getFechaInicioViaje() != null) viaje.setFechaInicioViaje(dto.getFechaInicioViaje());
         if(dto.getFechaFinViaje() != null) viaje.setFechaFinViaje(dto.getFechaFinViaje());
@@ -152,6 +188,7 @@ public class ViajeService {
     @Transactional
     public ViajeResponseDTO cambiarEstado(Long id, EstadoConcretoViaje nuevoEstado) {
         Viaje viaje = obtenerViajeOExcepcion(id);
+        validarOwnership(viaje, obtenerUsuarioAuth());
 
         EstadoViaje estadoActual = estadoViajeRepository
                 .findEstadoActual(id)
@@ -200,6 +237,7 @@ public class ViajeService {
     @Transactional
     public ViajeResponseDTO agregarAcompaniantes(Long idViaje, Long idAcompanante) {
         Viaje viaje = obtenerViajeOExcepcion(idViaje);
+        validarOwnership(viaje, obtenerUsuarioAuth());
         Acompanante acompanante = acompananteService.obtenerAcompananteOExcepcion(idAcompanante);
 
         boolean yaAsociado = viaje.getAcompanantes()
@@ -218,6 +256,7 @@ public class ViajeService {
     @Transactional
     public ViajeResponseDTO quitarAcompanante(Long idViaje, Long idAcompanante) {
         Viaje viaje = obtenerViajeOExcepcion(idViaje);
+        validarOwnership(viaje, obtenerUsuarioAuth());
 
         viaje.getAcompanantes()
                 .removeIf(a -> a.getIdAcompanante().equals(idAcompanante));
@@ -229,12 +268,15 @@ public class ViajeService {
     //listar todos
     @Transactional(readOnly = true)
     public List<ViajeResponseDTO> listarTodos() {
-        return viajeRepository.findAll()
-                .stream()
+        Usuario usuario = obtenerUsuarioAuth();
+        List<Viaje> viajes = usuario.getTipoRol().isAdmin()
+                ? viajeRepository.findAll()
+                : viajeRepository.findByClienteAgenteIdUsuario(usuario.getIdUsuario());
+
+        return viajes.stream()
                 .map(v -> ViajeMapper.toDTO(v,
                         estadoViajeRepository.findEstadoActual(v.getIdViaje()).orElse(null)
-                ))
-                .toList();
+                )).toList();
     }
 
 
@@ -258,6 +300,14 @@ public class ViajeService {
 
         if(!valida) {
             throw new ViajeTransicionInvalidaException(actual.name(), nuevo.name());
+        }
+    }
+
+    private void validarOwnership(Viaje viaje, Usuario usuario) {
+        if(usuario.getTipoRol().isAdmin()) return;
+        Long agenteCliente = viaje.getCliente().getAgente().getIdUsuario();
+        if(!agenteCliente.equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No tenes permisos para modificar al cliente");
         }
     }
 }

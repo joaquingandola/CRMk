@@ -7,13 +7,18 @@ import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
 import com.koraiken.crm.exception.ClienteConViajesActivosException;
 import com.koraiken.crm.exception.ClienteExisteException;
 import com.koraiken.crm.exception.ClienteNotFoundException;
+import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.mapper.ClienteMapper;
 import com.koraiken.crm.model.Cliente;
 import com.koraiken.crm.model.Contacto;
+import com.koraiken.crm.model.Usuario;
 import com.koraiken.crm.repository.IClienteRepository;
 import com.koraiken.crm.repository.IContactoRepository;
+import com.koraiken.crm.repository.IUsuarioRepository;
 import com.koraiken.crm.repository.IViajeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +31,15 @@ public class ClienteService {
     private final IClienteRepository iClienteRepository;
     private final IViajeRepository iViajeRepository;
     private final IContactoRepository iContactoRepository;
+    private final IUsuarioRepository usuarioRepository;
+
+    private Usuario obtenerUsuarioAuth() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UserMailNotFoundException(email));
+    }
 
     //CREAR//
     @Transactional
@@ -55,6 +69,9 @@ public class ClienteService {
         cliente.setFechaNacimiento(dto.getFechaNacimiento());
         cliente.setFechaAlta(LocalDateTime.now());
 
+        Usuario agente = obtenerUsuarioAuth();
+        cliente.setAgente(agente);
+
         if (dto.getContactos() != null) {
             List<Contacto> contactos = dto.getContactos().stream()
                     .map(c -> {
@@ -76,14 +93,24 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public ClienteResponseDTO buscarPorId(Long id) {
         Cliente cliente = obtenerClienteOExcepcion(id);
+        Usuario usuario = obtenerUsuarioAuth();
+        if(!usuario.getTipoRol().isAdmin() &&
+        !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No tenes los permisos para ver a este cliente");
+        }
         return ClienteMapper.toDTO(cliente);
     }
 
     //buscar clientes activos
     @Transactional(readOnly = true)
     public List<ClienteResponseDTO> listarActivos() {
-        return iClienteRepository.findByActivoTrue()
-                .stream()
+        Usuario usuario = obtenerUsuarioAuth();
+
+        List<Cliente> clientes = usuario.getTipoRol().isAdmin()
+                ? iClienteRepository.findByActivoTrue()
+                : iClienteRepository.findByActivoTrueAndAgenteIdUsuario(usuario.getIdUsuario());
+
+        return clientes.stream()
                 .map(ClienteMapper::toDTO)
                 .toList();
     }
@@ -91,11 +118,19 @@ public class ClienteService {
     //buscar clientes por nombre / apellido
     @Transactional(readOnly = true)
     public List<ClienteResponseDTO> buscarPorNombreOApellido(String termino) {
-        //El termino se pasa x el repositorio dos veces buscando tanto nombre o apellido . revisar inconsistencias del modelo
+        Usuario usuario = obtenerUsuarioAuth();
+        if(usuario.getTipoRol().isAdmin()) {
+            return iClienteRepository
+                    .findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(termino, termino)
+                    .stream()
+                    .map(ClienteMapper::toDTO)
+                    .toList();
+        }
+
         return iClienteRepository
-                .findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(termino, termino)
+                .findByAgenteIdUsuarioAndTermino(usuario.getIdUsuario(), termino)
                 .stream()
-                .map(ClienteMapper :: toDTO)
+                .map(ClienteMapper::toDTO)
                 .toList();
     }
 
@@ -146,8 +181,13 @@ public class ClienteService {
 
     @Transactional(readOnly = true)
     public List<ClienteResponseDTO> listarEnViaje() {
-        return iClienteRepository.findByEnViajeTrue()
-                .stream()
+        Usuario usuario = obtenerUsuarioAuth();
+
+        List<Cliente> clientes = usuario.getTipoRol().isAdmin()
+                ? iClienteRepository.findByEnViajeTrue()
+                : iClienteRepository.findByEnViajeTrueAndAgenteIdUsuario(usuario.getIdUsuario());
+
+        return clientes.stream()
                 .map(ClienteMapper::toDTO)
                 .toList();
     }

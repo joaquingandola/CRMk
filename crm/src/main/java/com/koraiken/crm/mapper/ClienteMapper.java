@@ -25,6 +25,8 @@ public class ClienteMapper {
                 .activo(cliente.getActivo())
                 .enViaje(cliente.getEnViaje())
                 .contactos(contactosDTO)
+                .idAgente(cliente.getAgente() != null ? cliente.getAgente().getIdUsuario() : null)
+                .nombreAgente(cliente.getAgente() != null ? cliente.getAgente().getNombreUsuario() : null)
                 .build();
     }
 

@@ -33,6 +33,10 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Observacion> observaciones = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUsuario")
+    private Usuario agente;
+
     private String nombre;
     private String apellido;
     private Boolean activo = true;
