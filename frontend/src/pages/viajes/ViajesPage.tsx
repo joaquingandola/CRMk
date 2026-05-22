@@ -20,20 +20,54 @@ export function ViajesPage() {
     const formatFecha = (iso : string) =>
         new Date(iso).toLocaleDateString('es-AR', {
             day: '2-digit', month: 'short', year: 'numeric',
-        })
+        }) //fijarse si esto queda TODO
+    
+    const inicioDeHoy = () => {
+        const hoy = new Date()
+        return new Date(
+            hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), 0, 0, 0, 0
+        ).getTime()
+    }
+
+    
+    const prioridadEstado = (estado?: string) => {
+        switch (estado) {
+            case 'PAGADO': return 1
+            case 'CONFIRMADO': return 2
+            case 'COTIZADO': return 3
+            case 'CANCELADO': return 4
+            default: return 5
+        }
+    }
+
+    const parseFechaLocal = (fecha : string) => {
+        const [year, month, day] = fecha.split('-').map(Number)
+        return new Date(year, month - 1, day).getTime()
+    }
+
+    const viajesVisiblesOrdenados = [...viajes]
+    .filter((v) => parseFechaLocal(v.fechaFinViaje) >= inicioDeHoy())
+    .sort((a, b) => {
+        const prioridadA = prioridadEstado(a.estadoActual?.estadoConcretoViaje)
+        const prioridadB = prioridadEstado(b.estadoActual?.estadoConcretoViaje)
+        if(prioridadA !== prioridadB) {
+            return prioridadA - prioridadB
+        }
+        return parseFechaLocal(a.fechaInicioViaje) - parseFechaLocal(b.fechaInicioViaje)
+    })
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-white tracking-light">Viajes</h1>
-                    <p className="text-sm text-slate-400 mt-1">{viajes.length} viajes registrados</p>
+                    <p className="text-sm text-slate-400 mt-1">{viajesVisiblesOrdenados.length} viajes registrados en curso o a futuro</p>
                 </div>
             </div>
 
             {loading ? (
                 <Spinner />
-            ) : viajes.length === 0 ? (
+            ) : viajesVisiblesOrdenados.length === 0 ? (
                 <EmptyState message="No hay viajes registrados." />
             ) : (
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl overflow-hidden backdrop-blur-sm">
@@ -49,7 +83,7 @@ export function ViajesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-800/50">
-                            {viajes.map((v) => (
+                            {viajesVisiblesOrdenados.map((v) => (
                                 <tr
                                     key={v.idViaje}
                                     onClick={() => navigate(`/viajes/${v.idViaje}`)}
