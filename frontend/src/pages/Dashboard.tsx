@@ -66,10 +66,12 @@ export function DashboardPage() {
       const ahora = new Date()
       const inicio = parseFechaLocalDateInicio(v.fechaInicioViaje)
       const fin = parseFechaLocalDateFin(v.fechaFinViaje)
+      const estado = v.estadoActual?.estadoConcretoViaje
       return (
         v.activo === true &&
-        v.estadoActual?.estadoConcretoViaje === 'CONFIRMADO' || v.estadoActual?.estadoConcretoViaje === 'PAGADO' && 
-        inicio <= ahora && ahora <= fin
+        (estado === 'CONFIRMADO' || estado === 'PAGADO') &&
+        inicio <= ahora &&
+        ahora <= fin
       )
     }
 

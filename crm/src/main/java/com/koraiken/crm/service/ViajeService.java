@@ -6,12 +6,14 @@ import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeCreateDTO;
 import com.koraiken.crm.dto.Viaje.ViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeUpdateDTO;
+import com.koraiken.crm.exception.DestinoFechaInvalidaException;
 import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.exception.ViajeNotFoundException;
 import com.koraiken.crm.exception.ViajeTransicionInvalidaException;
 import com.koraiken.crm.mapper.ClienteMapper;
 import com.koraiken.crm.mapper.ViajeMapper;
 import com.koraiken.crm.model.*;
+import com.koraiken.crm.repository.IDestinoRepository;
 import com.koraiken.crm.repository.IEstadoViajeRepository;
 import com.koraiken.crm.repository.IUsuarioRepository;
 import com.koraiken.crm.repository.IViajeRepository;
@@ -38,6 +40,7 @@ public class ViajeService {
     private final DestinoService destinoService;
     private final HotelService hotelService;
     private final IUsuarioRepository usuarioRepository;
+    private final IDestinoRepository destinoRepository;
 
     private Usuario obtenerUsuarioAuth() {
         String email = SecurityContextHolder.getContext()
@@ -84,7 +87,6 @@ public class ViajeService {
         // crear y asociar destinos
         if(dto.getDestinos() != null) {
             for(DestinoCreateDTO destinoDTO : dto.getDestinos()) {
-
                 // Validacion de fechas - viaje vs escalas
                 if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaInicioViaje()) ||
                 destinoDTO.getFechaLlegada().isAfter(dto.getFechaFinViaje())    ||
@@ -95,8 +97,11 @@ public class ViajeService {
                     );
                 }
 
-                Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
+                if(!destinoDTO.getFechaLlegada().isBefore(destinoDTO.getFechaSalida())) {
+                    throw new DestinoFechaInvalidaException();
+                }
 
+                Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
                 Hotel hotel = hotelService.resolverHotel(destinoDTO.getIdHotel(), destinoDTO.getHotel());
 
                 Destino destino = new Destino();
@@ -105,7 +110,9 @@ public class ViajeService {
                 destino.setFechaSalida(destinoDTO.getFechaSalida());
                 destino.setFechaLlegada(destinoDTO.getFechaLlegada());
                 destino.setHotel(hotel);
-                guardado.getDestinos().add(destino);
+
+                Destino destinoGuardado = destinoRepository.save(destino);
+                guardado.getDestinos().add(destinoGuardado);
             }
         }
 

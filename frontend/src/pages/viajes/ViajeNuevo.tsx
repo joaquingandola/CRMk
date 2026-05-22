@@ -100,9 +100,17 @@ export function ViajeNuevo() {
         e.preventDefault()
         setError('')
 
-        const destinosValidos = destinos.filter((d) => d.ciudad !== null)
+        const destinosValidos = destinos.filter((d) => d.ciudad !== null && d.fechaLlegada && d.fechaSalida)
         if (destinosValidos.length === 0) {
             setError('Agregá al menos un destino con ciudad seleccionada.')
+            return
+        }
+
+        const destinoConFechasInvalidas = destinosValidos.some(
+            (d) => d.fechaLlegada > d.fechaSalida
+        )
+        if(destinoConFechasInvalidas) {
+            setError('Revisá las fechas de llegada y salida de los destinos. La fecha de llegada no puede ser posterior a la fecha de salida.')
             return
         }
 
