@@ -64,18 +64,23 @@ export function DashboardPage() {
 
     const esViajeEnCurso = (v: ViajeResponseDTO) => {
       const ahora = new Date()
-      const inicio = parseFechaLocalDate(v.fechaInicioViaje)
-      const fin = parseFechaLocalDate(v.fechaFinViaje)
+      const inicio = parseFechaLocalDateInicio(v.fechaInicioViaje)
+      const fin = parseFechaLocalDateFin(v.fechaFinViaje)
       return (
         v.activo === true &&
-        v.estadoActual?.estadoConcretoViaje === 'CONFIRMADO' &&
+        v.estadoActual?.estadoConcretoViaje === 'CONFIRMADO' || v.estadoActual?.estadoConcretoViaje === 'PAGADO' && 
         inicio <= ahora && ahora <= fin
       )
     }
 
-    const parseFechaLocalDate = (fecha : string) => {
+    const parseFechaLocalDateInicio = (fecha : string) => {
       const [year, month, day] = fecha.split('-').map(Number)
-      return new Date(year, month - 1, day)
+      return new Date(year, month - 1, day, 0, 0, 0, 0)
+    }
+
+    const parseFechaLocalDateFin = (fecha : string) => {
+      const [year, month, day] = fecha.split('-').map(Number)
+      return new Date(year, month - 1, day, 23, 59, 59, 999)
     }
 
     const maxVisitas = ciudades[0]?.cantidadVisitas ?? 1
