@@ -60,8 +60,23 @@ export function DashboardPage() {
         new Date(iso).toLocaleDateString('es-AR', {
             day: '2-digit', month: 'short', year: 'numeric',
         })
-
     if(loading) return <Spinner />
+
+    const esViajeEnCurso = (v: ViajeResponseDTO) => {
+      const ahora = new Date()
+      const inicio = parseFechaLocalDate(v.fechaInicioViaje)
+      const fin = parseFechaLocalDate(v.fechaFinViaje)
+      return (
+        v.activo === true &&
+        v.estadoActual?.estadoConcretoViaje === 'CONFIRMADO' &&
+        inicio <= ahora && ahora <= fin
+      )
+    }
+
+    const parseFechaLocalDate = (fecha : string) => {
+      const [year, month, day] = fecha.split('-').map(Number)
+      return new Date(year, month - 1, day)
+    }
 
     const maxVisitas = ciudades[0]?.cantidadVisitas ?? 1
 
@@ -96,7 +111,7 @@ export function DashboardPage() {
                 label="Confirmados"
                 value={conteos.CONFIRMADO}
                 color="teal"
-                sublabel="activos"
+                sublabel="confirmados"
             />
         </div>
 
@@ -126,7 +141,7 @@ export function DashboardPage() {
                 const viajesDelCliente = viajes.filter(
                   (v) =>
                     v.idCliente === c.idCliente &&
-                    v.estadoActual?.estadoConcretoViaje === 'CONFIRMADO'
+                    esViajeEnCurso(v)
                 )
                 return (
                   <tr
@@ -146,7 +161,7 @@ export function DashboardPage() {
                           {viajesDelCliente.map((v) => (
                             <div
                               key={v.idViaje}
-                              onClick={(e) => {
+                              onClick={(e) => { //TODO fixear viaje pagado aparece como --
                                 e.stopPropagation()
                                 navigate(`/viajes/${v.idViaje}`)
                               }}

@@ -110,11 +110,6 @@ export function ClienteDetalle() {
                 </h1>
                 <div className="flex items-center gap-3 mt-2">
                     <span className="text-sm text-slate-400">DNI {cliente.dni}</span>
-                    {cliente.enViaje && (
-                    <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                        En viaje
-                    </span>
-                    )}
                 </div>
                 </div>
                 <div className="flex gap-3">

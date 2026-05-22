@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { buscarClientes, getClientesActivos } from "../../api/clientes"
+import { buscarClientes, getClientesActivos, getClientesEnViaje } from "../../api/clientes"
 import type { ClienteResponseDTO } from "../../types"
 import { Spinner } from "../../components/ui/Spinner"
 import { useAuth } from "../../hooks/useAuth"
@@ -11,18 +11,28 @@ export function ClientesPage() {
     const [busqueda, setBusqueda] = useState("")
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+    const [clientesEnViaje, setClientesEnViaje] = useState<ClienteResponseDTO[]>([])
     const { isAdmin } = useAuth()
 
     useEffect(() => {
         cargarClientes()
     }, [])
 
+    const idsClientesEnViaje = useMemo(() => {
+        return new Set(clientesEnViaje.map(c => c.idCliente))
+    }, [clientesEnViaje])
 
     const cargarClientes = async () => {
         setLoading(true)
         try {
-            const {data} = await getClientesActivos()
-            setClientes(data)
+            const [{ data: clientesData }, { data: clientesEnViajeData }] = 
+                await Promise.all([
+                    getClientesActivos(),
+                    getClientesEnViaje(),
+                ])
+
+                setClientes(clientesData)
+                setClientesEnViaje(clientesEnViajeData)
         } finally {
             setLoading(false)
         }
@@ -31,6 +41,7 @@ export function ClientesPage() {
     const handleBusqueda = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const valor = e.target.value
         setBusqueda(valor)
+
         if (valor.trim().length < 2) {
             cargarClientes()
             return
@@ -104,7 +115,7 @@ export function ClientesPage() {
                                     {c.contactos?.[0]?.detalle ?? '—'}
                                 </td>
                                 <td className="px-6 py-4">
-                                    {c.enViaje ? (
+                                    {idsClientesEnViaje.has(c.idCliente) ? (
                                         <span className="inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
                                             En viaje
                                         </span>

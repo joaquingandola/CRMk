@@ -187,10 +187,15 @@ public class ClienteService {
         LocalDate ahora = LocalDate.now(ZoneId.of("America/Argentina/Buenos_Aires"));
         Usuario usuario = obtenerUsuarioAuth();
 
+        List<EstadoConcretoViaje> estadosValidosEnViaje = List.of(
+                EstadoConcretoViaje.CONFIRMADO,
+                EstadoConcretoViaje.PAGADO
+        );
+
         List<Cliente> clientes = usuario.getTipoRol().isAdmin()
-                ? iViajeRepository.findClientesEnViajeAhora(ahora, EstadoConcretoViaje.CONFIRMADO)
+                ? iViajeRepository.findClientesEnViajeAhora(ahora, estadosValidosEnViaje)
                 : iViajeRepository.findClientesEnViajeAhoraByAgente(
-                        ahora, EstadoConcretoViaje.CONFIRMADO, usuario.getIdUsuario()
+                        ahora, estadosValidosEnViaje, usuario.getIdUsuario()
         );
         return clientes.stream().map(ClienteMapper::toDTO).toList();
     }

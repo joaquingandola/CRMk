@@ -32,39 +32,38 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
     @Query("""
         SELECT DISTINCT v.cliente
         FROM Viaje v
-        JOIN EstadoViaje ev ON ev.viaje = v
+        JOIN v.estadosViaje ev
         WHERE v.activo = true
             AND v.fechaInicioViaje <= :ahora
             AND v.fechaFinViaje >= :ahora
-            AND (
-                SELECT ev.estadoConcretoViaje
-                FROM EstadoViaje ev
-                WHERE ev.viaje = v
-                ORDER BY ev.fechaActualizacion DESC
-                LIMIT 1
-            ) = :estadoConfirmado
+            AND ev.estadoConcretoViaje IN :estadosValidos
+            AND ev.idEstadoViaje = (
+               SELECT MAX(ev2.idEstadoViaje)
+               FROM EstadoViaje ev2
+               WHERE ev2.viaje = v
+            )
 """) List<Cliente> findClientesEnViajeAhora(
             @Param("ahora") LocalDate ahora,
-            @Param("estadoConfirmado") EstadoConcretoViaje estadoConfirmado
-            );
+            @Param("estadosValidos") List<EstadoConcretoViaje> estadosValidos
+    );
 
     @Query("""
         SELECT DISTINCT v.cliente
         FROM Viaje v
-        JOIN EstadoViaje ev ON ev.viaje = v
+        JOIN v.estadosViaje ev
         WHERE v.activo = true
+            AND v.cliente.agente.idUsuario = :idAgente
             AND v.fechaInicioViaje <= :ahora
-            AND v.fechaFinViaje >= :ahora
-            AND (
-                SELECT ev.estadoConcretoViaje
-                FROM EstadoViaje ev
-                WHERE ev.viaje = v
-                ORDER BY ev.fechaActualizacion DESC
-                LIMIT 1
-            ) = :estadoConfirmado
+            AND v.fechaFinViaje > :ahora
+            AND ev.estadoConcretoViaje IN :estadosValidos
+            AND ev.idEstadoViaje = (
+                SELECT MAX(ev2.idEstadoViaje)
+                FROM EstadoViaje ev2
+                WHERE ev2.viaje = v
+            )
 """) List<Cliente> findClientesEnViajeAhoraByAgente(
             @Param("ahora") LocalDate ahora,
-            @Param("estadoConfirmado") EstadoConcretoViaje estadoConfirmado,
+            @Param("estadosValidos") List<EstadoConcretoViaje> estadosValidos,
             @Param("idAgente") Long idAgente
     );
 
