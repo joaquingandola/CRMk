@@ -40,7 +40,6 @@ public class Cliente {
     private String nombre;
     private String apellido;
     private Boolean activo = true;
-    private Boolean enViaje;
     private Integer dni;
     private LocalDate fechaNacimiento;
     private LocalDateTime fechaAlta = LocalDateTime.now();

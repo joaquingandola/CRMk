@@ -34,7 +34,6 @@ export interface ClienteResponseDTO {
     fechaNacimiento: string | null
     fechaCreacion: string | null
     activo: boolean
-    enViaje: boolean
     contactos: ContactoDTO[]
     idAgente?: number
     nombreAgente?: string

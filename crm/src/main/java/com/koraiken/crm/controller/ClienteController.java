@@ -22,7 +22,7 @@ public class ClienteController {
 
     @GetMapping("/en-viaje")
     public ResponseEntity<List<ClienteResponseDTO>> listarEnViaje() {
-        return ResponseEntity.ok(clienteService.listarEnViaje());
+        return ResponseEntity.ok(clienteService.listarClientesEnViaje());
     }
 
 

@@ -22,3 +22,6 @@ export const actualizarCliente = (id : number, data : ClienteUpdateDTO) => api.
 
 export const darDeBaja = (id : number) => api.
     patch<void>(`api/v1/clientes/${id}/baja`)
+
+export const getClientesEnViaje = () => api.
+    get<ClienteResponseDTO[]>("api/v1/clientes/en-viaje")

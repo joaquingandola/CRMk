@@ -1,4 +1,5 @@
 package com.koraiken.crm.repository;
+import com.koraiken.crm.model.EstadoConcretoViaje;
 import com.koraiken.crm.model.EstadoViaje;
 import com.koraiken.crm.model.Viaje;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.koraiken.crm.model.Cliente;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface IViajeRepository extends JpaRepository<Viaje, Long> {
@@ -26,6 +29,44 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
     );
 
 
+    @Query("""
+        SELECT DISTINCT v.cliente
+        FROM Viaje v
+        JOIN EstadoViaje ev ON ev.viaje = v
+        WHERE v.activo = true
+            AND v.fechaInicioViaje <= :ahora
+            AND v.fechaFinViaje >= :ahora
+            AND (
+                SELECT ev.estadoConcretoViaje
+                FROM EstadoViaje ev
+                WHERE ev.viaje = v
+                ORDER BY ev.fechaActualizacion DESC
+                LIMIT 1
+            ) = :estadoConfirmado
+""") List<Cliente> findClientesEnViajeAhora(
+            @Param("ahora") LocalDate ahora,
+            @Param("estadoConfirmado") EstadoConcretoViaje estadoConfirmado
+            );
+
+    @Query("""
+        SELECT DISTINCT v.cliente
+        FROM Viaje v
+        JOIN EstadoViaje ev ON ev.viaje = v
+        WHERE v.activo = true
+            AND v.fechaInicioViaje <= :ahora
+            AND v.fechaFinViaje >= :ahora
+            AND (
+                SELECT ev.estadoConcretoViaje
+                FROM EstadoViaje ev
+                WHERE ev.viaje = v
+                ORDER BY ev.fechaActualizacion DESC
+                LIMIT 1
+            ) = :estadoConfirmado
+""") List<Cliente> findClientesEnViajeAhoraByAgente(
+            @Param("ahora") LocalDate ahora,
+            @Param("estadoConfirmado") EstadoConcretoViaje estadoConfirmado,
+            @Param("idAgente") Long idAgente
+    );
 
 
     List<Viaje> findByAerolineaIdAerolinea(Long idAerolinea);

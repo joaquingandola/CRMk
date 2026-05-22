@@ -11,6 +11,7 @@ import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.mapper.ClienteMapper;
 import com.koraiken.crm.model.Cliente;
 import com.koraiken.crm.model.Contacto;
+import com.koraiken.crm.model.EstadoConcretoViaje;
 import com.koraiken.crm.model.Usuario;
 import com.koraiken.crm.repository.IClienteRepository;
 import com.koraiken.crm.repository.IContactoRepository;
@@ -22,7 +23,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -180,16 +183,16 @@ public class ClienteService {
     }
 
     @Transactional(readOnly = true)
-    public List<ClienteResponseDTO> listarEnViaje() {
+    public List<ClienteResponseDTO> listarClientesEnViaje() {
+        LocalDate ahora = LocalDate.now(ZoneId.of("America/Argentina/Buenos_Aires"));
         Usuario usuario = obtenerUsuarioAuth();
 
         List<Cliente> clientes = usuario.getTipoRol().isAdmin()
-                ? iClienteRepository.findByEnViajeTrue()
-                : iClienteRepository.findByEnViajeTrueAndAgenteIdUsuario(usuario.getIdUsuario());
-
-        return clientes.stream()
-                .map(ClienteMapper::toDTO)
-                .toList();
+                ? iViajeRepository.findClientesEnViajeAhora(ahora, EstadoConcretoViaje.CONFIRMADO)
+                : iViajeRepository.findClientesEnViajeAhoraByAgente(
+                        ahora, EstadoConcretoViaje.CONFIRMADO, usuario.getIdUsuario()
+        );
+        return clientes.stream().map(ClienteMapper::toDTO).toList();
     }
 
     //metodo interno

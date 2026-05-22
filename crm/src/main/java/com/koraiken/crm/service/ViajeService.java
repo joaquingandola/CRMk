@@ -1,5 +1,6 @@
 package com.koraiken.crm.service;
 
+import com.koraiken.crm.dto.Cliente.ClienteResponseDTO;
 import com.koraiken.crm.dto.Destino.DestinoCreateDTO;
 import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeCreateDTO;
@@ -8,6 +9,7 @@ import com.koraiken.crm.dto.Viaje.ViajeUpdateDTO;
 import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.exception.ViajeNotFoundException;
 import com.koraiken.crm.exception.ViajeTransicionInvalidaException;
+import com.koraiken.crm.mapper.ClienteMapper;
 import com.koraiken.crm.mapper.ViajeMapper;
 import com.koraiken.crm.model.*;
 import com.koraiken.crm.repository.IEstadoViajeRepository;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -197,24 +200,10 @@ public class ViajeService {
         validarTransicion(estadoActual.getEstadoConcretoViaje(), nuevoEstado);
 
         //registro del nuevo estado por una cuestion de historial
-        EstadoViaje nuevoEstadoViaje = new EstadoViaje();
-        nuevoEstadoViaje.setViaje(viaje);
-        nuevoEstadoViaje.setEstadoConcretoViaje(nuevoEstado);
-        nuevoEstadoViaje.setFechaActualizacion(LocalDateTime.now());
-        estadoViajeRepository.save(nuevoEstadoViaje);
+        EstadoViaje nuevoEstadoViaje = registrarNuevoEstado(viaje, nuevoEstado);
+        aplicarEfectosEstado(viaje, nuevoEstado);
 
-        if(nuevoEstado == EstadoConcretoViaje.CONFIRMADO) {
-            viaje.setActivo(true);
-            viaje.getCliente().setEnViaje(true);
-            viajeRepository.save(viaje);
-        }
-
-        if(nuevoEstado == EstadoConcretoViaje.CANCELADO) {
-            viaje.setActivo(false);
-            viaje.getCliente().setEnViaje(false);
-            viajeRepository.save(viaje);
-        }
-
+        viajeRepository.save(viaje);
         return ViajeMapper.toDTO(viaje, nuevoEstadoViaje);
     }
 
@@ -300,6 +289,25 @@ public class ViajeService {
 
         if(!valida) {
             throw new ViajeTransicionInvalidaException(actual.name(), nuevo.name());
+        }
+    }
+
+    private EstadoViaje registrarNuevoEstado(Viaje viaje, EstadoConcretoViaje nuevoEstado) {
+        EstadoViaje nuevoEstadoViaje = new EstadoViaje();
+
+        nuevoEstadoViaje.setViaje(viaje);
+        nuevoEstadoViaje.setEstadoConcretoViaje(nuevoEstado);
+        nuevoEstadoViaje.setFechaActualizacion(LocalDateTime.now());
+        return estadoViajeRepository.save(nuevoEstadoViaje);
+    }
+
+    private void aplicarEfectosEstado(Viaje viaje, EstadoConcretoViaje nuevoEstado) {
+        if(nuevoEstado == EstadoConcretoViaje.CONFIRMADO) {
+            viaje.setActivo(true);
+        }
+
+        if(nuevoEstado == EstadoConcretoViaje.CANCELADO) {
+            viaje.setActivo(false);
         }
     }
 

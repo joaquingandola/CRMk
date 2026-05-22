@@ -18,7 +18,6 @@ public class ClienteResponseDTO {
     private LocalDate fechaNacimiento;
     private LocalDateTime fechaCreacion;
     private Boolean activo;
-    private Boolean enViaje;
     private List<ContactoDTO> contactos;
     private Long idAgente;
     private String nombreAgente;

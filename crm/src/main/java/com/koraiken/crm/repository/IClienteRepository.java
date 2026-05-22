@@ -16,12 +16,6 @@ public interface IClienteRepository extends JpaRepository<Cliente, Long>{
     List<Cliente> findByActivoTrueAndAgenteIdUsuario(Long idAgente);
     List<Cliente> findByActivoTrue();
 
-
-    List<Cliente> findByEnViajeTrueAndAgenteIdUsuario(Long idAgente);
-    List<Cliente> findByEnViajeTrue();
-
-
-
     @Query("""
         SELECT c FROM Cliente c
         WHERE c.agente.idUsuario =:idAgente
