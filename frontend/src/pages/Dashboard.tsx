@@ -58,7 +58,7 @@ export function DashboardPage() {
 
     const formatFecha = (iso: string) => 
         new Date(iso).toLocaleDateString('es-AR', {
-            day: '2-digit', month: 'short', year: 'numeric',
+            timeZone: 'UTC', day: '2-digit', month: 'short', year: 'numeric',
         })
     if(loading) return <Spinner />
 

@@ -19,8 +19,8 @@ export function ViajesPage() {
 
     const formatFecha = (iso : string) =>
         new Date(iso).toLocaleDateString('es-AR', {
-            day: '2-digit', month: 'short', year: 'numeric',
-        }) //fijarse si esto queda TODO
+            timeZone: 'UTC', day: '2-digit', month: 'short', year: 'numeric',
+        })
     
     const inicioDeHoy = () => {
         const hoy = new Date()

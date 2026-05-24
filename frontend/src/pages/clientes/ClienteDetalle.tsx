@@ -54,10 +54,12 @@ export function ClienteDetalle() {
         }
     }
 
-    const formatFechaNacimiento = (iso: string | null) => {
+    const formatFecha = (iso: string | null) => {
         if (!iso) return '—'
-        const [year, month, day] = iso.split('-')
 
+        const fechaLimpia = iso.split('T')[0] // "YYYY-MM-DD"
+        const [year, month, day] = fechaLimpia.split('-')
+        if (!year || !month || !day) return '—'
         return `${day}/${month}/${year}`
     }
 
@@ -141,7 +143,7 @@ export function ClienteDetalle() {
                 <dl className="space-y-4">
                     <Row label="Nombre completo" value={`${cliente.nombre} ${cliente.apellido}`} />
                     <Row label="DNI" value={String(cliente.dni)} />
-                    <Row label="Fecha de nacimiento" value={formatFechaNacimiento(cliente.fechaNacimiento)} />
+                    <Row label="Fecha de nacimiento" value={formatFecha(cliente.fechaNacimiento)} />
                     <Row label="Alta en sistema" value={formatFechaCreacion(cliente.fechaCreacion)} />
                 </dl>
             </div>
@@ -194,12 +196,12 @@ export function ClienteDetalle() {
                 >
                     <div>
                     <div className="text-base font-semibold text-white">
-                        {v.destinos?.length > 0
-                        ? v.destinos.map((d) => d.ciudad?.nombre).join(' → ')
+                        {v.destinos && v.destinos?.length > 0
+                        ? v.destinos.map((d) => d.ciudad?.nombre).filter(Boolean).join(' → ')
                         : 'Sin destinos cargados'}
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
-                        {formatFechaNacimiento(v.fechaInicioViaje)} → {formatFechaNacimiento(v.fechaFinViaje)}
+                        {formatFecha(v.fechaInicioViaje)} → {formatFecha(v.fechaFinViaje)}
                         {v.aerolinea?.aerolinea && ` · ${v.aerolinea.aerolinea}`}
                     </div>
                     </div>
