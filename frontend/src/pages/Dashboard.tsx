@@ -174,8 +174,11 @@ export function DashboardPage() {
                               }}
                               className="text-xs text-blue-400 hover:text-blue-300 cursor-pointer"
                             >
-                              {v.destinos.length > 0
-                                ? v.destinos.map((d) => d.ciudad.nombre).join(' → ')
+                              {v.destinos && v.destinos.length > 0
+                                ? [...v.destinos]
+                                    .sort((a, b) => new Date(a.fechaLlegada).getTime() - new Date(b.fechaLlegada).getTime())
+                                    .map((d) => d.ciudad.nombre)
+                                    .join(' → ')
                                 : 'Sin destinos'}
                               {' · '}
                               {formatFecha(v.fechaInicioViaje)} → {formatFecha(v.fechaFinViaje)}

@@ -197,7 +197,9 @@ export function ClienteDetalle() {
                     <div>
                     <div className="text-base font-semibold text-white">
                         {v.destinos && v.destinos?.length > 0
-                        ? v.destinos.map((d) => d.ciudad?.nombre).filter(Boolean).join(' → ')
+                        ? [...v.destinos] 
+                        .sort((a, b) => new Date(a.fechaLlegada).getTime() - new Date(b.fechaLlegada).getTime())
+                        .map((d) => d.ciudad?.nombre).filter(Boolean).join(' → ')
                         : 'Sin destinos cargados'}
                     </div>
                     <div className="text-xs text-slate-500 mt-1">

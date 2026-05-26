@@ -98,8 +98,10 @@ export function ViajeDetalle() {
             <div className="flex items-start justify-between mb-6">
                 <div>
                     <h1 className="text-2xl font-bold text-white tracking-light">
-                        {viaje.destinos.length > 0
-                            ? viaje.destinos.map((d) => d.ciudad.nombre).join(' → ')
+                        {viaje.destinos && viaje.destinos.length > 0
+                            ? [...viaje.destinos]
+                            .sort((a, b) => new Date(a.fechaLlegada).getTime() - new Date(b.fechaLlegada).getTime())
+                            .map((d) => d.ciudad.nombre).join(' → ')
                             : 'Viaje sin destinos'}
                     </h1>
                     <p className="text-sm text-slate-400 mt-2">
@@ -169,11 +171,15 @@ export function ViajeDetalle() {
                             ({viaje.destinos.length})
                         </span>
                     </h2>
-                    {viaje.destinos.length === 0 ? (
+                    {viaje.destinos && viaje.destinos.length === 0 ? (
                         <p className="text-base font-semibold text-white">Sin destinos cargados.</p>
                     ) : (
                         <ol className="space-y-4">
-                            {viaje.destinos.map((d, i) => (
+                            {[...viaje.destinos]
+                                .sort((a,b) => {
+                                    return new Date(a.fechaLlegada).getTime() - new Date(b.fechaLlegada).getTime();
+                                })
+                                .map((d, i) => (
                                 <li key={d.idDestino} className="text-sm bg-slate-900/30 border border-slate-800 rounded-xl p-4">
                                     <div className="flex gap-4">
                                         <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
