@@ -11,6 +11,7 @@ import com.koraiken.crm.mapper.DestinoMapper;
 import com.koraiken.crm.model.*;
 import com.koraiken.crm.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,16 @@ public class DestinoService {
     private final IViajeRepository viajeRepository;
     private final IPaisRepository paisRepository;
     private final HotelService hotelService;
+    private final IUsuarioRepository usuarioRepository;
+
+    private Usuario obtenerUsuarioAuth () {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getName();
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UserMailNotFoundException(email));
+    }
+
 
     // destinos
     @Transactional
@@ -108,9 +119,12 @@ public class DestinoService {
     // Devuelve una proyección limpia en lugar de Object[]
     @Transactional(readOnly = true)
     public List<CiudadVisitadaDTO> ciudadesMasVisitadas() {
-        return destinoRepository.findCiudadesMasVisitadas()
-                .stream()
-                .map(row -> CiudadVisitadaDTO.builder()
+        Usuario usuario = obtenerUsuarioAuth();
+        List<Object[]> ciudades = usuario.getTipoRol().isAdmin()
+                ? destinoRepository.findCiudadesMasVisitadas()
+                : destinoRepository.findCiudadesMasVisitadasAgente(usuario.getIdUsuario());
+        return ciudades.stream().map(
+                row -> CiudadVisitadaDTO.builder()
                         .idCiudad((Long) row[0])
                         .nombre((String) row[1])
                         .pais((String) row[2])

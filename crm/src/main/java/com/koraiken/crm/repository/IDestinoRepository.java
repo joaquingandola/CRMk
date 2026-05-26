@@ -33,6 +33,15 @@ public interface IDestinoRepository extends JpaRepository<Destino, Long>{
     """)
     List<Object[]> findCiudadesMasVisitadas();
 
+    @Query("""
+        SELECT d.ciudad.idCiudad, d.ciudad.nombre, d.ciudad.pais.nombre, COUNT(d)
+        FROM Destino d
+        WHERE d.viaje.cliente.agente.idUsuario = :idAgente
+        GROUP BY d.ciudad.idCiudad, d.ciudad.nombre, d.ciudad.pais.nombre
+        ORDER BY COUNT(d) DESC
+    """)
+    List<Object[]> findCiudadesMasVisitadasAgente(@Param("idAgente") Long idAgente);
+
 
     // Clientes que están en una ciudad en este momento
     // (navegando viaje → cliente)
