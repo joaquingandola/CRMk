@@ -49,9 +49,19 @@ public class ViajeService {
                 .orElseThrow(() -> new UserMailNotFoundException(email));
     }
 
+    private void verificarExistenciaViajeMismaFechas(ViajeCreateDTO dto) {
+        boolean existeViajeSuperpuesto = viajeRepository.existeViajeSuperpuesto(
+                dto.getIdCliente(),
+                dto.getFechaInicioViaje(),
+                dto.getFechaFinViaje());
+        if (existeViajeSuperpuesto) {
+            throw new ViajeSuperpuestoException();
+        }
+    }
+
     @Transactional
     public ViajeResponseDTO crearViaje(ViajeCreateDTO dto) {
-
+        verificarExistenciaViajeMismaFechas(dto);
         if(!dto.getFechaInicioViaje().isBefore(dto.getFechaFinViaje())) {
             throw new RuntimeException("La fecha de salida es anterior a la de llegada");
         }

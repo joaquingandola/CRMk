@@ -67,6 +67,17 @@ public interface IViajeRepository extends JpaRepository<Viaje, Long> {
             @Param("idAgente") Long idAgente
     );
 
+    @Query("""
+        SELECT COUNT(v) > 0 FROM Viaje v
+        WHERE v.cliente.idCliente = :idCliente
+        AND v.fechaInicioViaje <= :fechaSalida
+        AND v.fechaFinViaje >= :fechaLlegada
+""")
+    boolean existeViajeSuperpuesto(
+            @Param("idCliente") Long idCliente,
+            @Param("fechaLlegada") LocalDate fechaLlegada,
+            @Param("fechaSalida") LocalDate fechaSalida
+    );
 
     List<Viaje> findByAerolineaIdAerolinea(Long idAerolinea);
 

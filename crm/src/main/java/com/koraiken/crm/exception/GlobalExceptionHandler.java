@@ -44,7 +44,8 @@ public class GlobalExceptionHandler {
             ClienteConViajesActivosException.class,
             ViajeTransicionInvalidaException.class,
             DestinoFechaInvalidaException.class,
-            DestinoFechasSolapadasException.class
+            DestinoFechasSolapadasException.class,
+            ViajeSuperpuestoException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleUnprocessable(RuntimeException exception, HttpServletRequest request) {
         return build(HttpStatus.UNPROCESSABLE_CONTENT, exception.getMessage(), request);
