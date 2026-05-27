@@ -5,17 +5,17 @@ import {
     getClientesEnViaje, 
     getTodosLosViajes, 
     getCiudadesMasVisitadas,
-} from '../api/dashboard'
+} from '../../api/dashboard'
 
 import type {
     ClienteResponseDTO,
     ViajeResponseDTO,
     CiudadVisitadaDTO,
     EstadoConcretoViaje,
-} from '../types'
+} from '../../types'
 
-import { Spinner } from "../components/ui/Spinner"
-import { Badge } from "../components/ui/Badge"
+import { Spinner } from "../../components/ui/Spinner"
+import { Badge } from "../../components/ui/Badge"
 
 interface Conteos {
     COTIZADO: number
@@ -91,9 +91,16 @@ export function DashboardPage() {
     <div className="space-y-6">
 
         {/* Header */}
-        <div>
+        <div className="flex items-center justify-between">
+          <div>
             <h1 className="text-2xl font-bold text-white tracking-tight">Dashboard</h1>
             <p className="text-sm text-slate-400 mt-0.5">Resumen general</p>
+          </div>
+          <button
+            onClick={() => navigate('/dashboard-map')}
+            className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-all shadow-lg shadow-blue-600/20">
+                Mapa de clientes en tiempo real
+          </button>
         </div>
 
         {/* Metric cards */}

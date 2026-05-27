@@ -63,7 +63,7 @@ public class ViajeService {
     public ViajeResponseDTO crearViaje(ViajeCreateDTO dto) {
         verificarExistenciaViajeMismaFechas(dto);
         if(!dto.getFechaInicioViaje().isBefore(dto.getFechaFinViaje())) {
-            throw new RuntimeException("La fecha de salida es anterior a la de llegada");
+            throw new RuntimeException("La fecha de inicio del viaje debe ser anterior a la fecha del fin del viaje");
         }
 
         Cliente cliente = clienteService.obtenerClienteOExcepcion(dto.getIdCliente());
