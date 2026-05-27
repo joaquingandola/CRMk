@@ -6,10 +6,7 @@ import com.koraiken.crm.dto.EstadoViaje.EstadoViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeCreateDTO;
 import com.koraiken.crm.dto.Viaje.ViajeResponseDTO;
 import com.koraiken.crm.dto.Viaje.ViajeUpdateDTO;
-import com.koraiken.crm.exception.DestinoFechaInvalidaException;
-import com.koraiken.crm.exception.UserMailNotFoundException;
-import com.koraiken.crm.exception.ViajeNotFoundException;
-import com.koraiken.crm.exception.ViajeTransicionInvalidaException;
+import com.koraiken.crm.exception.*;
 import com.koraiken.crm.mapper.ClienteMapper;
 import com.koraiken.crm.mapper.ViajeMapper;
 import com.koraiken.crm.model.*;
@@ -18,6 +15,7 @@ import com.koraiken.crm.repository.IEstadoViajeRepository;
 import com.koraiken.crm.repository.IUsuarioRepository;
 import com.koraiken.crm.repository.IViajeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -86,35 +85,10 @@ public class ViajeService {
 
         // crear y asociar destinos
         if(dto.getDestinos() != null) {
-            for(DestinoCreateDTO destinoDTO : dto.getDestinos()) {
-                // Validacion de fechas - viaje vs escalas
-                if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaInicioViaje()) ||
-                destinoDTO.getFechaLlegada().isAfter(dto.getFechaFinViaje())    ||
-                destinoDTO.getFechaSalida().isAfter(dto.getFechaFinViaje()) ||
-                destinoDTO.getFechaSalida().isBefore(dto.getFechaInicioViaje())) {
-                    throw new RuntimeException(
-                            "Las fechas del destino deben estar dentro del rango del viaje"
-                    );
-                }
-
-                if(!destinoDTO.getFechaLlegada().isBefore(destinoDTO.getFechaSalida())) {
-                    throw new DestinoFechaInvalidaException();
-                }
-
-                Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
-                Hotel hotel = hotelService.resolverHotel(destinoDTO.getIdHotel(), destinoDTO.getHotel());
-
-                Destino destino = new Destino();
-                destino.setViaje(guardado);
-                destino.setCiudad(ciudad);
-                destino.setFechaSalida(destinoDTO.getFechaSalida());
-                destino.setFechaLlegada(destinoDTO.getFechaLlegada());
-                destino.setHotel(hotel);
-
-                Destino destinoGuardado = destinoRepository.save(destino);
-                guardado.getDestinos().add(destinoGuardado);
-            }
+            validarFechasDestinos(dto);
+            guardarDestinos(dto, guardado);
         }
+
 
         EstadoViaje estadoInicial = new EstadoViaje();
         estadoInicial.setViaje(guardado);
@@ -122,8 +96,6 @@ public class ViajeService {
         estadoInicial.setFechaActualizacion(LocalDateTime.now());
         estadoViajeRepository.save(estadoInicial);
 
-        //deberia marcar cliente como en viaje si es que el viaje esta activo
-        //pero esto lo hago al confirmar el viaje mejor, tiene mas sentido
         return ViajeMapper.toDTO(guardado, estadoInicial);
     }
 
@@ -315,6 +287,53 @@ public class ViajeService {
 
         if(nuevoEstado == EstadoConcretoViaje.CANCELADO) {
             viaje.setActivo(false);
+        }
+    }
+
+    private void validarFechasNoPisadas(List<DestinoCreateDTO> destinos) {
+        for (int i = 0; i < destinos.size(); i++) {
+            for (int j = i + 1; j < destinos.size();j++) {
+                LocalDate llegadaA = destinos.get(i).getFechaLlegada();
+                LocalDate llegadaB = destinos.get(j).getFechaLlegada();
+                LocalDate salidaA = destinos.get(i).getFechaSalida();
+                LocalDate salidaB = destinos.get(j).getFechaSalida();
+
+                if(llegadaA.isBefore(salidaB) && llegadaB.isBefore(salidaA)) {
+                    throw new DestinoFechasSolapadasException(
+                            "Las fechas de dos destinos estan solapadas"
+                    );
+                }
+            }
+        }
+    }
+
+    private void validarFechasDestinos(ViajeCreateDTO dto) {
+        List<DestinoCreateDTO> destinos = dto.getDestinos();
+        for(DestinoCreateDTO destinoDTO : destinos) {
+            if(destinoDTO.getFechaLlegada().isBefore(dto.getFechaInicioViaje()) ||
+                    destinoDTO.getFechaLlegada().isAfter(dto.getFechaFinViaje())    ||
+                    destinoDTO.getFechaSalida().isAfter(dto.getFechaFinViaje()) ||
+                    destinoDTO.getFechaSalida().isBefore(dto.getFechaInicioViaje())) {
+                throw new DestinoFechaInvalidaException();
+            }
+            if(!destinoDTO.getFechaLlegada().isBefore(destinoDTO.getFechaSalida())) {
+                throw new DestinoFechaInvalidaException();
+            }
+        }
+        validarFechasNoPisadas(destinos);
+    }
+
+    private void guardarDestinos(ViajeCreateDTO viajeDTO, Viaje viaje) {
+        for (DestinoCreateDTO destinoDTO : viajeDTO.getDestinos()) {
+            Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
+            Hotel hotel = hotelService.resolverHotel(destinoDTO.getIdHotel(), destinoDTO.getHotel());
+            Destino destino = new Destino();
+            destino.setViaje(viaje);
+            destino.setCiudad(ciudad);
+            destino.setHotel(hotel);
+            destino.setFechaLlegada(destinoDTO.getFechaLlegada());
+            destino.setFechaSalida(destinoDTO.getFechaSalida());
+            viaje.getDestinos().add(destinoRepository.save(destino));
         }
     }
 

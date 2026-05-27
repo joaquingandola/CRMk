@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
             UserMailNotFoundException.class,
             ViajeNotFoundException.class,
             ClienteNotFoundException.class
-            //faltaria un exception  de destino not found
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), request);
@@ -44,7 +43,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             ClienteConViajesActivosException.class,
             ViajeTransicionInvalidaException.class,
-            DestinoFechaInvalidaException.class
+            DestinoFechaInvalidaException.class,
+            DestinoFechasSolapadasException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleUnprocessable(RuntimeException exception, HttpServletRequest request) {
         return build(HttpStatus.UNPROCESSABLE_CONTENT, exception.getMessage(), request);
@@ -90,7 +90,6 @@ public class GlobalExceptionHandler {
     // 500 fallback - aca no tengo que llegar en produccion
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGeneric(Exception ex, HttpServletRequest request) {
-        //aca logueo el stack trace completo para debuggear pero no lo veo re necesario
         ex.printStackTrace();
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrio un error inesperado", request);
     }
