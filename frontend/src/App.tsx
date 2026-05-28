@@ -12,10 +12,10 @@ import { ViajesPage } from "./pages/viajes/ViajesPage"
 import { ViajeDetalle } from "./pages/viajes/ViajeDetalle"
 import { ViajeNuevo } from "./pages/viajes/ViajeNuevo"
 import { ViajeEditar } from "./pages/viajes/ViajeEditar"
-import { DashboardPage } from "./pages/Dashboard/Dashboard"
+import { DashboardPage } from "./pages/dashboard/Dashboard"
 import { AerolineasPage } from "./pages/aerolineas/AerolineasPage"
 import { ImportacionCiudadesPage } from "./pages/importacion/ImportacionCiudadesPage"
-import { DashboardMap } from "./pages/Dashboard/DashboardMap"
+import { DashboardMap } from "./pages/dashboard/DashboardMap"
 
 export default function App() {
     return (
