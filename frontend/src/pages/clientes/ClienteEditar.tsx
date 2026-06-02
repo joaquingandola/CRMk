@@ -2,6 +2,9 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getClientePorId, actualizarCliente } from "../../api/clientes"
 import type { ContactoInputDTO, Medio } from "../../types"
+import { eliminarObservacion } from "../../api/observaciones"
+import type { ObservacionFormData } from "../../types/index"
+
 
 const MEDIOS: Medio[] = ['MAIL', 'TELEFONO', 'TELEGRAM', 'WHATSAPP']
 
@@ -15,6 +18,8 @@ export function ClienteEditar() {
         fechaNacimiento: '',
     })
     const [contactos, setContactos] = useState<ContactoInputDTO[]>([])
+    const [observaciones, setObservaciones] = useState<ObservacionFormData[]>([])
+
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [guardando, setGuardando] = useState(false)
@@ -30,6 +35,13 @@ export function ClienteEditar() {
             setContactos(
                 data.contactos.map((c) => ({ medio: c.medio, detalle: c.detalle}))
             )
+            if(data.observaciones) {
+                setObservaciones(
+                    data.observaciones.map((o) => ({
+                        idObservacion: o.idObservacion,
+                        observacion: o.observacion
+                    }))
+            )}
         }).finally(() => setLoading(false))
     }, [id])
 
@@ -54,6 +66,33 @@ export function ClienteEditar() {
     const quitarContacto = (index: number) => 
         setContactos(contactos.filter((_, i) => i !== index))
 
+    const handleObservacionChange = (index: number, value: string) => {
+        const nuevas = [...observaciones]
+        nuevas[index] = { ...nuevas[index], observacion: value }
+        setObservaciones(nuevas)
+    }
+
+    const agregarObservacion = () => {
+        setObservaciones([...observaciones, { observacion: '' }])
+    }
+
+    const quitarObservacion = async (index: number) => {
+        const obs = observaciones[index]
+        if(obs.idObservacion) {
+            const confirm = window.confirm('¿Confirma que desea eliminar esta observación?')
+            if(!confirm) return
+            try {
+                await eliminarObservacion(obs.idObservacion)
+                setObservaciones(observaciones.filter((_, i) => i !== index))
+            } catch (err) {
+                alert('No se pudo eliminar la observación')
+            }
+        }
+        else {
+            setObservaciones(observaciones.filter((_, i) => i !== index))
+        }
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
@@ -64,6 +103,7 @@ export function ClienteEditar() {
                 apellido: form.apellido.trim(),
                 fechaNacimiento: form.fechaNacimiento || undefined,
                 contactos: contactos.filter((c) => c.detalle.trim() !== ''),
+                observaciones: observaciones.filter((o) => o.observacion.trim() !== '')
             })
             navigate(`/clientes/${id}`)
         } catch(err: any) {
@@ -127,6 +167,8 @@ export function ClienteEditar() {
                     </div>
                 </div>
 
+
+                {/* Contactos */}
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
                     <div className="flex items-center justify-between mb-5">
                         <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Contactos</h2>
@@ -171,6 +213,63 @@ export function ClienteEditar() {
                             </div>
                         ))}
                     </div>
+                </div>
+
+                {/* Observaciones */}
+                <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-5">
+                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Observaciones</h2>
+                    <button
+                        type="button"
+                        onClick={agregarObservacion}
+                        className="text-xs bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 border border-blue-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
+                    >
+                        + 
+                    </button>
+                </div>
+
+                {observaciones.length === 0 ? (
+                    <p className="text-sm text-slate-400">No hay observaciones.</p>
+                    ) : (
+                    <div className="space-y-4">
+                        {observaciones.map((obs, index) => (
+                            <div 
+                                key={obs.idObservacion ? `obs-${obs.idObservacion}` : `nueva-obs-${index}`}
+                                className={`flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-200 ${
+                                    obs.idObservacion 
+                                        ? 'bg-gray-50/70 border-gray-200' 
+                                        : 'bg-green-50/40 border-green-200 animate-fadeIn'
+                                }`}
+                            >
+                                <div className="w-full">
+                                    {obs.idObservacion ? (
+                                        <span className="text-[11px] font-semibold text-gray-400 mb-1 block uppercase tracking-wider">
+                                            Nota Guardada #{obs.idObservacion}
+                                        </span>
+                                    ) : (
+                                        <span className="text-[11px] font-bold text-green-600 mb-1 block uppercase tracking-wider">
+                                            Nueva Nota
+                                        </span>
+                                    )}
+                                    
+                                    <textarea
+                                        value={obs.observacion}
+                                        onChange={(e) => handleObservacionChange(index, e.target.value)}
+                                        required
+                                        className="flex-1 bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all resize-none h-24"
+                                    />
+                                <button
+                                    type="button"
+                                    onClick={() => quitarObservacion(index)}
+                                    className="p-2 text-slate-500 hover:text-red-400 transition-colors"
+                                >
+                                    ✕
+                                </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
                 </div>
 
                 {error && (

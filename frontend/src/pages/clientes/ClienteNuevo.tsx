@@ -1,12 +1,27 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { crearCliente } from "../../api/clientes"
-import type { ContactoInputDTO, Medio } from "../../types"
+import type { ContactoInputDTO, Medio, ObservacionCreateDTO } from "../../types"
 
 const MEDIOS: Medio[] = ["MAIL", "TELEFONO", "WHATSAPP", "TELEGRAM"]
 
 export function ClienteNuevo() {
     const navigate = useNavigate()
+    const [ observaciones, setObservaciones] = useState<ObservacionCreateDTO[]>([])
+
+    const agregarCuadroObservacion = () => {
+      setObservaciones([...observaciones, { observacion: '' }])
+    }
+
+    const manejarCambioObservacion = (index: number, valor: string) => {
+      const nuevasObservaciones = [...observaciones]
+      nuevasObservaciones[index].observacion = valor
+      setObservaciones(nuevasObservaciones)
+    }
+
+    const quitarCuadroObservacion = (index: number) => {
+      setObservaciones(observaciones.filter((_, i) => i !== index))
+    }
 
     const [form, setForm] = useState({
         nombre: "",
@@ -47,7 +62,6 @@ export function ClienteNuevo() {
         setError("")
         
         const contactosFiltrados = contactos.filter((c) => c.detalle.trim() !== "")
-
         setGuardando(true)
         try {
             const {data} = await crearCliente({
@@ -56,6 +70,7 @@ export function ClienteNuevo() {
                 dni: Number(form.dni),
                 fechaNacimiento: form.fechaNacimiento || undefined,
                 contactos: contactosFiltrados,
+                observaciones: observaciones.filter((o) => o.observacion.trim() !== "")
             })
             navigate(`/clientes/${data.idCliente}`)
         } catch (err: any) {
@@ -188,6 +203,43 @@ export function ClienteNuevo() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Observaciones */}
+        <div className = "bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+            <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Observaciones</h2>
+            <button
+              type = "button"
+              onClick = {agregarCuadroObservacion}
+              className="bg-slate-900/50 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+            > + Agregar observación 
+            </button>
+          </div>
+
+          {observaciones.length === 0 && (
+            <p className="text-sm text-slate-400">No hay observaciones.</p>
+          )}
+          <div className="space-y-4">
+          {observaciones.map((o, i) => (
+            <div key={i} className="flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-200">
+              <textarea
+                value={o.observacion}
+                onChange={(e) => manejarCambioObservacion(i, e.target.value)}
+                placeholder="Escribe una observación sobre el cliente..."
+                className="flex-1 bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all resize-none h-24"
+              />
+              <button 
+                type="button"
+                onClick={() => quitarCuadroObservacion(i)}
+                className="p-2 text-slate-500 hover:text-red-400 transition-colors"
+                title="Eliminar observación"
+              >
+                ×
+              </button>
+            </div>
+            ))}
+            </div>
         </div>
 
         {error && (

@@ -37,6 +37,7 @@ export interface ClienteResponseDTO {
     contactos: ContactoDTO[]
     idAgente?: number
     nombreAgente?: string
+    observaciones?: ObservacionResponseDTO[]
 }
 
 export interface ClienteCreateDTO {
@@ -45,6 +46,7 @@ export interface ClienteCreateDTO {
     dni: number
     fechaNacimiento?: string | null
     contactos?: ContactoInputDTO[]
+    observaciones?: ObservacionCreateDTO[]
 }
 
 export interface ClienteUpdateDTO {
@@ -52,6 +54,7 @@ export interface ClienteUpdateDTO {
     apellido?: string
     fechaNacimiento?: string
     contactos?: ContactoInputDTO[]
+    observaciones?: ObservacionCreateDTO[]
 }
 
 //aerolinea
@@ -182,4 +185,21 @@ export interface DestinoFormData {
     idHotel : string
     hotelNombre : string
     hotelDireccion : string
+}
+
+export interface ObservacionFormData {
+    idObservacion?: number
+    observacion: string
+}
+
+//observaciones
+export interface ObservacionCreateDTO {
+    observacion: string
+}
+
+export interface ObservacionResponseDTO {
+    idObservacion: number
+    idCliente: number
+    observacion: string
+    fechaCreacion: string
 }

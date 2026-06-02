@@ -1,6 +1,8 @@
 package com.koraiken.crm.dto.Cliente;
 
 import com.koraiken.crm.dto.Contacto.ContactoDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionResponseDTO;
+import com.koraiken.crm.model.Observacion;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,5 +22,6 @@ public class ClienteResponseDTO {
     private Boolean activo;
     private List<ContactoDTO> contactos;
     private Long idAgente;
+    private List<ObservacionResponseDTO> observaciones;
     private String nombreAgente;
 }

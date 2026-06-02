@@ -219,6 +219,38 @@ export function ClienteDetalle() {
             )}
         </div>
 
+        {/* Observaciones */}
+        <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
+            <div className="flex items-center justify-between mb-5">
+            <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Observaciones</h2>
+            <span className="text-sm font-medium text-slate-300">
+                {cliente.observaciones?.length || 0} registros
+            </span>
+            </div>
+
+            {!cliente.observaciones || cliente.observaciones.length === 0 ? (
+                <div className="text-sm text-slate-500 py-4 text-center">
+                No hay observaciones para este cliente.
+                </div>
+            ) : (
+                <div className="grid gap-4">
+                {cliente.observaciones.map((o) => (
+                    <div
+                        key={o.idObservacion}
+                        className="border border-slate-700/50 bg-slate-900/20 rounded-xl px-5 py-4"
+                    >
+                        <div className="text-sm text-slate-300 whitespace-pre-wrap">
+                            <span className="text-xs text-slate-500">
+                                ID: #{o.idObservacion} · {formatFechaCreacion(o.fechaCreacion)}
+                            </span>
+                        </div>
+                        <p className="mt-2 text-sm text-slate-200">{o.observacion}</p>
+                    </div>
+                    ))}
+                </div>
+                )}
+        </div>
+        
 
         {/* Modal baja */}
         {confirmandoBaja && (

@@ -1,6 +1,7 @@
 package com.koraiken.crm.dto.Cliente;
 
 import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionCreateDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +16,6 @@ public class ClienteCreateDTO {
     private Integer dni;
     private LocalDate fechaNacimiento;
     private List<ContactoInputDTO> contactos;
+    private List<ObservacionCreateDTO> observaciones;
 }
 

@@ -1,6 +1,8 @@
 package com.koraiken.crm.dto.Cliente;
 
 import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionCreateDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionResponseDTO;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,4 +19,5 @@ public class ClienteUpdateDTO {
     private String apellido;
     private LocalDate fechaNacimiento;
     private List<ContactoInputDTO> contactos;
+    private List<ObservacionResponseDTO> observaciones;
 }

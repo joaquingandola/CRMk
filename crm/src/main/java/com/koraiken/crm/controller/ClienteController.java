@@ -25,7 +25,6 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listarClientesEnViaje());
     }
 
-
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> crear(@RequestBody ClienteCreateDTO dto) {
         return ResponseEntity
