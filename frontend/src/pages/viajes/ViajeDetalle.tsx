@@ -52,8 +52,7 @@ export function ViajeDetalle() {
 
     const formatFechaInicioFin = (iso: string | null) => {
         if (!iso) return '—'
-        const [year, month, day] = iso.split('-')
-
+        const [year, month, day] = iso.slice(0,10).split('-')
         return `${day}/${month}/${year}`
     }
 

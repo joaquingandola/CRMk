@@ -44,7 +44,7 @@ public interface IDestinoRepository extends JpaRepository<Destino, Long>{
 
 
     // Clientes que están en una ciudad en este momento
-    // (navegando viaje → cliente)
+    // (navegando viaje → cliente)z
     @Query("""
         SELECT d FROM Destino d
         WHERE d.ciudad.idCiudad = :idCiudad
