@@ -19,5 +19,5 @@ public class ClienteUpdateDTO {
     private String apellido;
     private LocalDate fechaNacimiento;
     private List<ContactoInputDTO> contactos;
-    private List<ObservacionResponseDTO> observaciones;
+    private List<ObservacionCreateDTO> observaciones;
 }

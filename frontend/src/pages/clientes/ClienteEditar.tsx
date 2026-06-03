@@ -217,59 +217,44 @@ export function ClienteEditar() {
 
                 {/* Observaciones */}
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-5">
-                    <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Observaciones</h2>
-                    <button
-                        type="button"
-                        onClick={agregarObservacion}
-                        className="text-xs bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 border border-blue-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
-                    >
-                        + 
-                    </button>
-                </div>
+                    <div className="flex items-center justify-between mb-5">
+                        <h2 className="text-sm font-semibold text-blue-400 uppercase tracking-wider">Observaciones</h2>
+                        <button
+                            type="button"
+                            onClick={agregarObservacion}
+                            className="text-xs bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 border border-blue-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
+                        >
+                            + Agregar observación
+                        </button>
+                    </div>
 
-                {observaciones.length === 0 ? (
-                    <p className="text-sm text-slate-400">No hay observaciones.</p>
-                    ) : (
+                    {observaciones.length === 0 && (
+                        <p className="text-sm text-slate-400">No hay observaciones.</p>
+                    )}
+
                     <div className="space-y-4">
                         {observaciones.map((obs, index) => (
                             <div 
-                                key={obs.idObservacion ? `obs-${obs.idObservacion}` : `nueva-obs-${index}`}
-                                className={`flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-200 ${
-                                    obs.idObservacion 
-                                        ? 'bg-gray-50/70 border-gray-200' 
-                                        : 'bg-green-50/40 border-green-200 animate-fadeIn'
-                                }`}
+                                key={obs.idObservacion ? `obs-${obs.idObservacion}` : `nueva-obs-${index}`} 
+                                className="flex items-center gap-3 animate-in fade-in slide-in-from-top-2 duration-200"
                             >
-                                <div className="w-full">
-                                    {obs.idObservacion ? (
-                                        <span className="text-[11px] font-semibold text-gray-400 mb-1 block uppercase tracking-wider">
-                                            Nota Guardada #{obs.idObservacion}
-                                        </span>
-                                    ) : (
-                                        <span className="text-[11px] font-bold text-green-600 mb-1 block uppercase tracking-wider">
-                                            Nueva Nota
-                                        </span>
-                                    )}
-                                    
-                                    <textarea
-                                        value={obs.observacion}
-                                        onChange={(e) => handleObservacionChange(index, e.target.value)}
-                                        required
-                                        className="flex-1 bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all resize-none h-24"
-                                    />
+                                <textarea
+                                    value={obs.observacion}
+                                    onChange={(e) => handleObservacionChange(index, e.target.value)}
+                                    placeholder="Escribe una observación sobre el cliente..."
+                                    className="flex-1 bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-600/50 outline-none transition-all resize-none h-24"
+                                />
                                 <button
                                     type="button"
                                     onClick={() => quitarObservacion(index)}
                                     className="p-2 text-slate-500 hover:text-red-400 transition-colors"
+                                    title="Eliminar observación"
                                 >
-                                    ✕
+                                    ×
                                 </button>
-                                </div>
                             </div>
                         ))}
                     </div>
-                )}
                 </div>
 
                 {error && (

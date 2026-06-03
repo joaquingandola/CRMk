@@ -4,19 +4,15 @@ import com.koraiken.crm.dto.Cliente.ClienteCreateDTO;
 import com.koraiken.crm.dto.Cliente.ClienteResponseDTO;
 import com.koraiken.crm.dto.Cliente.ClienteUpdateDTO;
 import com.koraiken.crm.dto.Contacto.ContactoInputDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionCreateDTO;
+import com.koraiken.crm.dto.Observacion.ObservacionResponseDTO;
 import com.koraiken.crm.exception.ClienteConViajesActivosException;
 import com.koraiken.crm.exception.ClienteExisteException;
 import com.koraiken.crm.exception.ClienteNotFoundException;
 import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.mapper.ClienteMapper;
-import com.koraiken.crm.model.Cliente;
-import com.koraiken.crm.model.Contacto;
-import com.koraiken.crm.model.EstadoConcretoViaje;
-import com.koraiken.crm.model.Usuario;
-import com.koraiken.crm.repository.IClienteRepository;
-import com.koraiken.crm.repository.IContactoRepository;
-import com.koraiken.crm.repository.IUsuarioRepository;
-import com.koraiken.crm.repository.IViajeRepository;
+import com.koraiken.crm.model.*;
+import com.koraiken.crm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +30,7 @@ public class ClienteService {
     private final IClienteRepository iClienteRepository;
     private final IViajeRepository iViajeRepository;
     private final IContactoRepository iContactoRepository;
+    private final IObservacionRepository observacionRepository;
     private final IUsuarioRepository usuarioRepository;
 
     private Usuario obtenerUsuarioAuth() {
@@ -89,6 +86,18 @@ public class ClienteService {
         }
 
         Cliente guardado = iClienteRepository.save(cliente);
+
+        if(dto.getObservaciones() != null) {
+            for(ObservacionCreateDTO obsdto : dto.getObservaciones()) {
+                if(obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank()) {
+                    Observacion obs = new Observacion();
+                    obs.setObservacion(obsdto.getObservacion());
+                    obs.setCliente(guardado);
+                    obs.setFechaCreacion(LocalDateTime.now());
+                    observacionRepository.save(obs);
+                }
+            }
+        }
         return ClienteMapper.toDTO(guardado);
     }
 
@@ -162,6 +171,18 @@ public class ClienteService {
             cliente.getContacto().addAll(nuevos);
         }
 
+        if(dto.getObservaciones() !=null) {
+            for(ObservacionCreateDTO obsdto : dto.getObservaciones()) {
+                if(obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank()) {
+                    Observacion obs = new Observacion();
+                    obs.setObservacion(obsdto.getObservacion());
+                    obs.setCliente(cliente);
+                    obs.setFechaCreacion(LocalDateTime.now());
+                    observacionRepository.save(obs);
+                }
+            }
+        }
+
         Cliente actualizado = iClienteRepository.save(cliente);
         return ClienteMapper.toDTO(actualizado);
     }
@@ -199,6 +220,7 @@ public class ClienteService {
         );
         return clientes.stream().map(ClienteMapper::toDTO).toList();
     }
+
 
     //metodo interno
     public Cliente obtenerClienteOExcepcion(Long id) {

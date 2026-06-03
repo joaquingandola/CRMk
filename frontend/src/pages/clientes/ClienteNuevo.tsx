@@ -212,7 +212,7 @@ export function ClienteNuevo() {
             <button
               type = "button"
               onClick = {agregarCuadroObservacion}
-              className="bg-slate-900/50 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+              className="text-xs bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 border border-blue-500/20 px-3 py-1.5 rounded-lg font-medium transition-all"
             > + Agregar observación 
             </button>
           </div>
