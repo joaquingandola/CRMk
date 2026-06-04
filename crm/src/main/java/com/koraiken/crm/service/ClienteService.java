@@ -155,7 +155,7 @@ public class ClienteService {
         if(dto.getApellido() != null) cliente.setApellido(dto.getApellido());
         if(dto.getFechaNacimiento() != null) cliente.setFechaNacimiento(dto.getFechaNacimiento());
 
-        // Si vienen contactos nuevos: reemplazamos la lista completa.
+        // Si vienen contactos nuevos: reemplazamos la lista completa. -> el dia de manana habria que hacer con esto lo mismo que las observaciones (Service + controller contactos)
         if(dto.getContactos() != null) {
             cliente.getContacto().clear();
             List<Contacto> nuevos = dto.getContactos().stream()
@@ -169,21 +169,7 @@ public class ClienteService {
                     .toList();
             cliente.getContacto().addAll(nuevos);
         }
-
-        if(dto.getObservaciones() !=null) {
-            cliente.getObservaciones().clear();
-            List<Observacion> nuevas = dto.getObservaciones().stream()
-                    .filter(obsdto -> obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank())
-                    .map(obsdto -> {
-                        Observacion obs = new Observacion();
-                        obs.setCliente(cliente);
-                        obs.setFechaCreacion(LocalDateTime.now());
-                        obs.setObservacion(obsdto.getObservacion());
-                        return obs;
-                    }).toList();
-            cliente.getObservaciones().addAll(nuevas);
-        }
-
+        //sin manejo de observaciones
         Cliente actualizado = iClienteRepository.save(cliente);
         return ClienteMapper.toDTO(actualizado);
     }

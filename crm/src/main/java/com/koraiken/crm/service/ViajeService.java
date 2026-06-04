@@ -161,7 +161,6 @@ public class ViajeService {
         Viaje viaje = obtenerViajeOExcepcion(id);
         validarOwnership(viaje, obtenerUsuarioAuth());
 
-
         if(dto.getFechaInicioViaje() != null) viaje.setFechaInicioViaje(dto.getFechaInicioViaje());
         if(dto.getFechaFinViaje() != null) viaje.setFechaFinViaje(dto.getFechaFinViaje());
         if(dto.getPrecio() != null) viaje.setPrecio(dto.getPrecio());

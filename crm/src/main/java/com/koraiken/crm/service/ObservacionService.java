@@ -35,10 +35,8 @@ public class ObservacionService {
     @Transactional
     public ObservacionResponseDTO crearObservacion(Long idCliente, ObservacionCreateDTO dto) {
         Cliente cliente = clienteService.obtenerClienteOExcepcion(idCliente);
-        Usuario usuario = obtenerUserAuth();
 
-        if(!usuario.getTipoRol().isAdmin() && !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario()))
-            throw new AccessDeniedException("No tenes permisos para agregar observaciones al cliente");
+        verificarPermisos(cliente);
         Observacion observacion = new Observacion();
         observacion.setObservacion(dto.getObservacion());
         observacion.setCliente(cliente);
@@ -49,10 +47,8 @@ public class ObservacionService {
 
     @Transactional(readOnly = true)
     public List<ObservacionResponseDTO> listarPorCliente(Long idCliente) {
-        Usuario usuario = obtenerUserAuth();
         Cliente cliente = clienteService.obtenerClienteOExcepcion(idCliente);
-        if(!usuario.getTipoRol().isAdmin() && !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario()))
-            throw new AccessDeniedException("No tenes permisos");
+        verificarPermisos(cliente);
         return observacionRepository
                 .findByClienteIdClienteOrderByFechaCreacionDesc(idCliente)
                 .stream()
@@ -61,16 +57,35 @@ public class ObservacionService {
     }
 
     @Transactional
+    public ObservacionResponseDTO modificarObservacion(Long idCliente, Long idObservacion, ObservacionCreateDTO dto) {
+        Cliente cliente = clienteService.obtenerClienteOExcepcion(idCliente);
+        verificarPermisos(cliente);
+        Observacion obs = observacionRepository.findById(idObservacion)
+                .orElseThrow(() -> new RuntimeException("No existe la observacion con id:" + idObservacion));
+        validarObsPerteneceCliente(obs, cliente);
+        obs.setObservacion(dto.getObservacion());
+        return toDTO(observacionRepository.save(obs));
+    }
+
+    @Transactional
     public void eliminarObservacion(Long idObservacion) {
         Observacion obs = observacionRepository.findById(idObservacion)
                 .orElseThrow(() -> new RuntimeException("No existe la observacion con id: " + idObservacion));
 
-        Usuario usuario = obtenerUserAuth();
         Cliente cliente = obs.getCliente();
-        if(!usuario.getTipoRol().isAdmin() && !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario()))
-            throw new AccessDeniedException("No tenes los permisos para eliminar la observacion");
+        verificarPermisos(cliente);
+        validarObsPerteneceCliente(obs, cliente);
         observacionRepository.delete(obs);
     }
+
+
+    // ------------ metodos auxiliares ------------------
+    private void validarObsPerteneceCliente(Observacion obs, Cliente cliente) {
+        if(!obs.getCliente().getIdCliente().equals(cliente.getIdCliente())) {
+            throw new IllegalArgumentException("Observacion no pertenece a este cliente");
+        }
+    }
+
 
     private ObservacionResponseDTO toDTO(Observacion obs) {
         return ObservacionResponseDTO.builder()
@@ -80,4 +95,12 @@ public class ObservacionService {
                 .fechaCreacion(obs.getFechaCreacion())
                 .build();
     }
+
+    private void verificarPermisos(Cliente cliente) {
+        Usuario usuario = obtenerUserAuth();
+        if(!usuario.getTipoRol().isAdmin() && !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No tenes permisos para realizar esta accion");
+        }
+    }
+
 }
