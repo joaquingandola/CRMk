@@ -48,7 +48,7 @@ export function ImportacionCiudadesPage() {
             if (inputRef.current) inputRef.current.value = ''
             setArchivo(null)
         } catch (err: any) {
-            setError(err.response?.data?.mensaje ?? err.response?.data?.message ?? 'No se pudo importar el archivo CSV')
+            setError(err.response?.data?.mensaje ?? 'No se pudo importar el archivo CSV')
         } finally {
             setImportando(false)
         }

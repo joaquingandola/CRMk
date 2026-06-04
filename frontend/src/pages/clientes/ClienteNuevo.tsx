@@ -74,7 +74,7 @@ export function ClienteNuevo() {
             })
             navigate(`/clientes/${data.idCliente}`)
         } catch (err: any) {
-            setError(err.response?.data?.message ?? "Error al crear cliente")
+            setError(err.response?.data?.mensaje ?? "Error al crear cliente")
         } finally {
             setGuardando(false)
         }
