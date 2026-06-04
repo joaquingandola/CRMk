@@ -30,7 +30,7 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Imagen> imagenes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Observacion> observaciones = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

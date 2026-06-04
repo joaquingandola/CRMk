@@ -151,7 +151,6 @@ public class ClienteService {
     public ClienteResponseDTO actualizarCliente(Long id, ClienteUpdateDTO dto) {
         Cliente cliente = obtenerClienteOExcepcion(id);
 
-        //solo piso si el front mando el campo
         if(dto.getNombre() != null) cliente.setNombre(dto.getNombre());
         if(dto.getApellido() != null) cliente.setApellido(dto.getApellido());
         if(dto.getFechaNacimiento() != null) cliente.setFechaNacimiento(dto.getFechaNacimiento());
@@ -172,15 +171,17 @@ public class ClienteService {
         }
 
         if(dto.getObservaciones() !=null) {
-            for(ObservacionCreateDTO obsdto : dto.getObservaciones()) {
-                if(obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank()) {
-                    Observacion obs = new Observacion();
-                    obs.setObservacion(obsdto.getObservacion());
-                    obs.setCliente(cliente);
-                    obs.setFechaCreacion(LocalDateTime.now());
-                    observacionRepository.save(obs);
-                }
-            }
+            cliente.getObservaciones().clear();
+            List<Observacion> nuevas = dto.getObservaciones().stream()
+                    .filter(obsdto -> obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank())
+                    .map(obsdto -> {
+                        Observacion obs = new Observacion();
+                        obs.setCliente(cliente);
+                        obs.setFechaCreacion(LocalDateTime.now());
+                        obs.setObservacion(obsdto.getObservacion());
+                        return obs;
+                    }).toList();
+            cliente.getObservaciones().addAll(nuevas);
         }
 
         Cliente actualizado = iClienteRepository.save(cliente);

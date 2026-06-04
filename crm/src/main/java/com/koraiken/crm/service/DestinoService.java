@@ -133,8 +133,9 @@ public class DestinoService {
                 ).toList();
     }
 
-    //CIUDADES
 
+
+    //CIUDADES
     @Transactional(readOnly = true)
     public List<CiudadResponseDTO> buscarCiudadPorNombre(String nombre) {
         return ciudadRepository.findByNombreContainingIgnoreCase(nombre)
