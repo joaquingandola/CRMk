@@ -2,6 +2,7 @@ package com.koraiken.crm.service;
 
 import com.koraiken.crm.dto.Observacion.ObservacionCreateDTO;
 import com.koraiken.crm.dto.Observacion.ObservacionResponseDTO;
+import com.koraiken.crm.exception.ObservacionNoEncontradaException;
 import com.koraiken.crm.exception.UserMailNotFoundException;
 import com.koraiken.crm.model.Cliente;
 import com.koraiken.crm.model.Observacion;
@@ -60,8 +61,7 @@ public class ObservacionService {
     public ObservacionResponseDTO modificarObservacion(Long idCliente, Long idObservacion, ObservacionCreateDTO dto) {
         Cliente cliente = clienteService.obtenerClienteOExcepcion(idCliente);
         verificarPermisos(cliente);
-        Observacion obs = observacionRepository.findById(idObservacion)
-                .orElseThrow(() -> new RuntimeException("No existe la observacion con id:" + idObservacion));
+        Observacion obs = obtenerOExcepcion(idObservacion);
         validarObsPerteneceCliente(obs, cliente);
         obs.setObservacion(dto.getObservacion());
         return toDTO(observacionRepository.save(obs));
@@ -69,15 +69,12 @@ public class ObservacionService {
 
     @Transactional
     public void eliminarObservacion(Long idObservacion) {
-        Observacion obs = observacionRepository.findById(idObservacion)
-                .orElseThrow(() -> new RuntimeException("No existe la observacion con id: " + idObservacion));
-
+        Observacion obs = obtenerOExcepcion(idObservacion);
         Cliente cliente = obs.getCliente();
         verificarPermisos(cliente);
         validarObsPerteneceCliente(obs, cliente);
         observacionRepository.delete(obs);
     }
-
 
     // ------------ metodos auxiliares ------------------
     private void validarObsPerteneceCliente(Observacion obs, Cliente cliente) {
@@ -86,6 +83,10 @@ public class ObservacionService {
         }
     }
 
+    private Observacion obtenerOExcepcion(Long idObservacion) {
+        return observacionRepository.findById(idObservacion)
+                .orElseThrow(() -> new ObservacionNoEncontradaException(idObservacion));
+    }
 
     private ObservacionResponseDTO toDTO(Observacion obs) {
         return ObservacionResponseDTO.builder()
@@ -102,5 +103,4 @@ public class ObservacionService {
             throw new AccessDeniedException("No tenes permisos para realizar esta accion");
         }
     }
-
 }

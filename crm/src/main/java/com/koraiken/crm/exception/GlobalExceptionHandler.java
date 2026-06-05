@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
             UserNotFoundException.class,
             UserMailNotFoundException.class,
             ViajeNotFoundException.class,
+            ObservacionNoEncontradaException.class,
             ClienteNotFoundException.class
     })
     public ResponseEntity<ErrorResponseDTO> handleNotFound(RuntimeException ex, HttpServletRequest request) {
