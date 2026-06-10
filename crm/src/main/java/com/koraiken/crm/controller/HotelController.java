@@ -2,6 +2,7 @@ package com.koraiken.crm.controller;
 
 import com.koraiken.crm.dto.Hotel.HotelCreateDTO;
 import com.koraiken.crm.dto.Hotel.HotelResponseDTO;
+import com.koraiken.crm.dto.Hotel.HotelUpdateDTO;
 import com.koraiken.crm.dto.Hotel.HotelVisitadoDTO;
 import com.koraiken.crm.model.Hotel;
 import com.koraiken.crm.service.HotelService;
@@ -45,4 +46,16 @@ public class HotelController {
         );
     }
 
+    @DeleteMapping("/{idHotel}")
+    public ResponseEntity<Void> eliminarHotel(@PathVariable Long idHotel) {
+        hotelService.eliminarHotel(idHotel);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{idHotel}")
+    public ResponseEntity<HotelResponseDTO> modificarHotel(
+            @PathVariable Long idHotel,
+            @RequestBody HotelUpdateDTO dto) {
+        return ResponseEntity.ok(hotelService.modificarHotel(idHotel, dto));
+    }
 }

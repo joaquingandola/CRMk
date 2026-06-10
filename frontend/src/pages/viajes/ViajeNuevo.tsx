@@ -6,11 +6,13 @@ import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
 import { crearAcompanante } from "../../api/acompanantes"
 import { getClientePorId } from "../../api/clientes"
 
+
 import type {
     AerolineaResponseDTO,
     AcompananteFormData,
     DestinoFormData,
     ClienteResponseDTO,
+    HotelResponseDTO,
 } from '../../types'
 
 const acompananteVacio = (): AcompananteFormData => ({
@@ -40,7 +42,7 @@ export function ViajeNuevo() {
     const [fechaInicio, setFechaInicio] = useState('')
     const [fechaFin, setFechaFin] = useState('')
     const [precio, setPrecio] = useState('')
-
+    
     const [destinos, setDestinos] = useState<DestinoFormData[]>([destinoVacio()])
 
     const [acompanantes, setAcompanantes] = useState<AcompananteFormData[]>([])
