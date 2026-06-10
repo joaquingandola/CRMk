@@ -97,7 +97,6 @@ export interface HotelResponseDTO {
     idDestino: number
     nombre: string
     direccion: string
-
 }
 
 export interface HotelUpdateDTO {
@@ -202,7 +201,7 @@ export interface DestinoFormData {
     ciudad : CiudadResponseDTO | null
     fechaLlegada : string
     fechaSalida : string
-    idHotel : string
+    hotelSeleccionado: HotelResponseDTO | null
     hotelNombre : string
     hotelDireccion : string
 }

@@ -5,7 +5,7 @@ import { getAerolineas } from "../../api/aerolineas"
 import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
 import { crearAcompanante } from "../../api/acompanantes"
 import { getClientePorId } from "../../api/clientes"
-
+import { BuscadorHotel } from "../../components/BuscadorHotel"
 
 import type {
     AerolineaResponseDTO,
@@ -23,7 +23,7 @@ const destinoVacio = (): DestinoFormData => ({
     ciudad: null,
     fechaLlegada: '',
     fechaSalida: '',
-    idHotel: '',
+    hotelSeleccionado: null,
     hotelNombre: '',
     hotelDireccion: '',
 })
@@ -48,6 +48,31 @@ export function ViajeNuevo() {
     const [acompanantes, setAcompanantes] = useState<AcompananteFormData[]>([])
     const [error, setError] = useState('')
     const [guardando, setGuardando] = useState(false)
+
+    const seleccionarHotel = (index: number, hotel: HotelResponseDTO | null) => {
+        const nuevos = [...destinos]
+        nuevos[index] = {
+            ...nuevos[index],
+            hotelSeleccionado: hotel, 
+            hotelDireccion: hotel ? '' : nuevos[index].hotelDireccion,
+            hotelNombre: hotel ? '' : nuevos[index].hotelNombre,
+    }
+    setDestinos(nuevos)
+}
+
+
+    const escribirNombreHotelLibre = (index: number, nombre: string) => {
+        const nuevos = [...destinos]
+        nuevos[index] = {
+            ...nuevos[index],
+            hotelNombre: nombre,
+            hotelSeleccionado: null,
+        }
+        setDestinos(nuevos)
+    }
+
+
+
 
     useEffect(() => {
         const cargarDatosIniciales = async () => {

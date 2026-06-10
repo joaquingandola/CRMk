@@ -1,5 +1,5 @@
 import api from "./axios"
-import type { ClienteResponseDTO, ViajeResponseDTO, CiudadVisitadaDTO, HotelVisitadoDTO } from "../types"
+import type { ClienteResponseDTO, ViajeResponseDTO, CiudadVisitadaDTO } from "../types"
 
 export const getClientesEnViaje = () => 
     api.get<ClienteResponseDTO[]>('/api/v1/clientes/en-viaje')
@@ -16,6 +16,3 @@ export const getViajesPorEstado = (estado : string) =>
 */
 export const getCiudadesMasVisitadas = () => 
     api.get<CiudadVisitadaDTO[]>('/api/v1/destinos/dashboard/ciudades-visitadas')
-
-export const getHotelesTop10 = () =>
-    api.get<HotelVisitadoDTO[]>('/api/v1/destinos/dashboard/top-hoteles')
