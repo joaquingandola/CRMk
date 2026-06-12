@@ -92,13 +92,11 @@ public class ViajeService {
 
         Viaje guardado = viajeRepository.save(viaje);
 
-
         // crear y asociar destinos
         if(dto.getDestinos() != null) {
             validarFechasDestinos(dto);
             guardarDestinos(dto, guardado);
         }
-
 
         EstadoViaje estadoInicial = new EstadoViaje();
         estadoInicial.setViaje(guardado);
@@ -342,10 +340,10 @@ public class ViajeService {
             destino.setCiudad(ciudad);
             destino.setFechaLlegada(destinoDTO.getFechaLlegada());
             destino.setFechaSalida(destinoDTO.getFechaSalida());
+            destino.setHotel(hotel);
             Destino destinoGuardado = destinoRepository.save(destino);
-            hotelService.asociarDestino(hotel, destinoGuardado);
 
-            viaje.getDestinos().add(destinoRepository.save(destino));
+            viaje.getDestinos().add(destinoGuardado);
         }
     }
 

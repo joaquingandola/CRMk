@@ -9,7 +9,6 @@ public class HotelMapper {
                 .idHotel(hotel.getIdHotel())
                 .nombre(hotel.getNombre())
                 .direccion(hotel.getDireccion())
-                .idDestino(hotel.getIdHotel())
                 .build();
     }
 }

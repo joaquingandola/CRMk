@@ -13,7 +13,6 @@ public interface IHotelRepository extends JpaRepository<Hotel, Long> {
 
     Optional<Hotel> findByNombreIgnoreCaseAndDireccion(String nombre, String direccion);
 
-    boolean existsByNombreIgnoringCaseAndDireccion(String nombre, String direccion);
 
     Optional<Hotel> findByIdHotel(Long id);
 

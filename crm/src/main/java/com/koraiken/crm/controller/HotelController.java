@@ -40,6 +40,11 @@ public class HotelController {
         );
     }
 
+    @GetMapping("/hoteles/buscar/{idHotel}")
+    public ResponseEntity<Hotel> buscarHotelPorId(@RequestParam Long id) {
+        return ResponseEntity.ok(hotelService.obtenerOExcepcion(id));
+    }
+
     @DeleteMapping("/{idHotel}")
     public ResponseEntity<Void> eliminarHotel(@PathVariable Long idHotel) {
         hotelService.eliminarHotel(idHotel);

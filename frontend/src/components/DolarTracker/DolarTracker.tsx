@@ -286,8 +286,9 @@ export default function DolarTracker() {
             title="Actualizar ahora"
           >
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '11px', color: '#3a3a4e', letterSpacing: '0.06em' }}>PRÓXIMA ACTUALIZACIÓN</div>
+              <div style={{ fontSize: '13px', color: '#3a3a4e', letterSpacing: '0.06em' }}>PRÓXIMA ACTUALIZACIÓN</div>
               <div style={{ fontSize: '14px', color: '#4a4a6a', fontWeight: 600 }}>{countdown}s</div>
+              <div style={{fontSize: '11px', color: '#3a3a4e', letterSpacing: '0.06em'}}> o presionar para actualizar manualmente</div>
             </div>
             <CountdownRing seconds={countdown} total={600} />
           </div>

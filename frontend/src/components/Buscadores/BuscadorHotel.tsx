@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect } from 'react'
 import { buscarHoteles } from '../../api/hotel.ts'
 import type { HotelResponseDTO } from  '../../types/index.ts'
 
@@ -12,7 +12,6 @@ export function BuscadorHotel({ value, onChange, onNombreLibre }: Props) {
     const [query, setQuery] = useState(value?.nombre ?? '')
     const [resultados, setResultados] = useState<HotelResponseDTO[]>([])
     const [abierto, setAbierto] = useState(false)
-    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     useEffect(() => {
         if(query.length < 2) {
@@ -22,19 +21,21 @@ export function BuscadorHotel({ value, onChange, onNombreLibre }: Props) {
         }
 
         if (value && value.nombre === query) return
-
-        if (debounceRef.current) clearTimeout(debounceRef.current)
-
-        debounceRef.current = setTimeout(async () => {
+        const ejecutarBusqueda = async () => {
             try {
-                const { data } = await buscarHoteles(query) 
+                const { data } = await buscarHoteles(query)
                 setResultados(data)
                 setAbierto(true)
-            } catch {
+            } catch (error) {
+                console.error("Error al buscar hoteles: ", error)
                 setResultados([])
             }
-    }, 300)
-}, [query])
+        }
+
+        const timer = setTimeout(ejecutarBusqueda, 300)
+        return () => clearTimeout(timer)
+
+    }, [query])
 
     const seleccionar = (hotel: HotelResponseDTO) => {
         onChange(hotel)

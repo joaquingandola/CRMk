@@ -27,7 +27,6 @@ public class HotelService {
     private final IHotelRepository hotelRepository;
     private final AuthContextService authContextService;
 
-    //aca voy a crearlo pero desp queda el TODO de hacer el autocomplete de los que existen en el frontend
     @Transactional
     public Hotel resolverHotel(Long idHotel, HotelCreateDTO dto) {
         if(idHotel != null) {
@@ -72,15 +71,6 @@ public class HotelService {
     public void eliminarHotel(Long idObservacion) {
         Hotel hotel = obtenerOExcepcion(idObservacion);
         hotelRepository.delete(hotel);
-    }
-
-
-    @Transactional
-    public void asociarDestino(Hotel hotel, Destino destino) {
-        if (hotel != null) {
-            hotel.setDestino(destino);
-            hotelRepository.save(hotel);
-        }
     }
 
     @Transactional(readOnly = true)

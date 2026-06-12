@@ -118,7 +118,7 @@ export interface DestinoEnViajeDTO {
     ciudad: CiudadResponseDTO
     fechaLlegada: string
     fechaSalida: string
-    idHotel?: number | null
+    hotel?: HotelResponseDTO | null
 }
 
 export interface DestinoCreateDTO {
@@ -128,6 +128,15 @@ export interface DestinoCreateDTO {
     hotel?: HotelCreateDTO
     fechaLlegada: string
     fechaSalida: string
+}
+
+export interface DestinoFormData {
+    ciudad : CiudadResponseDTO | null
+    fechaLlegada : string
+    fechaSalida : string
+    hotelSeleccionado: HotelResponseDTO | null
+    hotelNombre : string
+    hotelDireccion : string
 }
 
 //acompanante
@@ -195,15 +204,6 @@ export interface AcompananteFormData {
     apellido: string
     dni: string
     fechaNacimiento: string
-}
-
-export interface DestinoFormData {
-    ciudad : CiudadResponseDTO | null
-    fechaLlegada : string
-    fechaSalida : string
-    hotelSeleccionado: HotelResponseDTO | null
-    hotelNombre : string
-    hotelDireccion : string
 }
 
 export interface ObservacionFormData {

@@ -3,6 +3,7 @@ package com.koraiken.crm.mapper;
 import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
 import com.koraiken.crm.dto.Destino.DestinoEnViajeDTO;
 import com.koraiken.crm.dto.Destino.DestinoResponseDTO;
+import com.koraiken.crm.dto.Hotel.HotelResponseDTO;
 import com.koraiken.crm.model.Ciudad;
 import com.koraiken.crm.model.Destino;
 
@@ -15,7 +16,11 @@ public class DestinoMapper {
                 .fechaLlegada(destino.getFechaLlegada())
                 .fechaSalida(destino.getFechaSalida())
                 .idViaje(destino.getViaje().getIdViaje())
-                .idHotel(destino.getHotel() != null ? destino.getHotel().getIdHotel() : null)
+                .hotel(destino.getHotel() != null ? HotelResponseDTO.builder()
+                                                    .idHotel(destino.getHotel().getIdHotel())
+                                                    .nombre(destino.getHotel().getNombre())
+                                                    .direccion(destino.getHotel().getDireccion())
+                                                    .build() : null)
                 .build();
     }
 
@@ -25,7 +30,11 @@ public class DestinoMapper {
                 .ciudad(toCiudadDTO(destino.getCiudad()))
                 .fechaLlegada(destino.getFechaLlegada())
                 .fechaSalida(destino.getFechaSalida())
-                .idHotel(destino.getHotel() != null ? destino.getHotel().getIdHotel() : null)
+                .hotel(destino.getHotel() != null ? HotelResponseDTO.builder()
+                                                    .idHotel(destino.getHotel().getIdHotel())
+                                                    .nombre(destino.getHotel().getNombre())
+                                                    .direccion(destino.getHotel().getDireccion())
+                                                    .build() : null)
                 .build();
     }
     public static CiudadResponseDTO toCiudadDTO(Ciudad ciudad) {

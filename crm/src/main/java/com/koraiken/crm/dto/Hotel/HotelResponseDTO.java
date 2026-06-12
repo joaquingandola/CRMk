@@ -10,7 +10,6 @@ import lombok.Setter;
 @Builder
 public class HotelResponseDTO {
     private Long idHotel;
-    private Long idDestino;
     private String direccion;
     private String nombre;
 }

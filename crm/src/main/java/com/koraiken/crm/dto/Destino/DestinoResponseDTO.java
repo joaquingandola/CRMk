@@ -1,6 +1,7 @@
 package com.koraiken.crm.dto.Destino;
 
 import com.koraiken.crm.dto.Ciudad.CiudadResponseDTO;
+import com.koraiken.crm.dto.Hotel.HotelResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,5 +16,5 @@ public class DestinoResponseDTO {
     private LocalDate fechaLlegada;
     private LocalDate fechaSalida;
     private Long idViaje;
-    private Long idHotel;
+    private HotelResponseDTO hotel;
 }

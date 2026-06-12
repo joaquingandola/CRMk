@@ -29,7 +29,7 @@ public class Destino {
     @JoinColumn(name = "idViaje", nullable = false)
     private Viaje viaje;
 
-    @OneToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idHotel")
     private Hotel hotel;
 }
