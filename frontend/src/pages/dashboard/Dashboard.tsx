@@ -5,8 +5,10 @@ import {
     getClientesEnViaje, 
     getTodosLosViajes, 
     getCiudadesMasVisitadas,
-    getHotelesTop10,
+    //getHotelesTop10,
 } from '../../api/dashboard'
+
+import DolarTracker from "../../components/DolarTracker.tsx"
 
 import type {
     ClienteResponseDTO,
@@ -42,13 +44,15 @@ export function DashboardPage() {
             getClientesEnViaje(),
             getTodosLosViajes(),
             getCiudadesMasVisitadas(),
-            getHotelesTop10(),
-        ]).then(([ca, cev, v, c, h]) => {
+            //getHotelesTop10(),
+        ]).then(([ca, cev, v, c, 
+          //h
+        ]) => {
             setClientesActivos(ca.data)
             setClientesEnViaje(cev.data)
             setViajes(v.data)
             setCiudades(c.data.slice(0, 5))
-            setHoteles(h.data.slice(0, 10))
+            //setHoteles(h.data.slice(0, 10))
         }).finally(() => setLoading(false))
     }, [])
 
@@ -315,6 +319,7 @@ export function DashboardPage() {
           </div>
           )}
         </div>
+        <DolarTracker />
       </div>
     </div>
   )
