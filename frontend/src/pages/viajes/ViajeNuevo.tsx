@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { crearViaje } from "../../api/viajes"
 import { getAerolineas } from "../../api/aerolineas"
-import { BuscadorCiudad } from "../../components/ui/BuscadorCiudad"
+import { BuscadorCiudad } from "../../components/Buscadores/BuscadorCiudad"
 import { crearAcompanante } from "../../api/acompanantes"
 import { getClientePorId } from "../../api/clientes"
-import { BuscadorHotel } from "../../components/BuscadorHotel"
+import { BuscadorHotel } from "../../components/Buscadores/BuscadorHotel"
 
 import type {
     AerolineaResponseDTO,
@@ -70,8 +70,6 @@ export function ViajeNuevo() {
         }
         setDestinos(nuevos)
     }
-
-
 
 
     useEffect(() => {
@@ -141,9 +139,12 @@ export function ViajeNuevo() {
             return
         }
 
-        const hotelInvalido = destinosValidos.some(
-            (d) => (d.hotelNombre && !d.hotelDireccion) || (!d.hotelNombre && d.hotelDireccion)
-        )
+        const hotelInvalido = destinosValidos.some((d) => {
+            const tieneSeleccionado = d.hotelSeleccionado !== null
+            const tieneLibre = d.hotelNombre.trim() !== ''
+            if(tieneLibre && !d.hotelDireccion.trim()) return true
+            if(tieneSeleccionado && tieneLibre) return false
+        })
 
         if (hotelInvalido) {
             setError('Si cargás un hotel, completá nombre y dirección.')
@@ -177,18 +178,16 @@ export function ViajeNuevo() {
                     idCiudad: d.ciudad!.idCiudad,
                     fechaLlegada: d.fechaLlegada,
                     fechaSalida: d.fechaSalida,
-                    ...(d.idHotel
-                        ? { idHotel: Number(d.idHotel) }
-                        : d.hotelNombre
+                    ...(d.hotelSeleccionado
+                        ? { idHotel: d.hotelSeleccionado.idHotel }
+                        : d.hotelNombre.trim()
                             ? {
                                 hotel: {
                                     nombre: d.hotelNombre,
                                     direccion: d.hotelDireccion,
-                                },
-                            }
+                                } }
                             : {}),
                 })),
-                idAcompanantes: idsAcompanantes
             })
 
             navigate(`/viajes/${data.idViaje}`)
@@ -443,51 +442,22 @@ export function ViajeNuevo() {
                                         </h3>
                                     </div>
 
-                                    <div className="space-y-1.5">
-                                        <label className="block text-xs font-medium text-slate-400">
-                                            ID hotel existente
-                                        </label>
+                                    <BuscadorHotel
+                                        value={d.hotelSeleccionado}
+                                        onChange={(hotel) => seleccionarHotel(i, hotel)}
+                                        onNombreLibre={(nombre) => escribirNombreHotelLibre(i, nombre)}
+                                    />
+
+                                    {!d.hotelSeleccionado && d.hotelNombre.trim() !== '' &&  (
                                         <input
-                                            type="number"
-                                            min="1"
-                                            value={d.idHotel}
-                                            onChange={(e) => actualizarDestino(i, 'idHotel', e.target.value)}
-                                            placeholder="Ej: 3"
-                                            className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
-                                        />
-                                    </div>
-
-                                    <div className="text-center text-xs text-slate-500 uppercase tracking-wider">
-                                        o crear uno nuevo
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-1.5">
-                                            <label className="block text-xs font-medium text-slate-400">
-                                                Nombre hotel
-                                            </label>
-                                            <input
                                                 type="text"
-                                                value={d.hotelNombre}
-                                                onChange={(e) => actualizarDestino(i, 'hotelNombre', e.target.value)}
-                                                placeholder="Hilton"
-                                                className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
-                                            />
-                                        </div>
-
-                                        <div className="space-y-1.5">
-                                            <label className="block text-xs font-medium text-slate-400">
-                                                Dirección
-                                            </label>
-                                            <input
-                                                type="text"
+                                                placeholder="Direccion del hotel"
                                                 value={d.hotelDireccion}
                                                 onChange={(e) => actualizarDestino(i, 'hotelDireccion', e.target.value)}
-                                                placeholder="Macacha Güemes 351"
-                                                className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white"
-                                            />
-                                        </div>
-                                    </div>
+                                                className="mt-2 w-full border rounded px-3 py-2 text-sm"
+                                        />
+                                    )}
+
                                 </div>
                             </div>
                         ))}

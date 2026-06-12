@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-const REFRESH_INTERVAL = 60_000
+const REFRESH_INTERVAL = 600_000
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -200,7 +200,7 @@ export default function DolarTracker() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
-  const [countdown, setCountdown] = useState(60)
+  const [countdown, setCountdown] = useState(600)
 
   const fetchRates = useCallback(async () => {
     setError(null)
@@ -219,7 +219,7 @@ export default function DolarTracker() {
 
       setData({ blue, ccl })
       setLastUpdate(new Date())
-      setCountdown(60)
+      setCountdown(600)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error desconocido')
     } finally {
@@ -235,7 +235,7 @@ export default function DolarTracker() {
 
   useEffect(() => {
     const tick = setInterval(() => {
-      setCountdown((c) => (c > 0 ? c - 1 : 60))
+      setCountdown((c) => (c > 0 ? c - 1 : 600))
     }, 1000)
     return () => clearInterval(tick)
   }, [lastUpdate])
@@ -289,7 +289,7 @@ export default function DolarTracker() {
               <div style={{ fontSize: '11px', color: '#3a3a4e', letterSpacing: '0.06em' }}>PRÓXIMA ACTUALIZACIÓN</div>
               <div style={{ fontSize: '14px', color: '#4a4a6a', fontWeight: 600 }}>{countdown}s</div>
             </div>
-            <CountdownRing seconds={countdown} total={60} />
+            <CountdownRing seconds={countdown} total={600} />
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from 'react'
-import { buscarHoteles } from '../api/hotel.ts'
-import type { HotelResponseDTO } from  '../types'
+import { buscarHoteles } from '../../api/hotel.ts'
+import type { HotelResponseDTO } from  '../../types/index.ts'
 
 interface Props {
     value: HotelResponseDTO | null

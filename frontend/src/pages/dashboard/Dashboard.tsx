@@ -5,10 +5,9 @@ import {
     getClientesEnViaje, 
     getTodosLosViajes, 
     getCiudadesMasVisitadas,
-    //getHotelesTop10,
 } from '../../api/dashboard'
-
-import DolarTracker from "../../components/DolarTracker.tsx"
+import { topHoteles } from '../../api/hotel.ts'
+import DolarTracker from "../../components/DolarTracker/DolarTracker.tsx"
 
 import type {
     ClienteResponseDTO,
@@ -23,7 +22,7 @@ import { Badge } from "../../components/ui/Badge"
 
 interface Conteos {
     COTIZADO: number
-    CONFIRMADO: number
+    CONFIRMADO: number 
     PAGADO: number
     CANCELADO: number
 }
@@ -44,15 +43,14 @@ export function DashboardPage() {
             getClientesEnViaje(),
             getTodosLosViajes(),
             getCiudadesMasVisitadas(),
-            //getHotelesTop10(),
-        ]).then(([ca, cev, v, c, 
-          //h
+            topHoteles(),
+        ]).then(([ca, cev, v, c, h,
         ]) => {
             setClientesActivos(ca.data)
             setClientesEnViaje(cev.data)
             setViajes(v.data)
             setCiudades(c.data.slice(0, 5))
-            //setHoteles(h.data.slice(0, 10))
+            setHoteles(h.data.slice(0, 10))
         }).finally(() => setLoading(false))
     }, [])
 
