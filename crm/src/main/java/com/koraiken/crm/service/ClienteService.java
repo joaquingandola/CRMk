@@ -41,25 +41,14 @@ public class ClienteService {
                 .orElseThrow(() -> new UserMailNotFoundException(email));
     }
 
-    //CREAR//
+    //--------------------------------------CREAR--------------------------------------//
     @Transactional
     public ClienteResponseDTO crearCliente(ClienteCreateDTO dto) {
         //1.Validar DNI
         if (iClienteRepository.existsByDni(dto.getDni())) {
             throw new ClienteExisteException("DNI", dto.getDni().toString());
         }
-
-        //2.Validar CONTACTOS duplicados (mail, telefono, etc)
-        if (dto.getContactos() != null) {
-            for (ContactoInputDTO contactoInputDTO : dto.getContactos()) {
-                if (iContactoRepository.existsByDetalle(contactoInputDTO.getDetalle())) {
-                    throw new ClienteExisteException(
-                            contactoInputDTO.getMedio().name(),
-                            contactoInputDTO.getDetalle()
-                    );
-                }
-            }
-        }
+        validarContactosDuplicados(dto);
 
         //Construir entidad
         Cliente cliente = new Cliente();
@@ -105,11 +94,7 @@ public class ClienteService {
     @Transactional(readOnly = true)
     public ClienteResponseDTO buscarPorId(Long id) {
         Cliente cliente = obtenerClienteOExcepcion(id);
-        Usuario usuario = obtenerUsuarioAuth();
-        if(!usuario.getTipoRol().isAdmin() &&
-        !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
-            throw new AccessDeniedException("No tenes los permisos para ver a este cliente");
-        }
+        verificarPermisos(cliente);
         return ClienteMapper.toDTO(cliente);
     }
 
@@ -151,12 +136,11 @@ public class ClienteService {
     public ClienteResponseDTO actualizarCliente(Long id, ClienteUpdateDTO dto) {
         Cliente cliente = obtenerClienteOExcepcion(id);
 
-        //solo piso si el front mando el campo
         if(dto.getNombre() != null) cliente.setNombre(dto.getNombre());
         if(dto.getApellido() != null) cliente.setApellido(dto.getApellido());
         if(dto.getFechaNacimiento() != null) cliente.setFechaNacimiento(dto.getFechaNacimiento());
 
-        // Si vienen contactos nuevos: reemplazamos la lista completa.
+        // Si vienen contactos nuevos: reemplazamos la lista completa. -> el dia de manana habria que hacer con esto lo mismo que las observaciones (Service + controller contactos)
         if(dto.getContactos() != null) {
             cliente.getContacto().clear();
             List<Contacto> nuevos = dto.getContactos().stream()
@@ -170,19 +154,7 @@ public class ClienteService {
                     .toList();
             cliente.getContacto().addAll(nuevos);
         }
-
-        if(dto.getObservaciones() !=null) {
-            for(ObservacionCreateDTO obsdto : dto.getObservaciones()) {
-                if(obsdto.getObservacion() != null && !obsdto.getObservacion().isBlank()) {
-                    Observacion obs = new Observacion();
-                    obs.setObservacion(obsdto.getObservacion());
-                    obs.setCliente(cliente);
-                    obs.setFechaCreacion(LocalDateTime.now());
-                    observacionRepository.save(obs);
-                }
-            }
-        }
-
+        //sin manejo de observaciones
         Cliente actualizado = iClienteRepository.save(cliente);
         return ClienteMapper.toDTO(actualizado);
     }
@@ -222,10 +194,32 @@ public class ClienteService {
     }
 
 
-    //metodo interno
+    //metodos auxiliares
     public Cliente obtenerClienteOExcepcion(Long id) {
         return iClienteRepository.findByIdCliente(id)
                 .orElseThrow(() -> new ClienteNotFoundException(id));
     }
+
+    private void verificarPermisos(Cliente cliente) {
+        Usuario usuario = obtenerUsuarioAuth();
+        if(!usuario.getTipoRol().isAdmin() &&
+                !cliente.getAgente().getIdUsuario().equals(usuario.getIdUsuario())) {
+            throw new AccessDeniedException("No tenes los permisos para ver a este cliente");
+        }
+    }
+
+    private void validarContactosDuplicados(ClienteCreateDTO dto) {
+        if(dto.getContactos() != null) {
+            for(ContactoInputDTO contactoInputDTO : dto.getContactos()) {
+                if(iContactoRepository.existsByDetalle(contactoInputDTO.getDetalle())) {
+                    throw new ClienteExisteException(
+                            contactoInputDTO.getMedio().name(),
+                            contactoInputDTO.getDetalle()
+                    );
+                }
+            }
+        }
+    }
+
 
 }

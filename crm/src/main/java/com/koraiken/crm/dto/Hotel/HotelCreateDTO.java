@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class HotelCreateDTO {
-    private Long idHotel;
     private String nombre;
     private String direccion;
 }

@@ -161,7 +161,6 @@ public class ViajeService {
         Viaje viaje = obtenerViajeOExcepcion(id);
         validarOwnership(viaje, obtenerUsuarioAuth());
 
-
         if(dto.getFechaInicioViaje() != null) viaje.setFechaInicioViaje(dto.getFechaInicioViaje());
         if(dto.getFechaFinViaje() != null) viaje.setFechaFinViaje(dto.getFechaFinViaje());
         if(dto.getPrecio() != null) viaje.setPrecio(dto.getPrecio());
@@ -337,12 +336,15 @@ public class ViajeService {
         for (DestinoCreateDTO destinoDTO : viajeDTO.getDestinos()) {
             Ciudad ciudad = destinoService.obtenerCiudadOExcepcion(destinoDTO.getIdCiudad());
             Hotel hotel = hotelService.resolverHotel(destinoDTO.getIdHotel(), destinoDTO.getHotel());
+
             Destino destino = new Destino();
             destino.setViaje(viaje);
             destino.setCiudad(ciudad);
-            destino.setHotel(hotel);
             destino.setFechaLlegada(destinoDTO.getFechaLlegada());
             destino.setFechaSalida(destinoDTO.getFechaSalida());
+            Destino destinoGuardado = destinoRepository.save(destino);
+            hotelService.asociarDestino(hotel, destinoGuardado);
+
             viaje.getDestinos().add(destinoRepository.save(destino));
         }
     }

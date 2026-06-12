@@ -25,7 +25,6 @@ public class DestinoService {
     private final IDestinoRepository destinoRepository;
     private final ICiudadRepository ciudadRepository;
     private final IViajeRepository viajeRepository;
-    private final IPaisRepository paisRepository;
     private final HotelService hotelService;
     private final IUsuarioRepository usuarioRepository;
 
@@ -133,8 +132,9 @@ public class DestinoService {
                 ).toList();
     }
 
-    //CIUDADES
 
+
+    //CIUDADES
     @Transactional(readOnly = true)
     public List<CiudadResponseDTO> buscarCiudadPorNombre(String nombre) {
         return ciudadRepository.findByNombreContainingIgnoreCase(nombre)

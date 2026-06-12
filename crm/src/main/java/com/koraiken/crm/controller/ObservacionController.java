@@ -24,6 +24,15 @@ public class ObservacionController {
                 .body(observacionService.crearObservacion(idCliente, dto));
     }
 
+    @PatchMapping("/{idObservacion}")
+    public ResponseEntity<ObservacionResponseDTO> modificarObservacion (
+            @PathVariable Long idCliente,
+            @PathVariable Long idObservacion,
+            @RequestBody ObservacionCreateDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(observacionService.modificarObservacion(idCliente, idObservacion, dto));
+    }
+
     @GetMapping
     public ResponseEntity<List<ObservacionResponseDTO>> listar (
             @PathVariable Long idCliente) {

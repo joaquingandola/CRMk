@@ -88,9 +88,28 @@ export interface CiudadVisitadaDTO {
 
 //hotel
 export interface HotelCreateDTO {
-    idHotel?: number
     nombre: string
     direccion?: string
+}
+
+export interface HotelResponseDTO {
+    idHotel: number
+    idDestino: number
+    nombre: string
+    direccion: string
+}
+
+export interface HotelUpdateDTO {
+    nombre?: string
+    direccion?: string
+
+}
+
+export interface HotelVisitadoDTO {
+    idHotel: number
+    nombre: string
+    direccion: string
+    cantidadVisitas: number
 }
 
 //destino
@@ -182,7 +201,7 @@ export interface DestinoFormData {
     ciudad : CiudadResponseDTO | null
     fechaLlegada : string
     fechaSalida : string
-    idHotel : string
+    hotelSeleccionado: HotelResponseDTO | null
     hotelNombre : string
     hotelDireccion : string
 }

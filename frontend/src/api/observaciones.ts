@@ -7,5 +7,8 @@ export const listarObservacionesPorCliente = (idCliente: number) =>
 export const crearObservacion = (idCliente:number, data: ObservacionCreateDTO) =>
     api.post<ObservacionResponseDTO>(`api/v1/clientes/${idCliente}/observaciones`, data)
 
-export const eliminarObservacion = (idObservacion: number) =>
-    api.delete<void>(`api/v1/observaciones/${idObservacion}`)
+export const eliminarObservacion = (idCliente: number, idObservacion: number) =>
+    api.delete<void>(`api/v1/clientes/${idCliente}/observaciones/${idObservacion}`)
+
+export const modificarObservacion = (idCliente: number, idObservacion: number, data: ObservacionCreateDTO) =>
+    api.patch<ObservacionResponseDTO>(`api/v1/clientes/${idCliente}/observaciones/${idObservacion}`, data)

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getClientePorId, actualizarCliente } from "../../api/clientes"
 import type { ContactoInputDTO, Medio } from "../../types"
-import { eliminarObservacion } from "../../api/observaciones"
+import { modificarObservacion, crearObservacion, eliminarObservacion } from "../../api/observaciones"
 import type { ObservacionFormData } from "../../types/index"
 
 
@@ -79,16 +79,15 @@ export function ClienteEditar() {
     const quitarObservacion = async (index: number) => {
         const obs = observaciones[index]
         if(obs.idObservacion) {
-            const confirm = window.confirm('¿Confirma que desea eliminar esta observación?')
-            if(!confirm) return
             try {
-                await eliminarObservacion(obs.idObservacion)
+                await eliminarObservacion(Number(id), obs.idObservacion) 
+                {/*aca paso el id del cliente para que elimine la observacion de este directamente*/}
                 setObservaciones(observaciones.filter((_, i) => i !== index))
             } catch (err) {
                 alert('No se pudo eliminar la observación')
             }
         }
-        else {
+        else {  
             setObservaciones(observaciones.filter((_, i) => i !== index))
         }
     }
@@ -103,8 +102,18 @@ export function ClienteEditar() {
                 apellido: form.apellido.trim(),
                 fechaNacimiento: form.fechaNacimiento || undefined,
                 contactos: contactos.filter((c) => c.detalle.trim() !== ''),
-                observaciones: observaciones.filter((o) => o.observacion.trim() !== '')
             })
+
+            const obsManejar = observaciones.filter((o) => o.observacion.trim() !== '')
+            await Promise.all(
+                obsManejar.map((obs) => {
+                    if(obs.idObservacion) {
+                        return modificarObservacion(Number(id), obs.idObservacion, {observacion: obs.observacion})
+                    } else {
+                        return crearObservacion(Number(id), {observacion: obs.observacion})
+                    }
+                    })
+            )
             navigate(`/clientes/${id}`)
         } catch(err: any) {
             setError(err.response?.data?.mensaje ?? 'No se pudo actualizar el cliente')

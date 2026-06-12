@@ -241,7 +241,7 @@ export function ClienteDetalle() {
                     >
                         <div className="text-sm text-slate-300 whitespace-pre-wrap">
                             <span className="text-xs text-slate-500">
-                                ID: #{o.idObservacion} · {formatFechaCreacion(o.fechaCreacion)}
+                                {formatFechaCreacion(o.fechaCreacion)}
                             </span>
                         </div>
                         <p className="mt-2 text-sm text-slate-200">{o.observacion}</p>

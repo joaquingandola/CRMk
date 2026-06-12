@@ -50,7 +50,7 @@ export function UsuariosPage() {
             setMostrarForm(false)
             await cargar()
         } catch (err: any) {
-            setFormError(err.response?.data?.message ?? 'Error al registrar agente')
+            setFormError(err.response?.data?.mensaje ?? 'Error al registrar agente')
         } finally {
             setGuardando(false)
         }
@@ -61,8 +61,8 @@ export function UsuariosPage() {
         try {
             await desactivarUsuario(id)
             await cargar()
-        } catch {
-            setError('Error al desactivar usuario')
+        } catch (err: any) {
+            setError(err.response?.data?.mensaje ?? 'Error al desactivar usuario')
         }
     }
 
