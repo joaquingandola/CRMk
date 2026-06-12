@@ -58,17 +58,4 @@ public class DestinoController {
     public ResponseEntity<List<CiudadResponseDTO>> buscarCiudad(@RequestParam String nombre) {
         return ResponseEntity.ok(destinoService.buscarCiudadPorNombre(nombre));
     }
-
-    //-----------------------------------------------Dashboard-------------------------------------------------------
-    @GetMapping("/dashboard/ciudades-visitadas")
-    public ResponseEntity<List<CiudadVisitadaDTO>> ciudadesMasVisitadas() {
-        return ResponseEntity.ok(destinoService.ciudadesMasVisitadas());
-    }
-
-    @GetMapping("/dashboard/en-ciudad/{idCiudad}")
-    public ResponseEntity<List<DestinoResponseDTO>> clientesEnCiudadesAhora(
-            @PathVariable Long idCiudad) {
-        return ResponseEntity.ok(destinoService.clientesEnCiudadAhora(idCiudad));
-    }
-
 }

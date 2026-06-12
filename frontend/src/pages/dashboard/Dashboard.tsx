@@ -6,7 +6,7 @@ import {
     getTodosLosViajes, 
     getCiudadesMasVisitadas,
 } from '../../api/dashboard'
-import { topHoteles } from '../../api/hotel.ts'
+import { topHoteles } from '../../api/dashboard.ts'
 import DolarTracker from "../../components/DolarTracker/DolarTracker.tsx"
 
 import type {
@@ -51,7 +51,9 @@ export function DashboardPage() {
             setViajes(v.data)
             setCiudades(c.data.slice(0, 5))
             setHoteles(h.data.slice(0, 10))
-        }).finally(() => setLoading(false))
+        })
+        .catch((error) => console.error("error al cargar los datos", error))
+        .finally(() => setLoading(false))
     }, [])
 
     const conteos: Conteos = viajes.reduce(

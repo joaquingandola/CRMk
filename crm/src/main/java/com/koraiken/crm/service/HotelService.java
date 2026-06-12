@@ -94,7 +94,7 @@ public class HotelService {
                         .idHotel((Long) row[0])
                         .nombre((String) row[1])
                         .direccion((String) row[2])
-                        .cantidadVisitas((Double) row[3])
+                        .cantidadVisitas((Long) row[3])
                         .build()
                 ).toList();
     }

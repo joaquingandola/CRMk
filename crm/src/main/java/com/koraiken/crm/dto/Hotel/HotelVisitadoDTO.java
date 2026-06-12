@@ -11,5 +11,5 @@ public class HotelVisitadoDTO {
     Long idHotel;
     String nombre;
     String direccion;
-    Double cantidadVisitas;
+    Long cantidadVisitas;
 }

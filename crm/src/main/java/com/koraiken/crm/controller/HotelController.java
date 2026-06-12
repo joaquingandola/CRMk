@@ -26,12 +26,6 @@ public class HotelController {
                 .body(hotelService.obteneroCrear(hotelCreateDTO));
     }
 
-    //falta modificar y eliminar, capaz un get para buscar
-    @GetMapping("/dashboard/top-hoteles")
-    public ResponseEntity<List<HotelVisitadoDTO>> topHoteles() {
-        return ResponseEntity.ok(hotelService.listarHotelesTop10());
-    }
-
     @GetMapping("/hoteles/buscar")
     public ResponseEntity<List<HotelResponseDTO>> buscarHotel(@RequestParam String nombre) {
         return ResponseEntity.ok(
