@@ -309,7 +309,6 @@ export function DashboardPage() {
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-slate-200 font-medium">{h.nombre}</span>
-                      <span className="text-xs text-slate-500">{h.direccion}</span>
                       <span className="text-xs text-slate-500">{h.cantidadVisitas} visitas</span>
                     </div>
                   </div>

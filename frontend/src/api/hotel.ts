@@ -6,7 +6,9 @@ import type {
 } from "../types"
 
 export const buscarHoteles = (nombre: string) =>
-    api.get<HotelResponseDTO[]>(`/api/v1/destinos/{idDestino}/hoteles/buscar`)
+    api.get<HotelResponseDTO[]>(`/api/v1/destinos/{idDestino}/hoteles` , {
+        params: {nombre}
+    })
 
 export const eliminarHotel = (id: number) =>
     api.delete(`/api/v1/destinos/{idDestino}/hoteles/${id}`)

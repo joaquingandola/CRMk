@@ -16,7 +16,4 @@ public class Hotel {
 
     private String nombre;
     private String direccion;
-
-    @OneToOne(mappedBy = "hotel")
-    private Destino destino;
 }
