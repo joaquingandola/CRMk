@@ -29,10 +29,9 @@ export function AuthProvider({children}: {children: ReactNode}) {
             getMe()
                 .then(({data}) => {setUsuario(data)})
                 .catch(() => {
-                    //token invalido o expirado
-                    localStorage.removeItem('token')
                     setToken(null)
                     setUsuario(null)
+                    localStorage.removeItem('token')
                 })
                 .finally(() => {
                     setAuthLoading(false)
