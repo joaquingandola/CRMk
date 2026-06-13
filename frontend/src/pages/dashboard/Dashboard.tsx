@@ -6,7 +6,6 @@ import {
     getTodosLosViajes, 
     getCiudadesMasVisitadas,
 } from '../../api/dashboard'
-import { topHoteles } from '../../api/dashboard.ts'
 import DolarTracker from "../../components/DolarTracker/DolarTracker.tsx"
 
 import type {
@@ -34,7 +33,6 @@ export function DashboardPage() {
     const [clientesEnViaje, setClientesEnViaje] = useState<ClienteResponseDTO[]>([])
     const [viajes, setViajes] = useState<ViajeResponseDTO[]>([])
     const [ciudades, setCiudades] = useState<CiudadVisitadaDTO[]>([])
-    const [hoteles, setHoteles] = useState<HotelVisitadoDTO[]>([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -43,14 +41,12 @@ export function DashboardPage() {
             getClientesEnViaje(),
             getTodosLosViajes(),
             getCiudadesMasVisitadas(),
-            topHoteles(),
-        ]).then(([ca, cev, v, c, h,
+        ]).then(([ca, cev, v, c,
         ]) => {
             setClientesActivos(ca.data)
             setClientesEnViaje(cev.data)
             setViajes(v.data)
             setCiudades(c.data.slice(0, 5))
-            setHoteles(h.data.slice(0, 10))
         })
         .catch((error) => console.error("error al cargar los datos", error))
         .finally(() => setLoading(false))
@@ -293,30 +289,10 @@ export function DashboardPage() {
           )}
         </div>
 
-        {/* Top 10 hoteles mas visitados por Agente */}
+        {/* Ingresos anuales por agente */}
         <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 backdrop-blur-sm">
-          <h2 className="text-sm font-semibold text-white mb-4"> Hoteles mas visitados</h2>
+          <h2 className="text-sm font-semibold text-white mb-4"> Ingresos</h2>
 
-          {hoteles.length === 0 ? (
-            <p className="text-sm text-slate-500 text-center py-4">
-              Sin datos de hoteles todavia.
-            </p>
-          ) : (
-            <div className="space-y-3">
-            {hoteles.map((h) => {
-              return (
-                <div key={h.idHotel}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-slate-200 font-medium">{h.nombre}</span>
-                      <span className="text-xs text-slate-500">{h.cantidadVisitas} visitas</span>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-          )}
         </div>
         <DolarTracker />
       </div>
