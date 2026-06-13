@@ -19,8 +19,8 @@ export function Login() {
             const { data } = await loginRequest({email, password})
             login(data.access_token)
             navigate('/clientes')
-        } catch {
-            setError('Credenciales inválidas')
+        } catch (err : any){
+            setError(err.response?.data?.message ?? "Credenciales invalidas")
         } finally {
             setLoading(false)
         }

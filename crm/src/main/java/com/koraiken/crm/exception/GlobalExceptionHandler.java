@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponseDTO> handleBadCredentials(
             BadCredentialsException ex, HttpServletRequest request) {
-        return build(HttpStatus.UNAUTHORIZED, "Credenciales Incorrectas", request);
+        return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), request);
     }
 
 
@@ -96,7 +96,7 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrio un error inesperado", request);
     }
 
-    //m,etodo interno
+    //metodo interno
     private ResponseEntity<ErrorResponseDTO> build(HttpStatus status, String mensaje, HttpServletRequest request) {
         ErrorResponseDTO error = ErrorResponseDTO.builder()
                 .status(status.value())
