@@ -20,7 +20,7 @@ export function Login() {
             login(data.access_token)
             navigate('/clientes')
         } catch (err : any){
-            setError(err.response?.data?.message ?? "Credenciales invalidas")
+            setError(err.response?.data?.mensaje ?? "Credenciales invalidas")
         } finally {
             setLoading(false)
         }
