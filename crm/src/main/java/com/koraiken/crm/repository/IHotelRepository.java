@@ -16,35 +16,5 @@ public interface IHotelRepository extends JpaRepository<Hotel, Long> {
 
     Optional<Hotel> findByIdHotel(Long id);
 
-    //Todos los hoteles dentro de un viaje especifico.
-    //TODO
 
-    @Query("""
-        SELECT d.hotel.idHotel,
-               d.hotel.nombre,
-               d.hotel.direccion,
-               COUNT(d) as cantidadVisitas
-        FROM Destino d
-        WHERE d.hotel is not null
-        AND d.viaje.cliente.agente.idUsuario = :idAgente
-        GROUP BY d.hotel.idHotel, d.hotel.nombre, d.hotel.direccion
-        ORDER BY COUNT(d) DESC
-        LIMIT 10
-""")
-    List<Object[]> findByAgenteHotelTop10(
-            @Param("idAgente") Long idAgente
-    );
-
-    @Query("""
-        SELECT d.hotel.idHotel,
-               d.hotel.nombre, 
-               d.hotel.direccion,
-               COUNT(d) as cantidadVisitas
-        FROM Destino d
-        WHERE d.hotel IS NOT NULL
-        GROUP BY d.hotel.idHotel, d.hotel.nombre, d.hotel.direccion
-        ORDER BY COUNT(d) DESC
-        LIMIT 10 
-""")
-    List<Object[]> findByHotelTop10();
 }

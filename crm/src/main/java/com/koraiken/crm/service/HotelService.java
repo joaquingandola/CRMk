@@ -73,22 +73,6 @@ public class HotelService {
         hotelRepository.delete(hotel);
     }
 
-    @Transactional(readOnly = true)
-    public List<HotelVisitadoDTO> listarHotelesTop10()  {
-        Usuario usuario = authContextService.obtenerUsuarioAuth();
-        List<Object[]> rows = usuario.getTipoRol().isAdmin()
-                ? hotelRepository.findByHotelTop10()
-                : hotelRepository.findByAgenteHotelTop10(usuario.getIdUsuario());
-        return rows.stream()
-                .map(row -> HotelVisitadoDTO.builder()
-                        .idHotel((Long) row[0])
-                        .nombre((String) row[1])
-                        .direccion((String) row[2])
-                        .cantidadVisitas((Long) row[3])
-                        .build()
-                ).toList();
-    }
-
     @Transactional (readOnly = true)
     public Hotel obtenerOExcepcion(Long idHotel) {
         return hotelRepository.findByIdHotel(idHotel).orElseThrow(() ->
