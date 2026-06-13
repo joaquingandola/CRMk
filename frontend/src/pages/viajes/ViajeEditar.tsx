@@ -39,9 +39,14 @@ export function ViajeEditar() {
                     precio: viaje.precio != null ? String(viaje.precio) : '',
                 })
             })
-            .catch(() => setError('No se pudieron cargar los datos del viaje'))
+            .catch((err:any) => {
+                if(err.response?.status === 403 || err.response?.status === 401) {
+                    navigate('/viajes', {replace: true})
+                    return
+                }
+                setError('No se pudieron cargar los datos del viaje')})
             .finally(() => setLoading(false))
-    }, [id])
+    }, [id, navigate])
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

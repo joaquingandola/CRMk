@@ -30,7 +30,11 @@ export function ViajeDetalle() {
         try {
             const { data } = await getViajePorId(viajeId)
             setViaje(data)
-        } catch { 
+        } catch(err:any) {
+            if(err.response?.status === 401 || err.response?.status === 403) {
+                navigate('/viajes', {replace: true})
+                return
+            }
             setError('No se pudo cargar el viaje')
         } finally {
             setLoading(false)
