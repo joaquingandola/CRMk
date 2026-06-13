@@ -13,7 +13,6 @@ import type {
     ViajeResponseDTO,
     CiudadVisitadaDTO,
     EstadoConcretoViaje,
-    HotelVisitadoDTO,
 } from '../../types'
 
 import { Spinner } from "../../components/ui/Spinner"

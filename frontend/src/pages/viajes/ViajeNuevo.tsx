@@ -82,7 +82,12 @@ export function ViajeNuevo() {
                     const { data: clienteData } = await getClientePorId(Number(clienteIdParam))
                     setCliente(clienteData)
                 }
-            } catch {
+            } catch (err : any){
+                if(err.response?.status === 403 || err.response?.status === 401) {
+                    navigate('/viajes', {replace: true})
+                    return
+                }
+
                 setError('No se pudieron cargar los datos iniciales')
             }
         } 
