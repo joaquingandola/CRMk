@@ -32,8 +32,12 @@ export function ClienteDetalle() {
             ])
             setCliente(clienteData)
             setViajes(viajesData)
-        } catch { 
-            setError('Error al cargar los datos del cliente')
+        } catch (err: any) { 
+            if(err.response?.status === 403 || err.response?.status === 401) {
+                navigate('/clientes', {replace: true})
+                return
+            }
+            setError('No se pudieron cargar los datos del cliente')
         } finally {
             setLoading(false)
         }

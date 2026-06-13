@@ -25,7 +25,8 @@ export function ClienteEditar() {
     const [guardando, setGuardando] = useState(false)
 
     useEffect (() => {
-        if(!id) return 
+        if(!id) return
+        setLoading(true)
         getClientePorId(Number(id)).then(({ data }) => {
             setForm({
                 nombre: data.nombre,
@@ -42,8 +43,15 @@ export function ClienteEditar() {
                         observacion: o.observacion
                     }))
             )}
-        }).finally(() => setLoading(false))
-    }, [id])
+        }).catch((err:any) => {
+            if(err.response?.status === 401 || err.response?.status === 403) {
+                navigate('/clientes', {replace : true})
+                return
+            }
+            setError('No se pudo cargar al cliente')
+        })
+        .finally(() => setLoading(false))
+    }, [id, navigate])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => 
         setForm({...form, [e.target.name]: e.target.value })
