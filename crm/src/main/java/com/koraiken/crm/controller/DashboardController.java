@@ -17,12 +17,7 @@ import java.util.List;
 @RequestMapping("/api/v1/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
-    private final HotelService hotelService;
     private final DestinoService destinoService;
-    @GetMapping("/top-hoteles")
-    public ResponseEntity<List<HotelVisitadoDTO>> topHoteles() {
-        return ResponseEntity.ok(hotelService.listarHotelesTop10());
-    }
 
     @GetMapping("/ciudades-visitadas")
     public ResponseEntity<List<CiudadVisitadaDTO>> ciudadesMasVisitadas() {
