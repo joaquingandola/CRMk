@@ -29,7 +29,7 @@ export function Sidebar() {
     }
     
     return (
-    <aside className="w-56 min-h-screen bg-slate-900/50 border-r border-slate-800 flex flex-col">
+    <aside className="w-56 h-screen sticky top-0 bg-slate-900/50 border-r border-slate-800 flex flex-col">
       <div className="px-5 py-5 border-b border-slate-800">
         <span className="text-base font-semibold text-white tracking-tight">CRM</span> 
         {/* deberia pensarse capaz como si se pusiera el nombre de la empresa del agente */}
@@ -37,7 +37,7 @@ export function Sidebar() {
       </div>
       
       
-    <nav className="flex-1 px-3 py-4 space-y-1">
+    <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1 custom-scrollbar">
         {links.map(({ to, label }) => (
           <NavLink
             key={to}
