@@ -24,6 +24,18 @@ public class AcompananteController {
                 .body(acompananteService.crearAcompanante(dto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        acompananteService.eliminarAcompanante(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AcompananteResponseDTO> modificar(
+            @PathVariable Long id, @RequestBody AcompananteCreateDTO dto) {
+        return ResponseEntity.ok(acompananteService.modificarAcompanante(id, dto));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AcompananteResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(acompananteService.buscarPorId(id));
@@ -40,5 +52,4 @@ public class AcompananteController {
             @PathVariable Long idViaje) {
         return ResponseEntity.ok(acompananteService.listarPorViaje(idViaje));
     }
-
 }

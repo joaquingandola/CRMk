@@ -7,3 +7,4 @@ export const crearAcompanante = (data: {
     dni : number
     fechaNacimiento? : string
 }) => api.post<AcompananteResponseDTO>('/api/v1/acompanantes', data)
+
