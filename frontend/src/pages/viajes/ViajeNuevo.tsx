@@ -194,7 +194,6 @@ export function ViajeNuevo() {
                             : {}),
                 })),
             })
-
             navigate(`/viajes/${data.idViaje}`)
         } catch (err: any) {
             setError(err.response?.data?.mensaje ?? "No se pudo cargar el viaje")
