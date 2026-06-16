@@ -200,6 +200,7 @@ export interface ApiError {
 
 //formulario viaje
 export interface AcompananteFormData {
+    id?: number
     nombre: string
     apellido: string
     dni: string

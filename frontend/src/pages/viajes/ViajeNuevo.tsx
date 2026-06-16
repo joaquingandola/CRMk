@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import { crearViaje } from "../../api/viajes"
 import { getAerolineas } from "../../api/aerolineas"
 import { BuscadorCiudad } from "../../components/Buscadores/BuscadorCiudad"
-import { crearAcompanante } from "../../api/acompanantes"
+import { crearAcompanante, eliminarAcompanante, modificarAcompanante } from "../../api/acompanantes"
 import { getClientePorId } from "../../api/clientes"
 import { BuscadorHotel } from "../../components/Buscadores/BuscadorHotel"
 
@@ -16,7 +16,7 @@ import type {
 } from '../../types'
 
 const acompananteVacio = (): AcompananteFormData => ({
-    nombre : '', apellido : '', dni: '', fechaNacimiento : '',
+    id: undefined, nombre : '', apellido : '', dni: '', fechaNacimiento : '',
 })
 
 const destinoVacio = (): DestinoFormData => ({
@@ -120,11 +120,23 @@ export function ViajeNuevo() {
         setAcompanantes(nuevos)
     }
 
-    const agregarAcompanante = () => 
+    const agregarAcompanante = () =>
         setAcompanantes([...acompanantes, acompananteVacio()])
 
-    const quitarAcompanante = (i:number) =>
+    const quitarAcompanante = async (i: number) => {
+        const acompanante = acompanantes[i]
+        if(acompanante.id) {
+            try{
+                setGuardando(true)
+                await eliminarAcompanante(acompanante.id)
+            } catch (err) {
+                setError("no se pudo eliminar al acompanante del lado del servidor")
+            } finally {
+                setGuardando(false)
+            }
+        }
         setAcompanantes(acompanantes.filter((_, idx) => idx !== i))
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -163,13 +175,22 @@ export function ViajeNuevo() {
             )
 
             const idsAcompanantes = await Promise.all(
-                acompanantesValidos.map((a) =>
-                    crearAcompanante({
+                acompanantesValidos.map(async(a) => {
+                    const payload = {
                         nombre : a.nombre,
-                        apellido : a.apellido, 
-                        dni: Number(a.dni),
-                        fechaNacimiento: a.fechaNacimiento || undefined, 
-                    }).then(({ data }) => data.idAcompanante)
+                        apellido : a.apellido,
+                        dni : Number(a.dni),
+                        fechaNacimiento: a.fechaNacimiento || undefined
+                    }
+                   
+                    if(a.id) {
+                        const { data } = await modificarAcompanante(a.id, payload)
+                        return data.idAcompanante
+                    } else {
+                        const { data } = await crearAcompanante(payload)
+                        return data.idAcompanante
+                    }
+                }
                 )
             ) 
 
@@ -192,9 +213,9 @@ export function ViajeNuevo() {
                                     direccion: d.hotelDireccion,
                                 } }
                             : {}),
+                idsAcompanantes,
                 })),
             })
-
             navigate(`/viajes/${data.idViaje}`)
         } catch (err: any) {
             setError(err.response?.data?.mensaje ?? "No se pudo cargar el viaje")
