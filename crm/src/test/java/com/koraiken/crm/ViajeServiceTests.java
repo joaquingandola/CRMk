@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -50,7 +51,6 @@ public class ViajeServiceTests {
         cliente.setNombre("Juan");
         cliente.setApellido("Gomez");
         cliente.setActivo(true);
-        cliente.setEnViaje(false);
 
         aerolinea = new Aerolinea();
         aerolinea.setIdAerolinea(1L);
@@ -60,8 +60,8 @@ public class ViajeServiceTests {
         viaje.setIdViaje(1L);
         viaje.setCliente(cliente);
         viaje.setAerolinea(aerolinea);
-        viaje.setFechaInicioViaje(LocalDateTime.now().plusDays(5));
-        viaje.setFechaFinViaje(LocalDateTime.now().plusDays(10));
+        viaje.setFechaInicioViaje(LocalDate.now().plusDays(5));
+        viaje.setFechaFinViaje(LocalDate.now().plusDays(10));
         viaje.setPrecio(1500.0);
         viaje.setActivo(false);
         viaje.setDestinos(new ArrayList<>());
@@ -90,8 +90,8 @@ public class ViajeServiceTests {
             ViajeCreateDTO dto = new ViajeCreateDTO();
             dto.setIdCliente(1L);
             dto.setIdAerolinea(1L);
-            dto.setFechaInicioViaje(LocalDateTime.now().plusDays(5));
-            dto.setFechaFinViaje(LocalDateTime.now().plusDays(10));
+            dto.setFechaInicioViaje(LocalDate.now().plusDays(5));
+            dto.setFechaFinViaje(LocalDate.now().plusDays(10));
             dto.setPrecio(1500.0);
 
             when(clienteService.obtenerClienteOExcepcion(1L)).thenReturn(cliente);
@@ -113,8 +113,8 @@ public class ViajeServiceTests {
             ViajeCreateDTO dto = new ViajeCreateDTO();
             dto.setIdCliente(1L);
             dto.setIdAerolinea(1L);
-            dto.setFechaInicioViaje(LocalDateTime.now().plusDays(10));
-            dto.setFechaFinViaje(LocalDateTime.now().plusDays(5));
+            dto.setFechaInicioViaje(LocalDate.now().plusDays(10));
+            dto.setFechaFinViaje(LocalDate.now().plusDays(5));
 
             assertThatThrownBy(() -> viajeService.crearViaje(dto))
                     .isInstanceOf(RuntimeException.class)
@@ -169,8 +169,6 @@ public class ViajeServiceTests {
 
             // El viaje debe quedar activo
             assertThat(viaje.getActivo()).isTrue();
-            // El cliente debe quedar marcado como en viaje
-            assertThat(cliente.getEnViaje()).isTrue();
         }
         @Test
         @DisplayName("transición inválida PAGADO → CONFIRMADO lanza excepción")
@@ -191,10 +189,9 @@ public class ViajeServiceTests {
         }
 
         @Test
-        @DisplayName("transición CONFIRMADO → CANCELADO desactiva el viaje y al cliente")
-        void dadoEstadoConfirmado_cuandoCancelar_entoncesViajeYClienteInactivos() {
+        @DisplayName("transición CONFIRMADO → CANCELADO desactiva el viaje")
+        void dadoEstadoConfirmado_cuandoCancelar_entoncesViajeInactivo() {
             viaje.setActivo(true);
-            cliente.setEnViaje(true);
 
             when(viajeRepository.findById(1L)).thenReturn(Optional.of(viaje));
             when(estadoViajeRepository.findEstadoActual(1L))
@@ -205,7 +202,6 @@ public class ViajeServiceTests {
             viajeService.cambiarEstado(1L, EstadoConcretoViaje.CANCELADO);
 
             assertThat(viaje.getActivo()).isFalse();
-            assertThat(cliente.getEnViaje()).isFalse();
         }
 
         @Test
