@@ -237,7 +237,7 @@ export function DatosGeneralesSection({ aerolineas, value, onChange }: DatosGene
                             value={value.fechaInicioViaje}
                             onChange={(e) => onChange('fechaInicioViaje', e.target.value)}
                             required
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white [color-scheme:dark] focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                            className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white scheme-dark focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                         />
                     </div>
                     <div className="space-y-1.5">
@@ -250,7 +250,7 @@ export function DatosGeneralesSection({ aerolineas, value, onChange }: DatosGene
                             min={value.fechaInicioViaje}
                             onChange={(e) => onChange('fechaFinViaje', e.target.value)}
                             required
-                            className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white [color-scheme:dark] focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                            className="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white scheme-dark focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                         />
                     </div>
                 </div>
@@ -361,7 +361,7 @@ export function AcompanantesSection({ acompanantes, onActualizar, onAgregar, onQ
                                         type="date"
                                         value={a.fechaNacimiento}
                                         onChange={(e) => onActualizar(i, 'fechaNacimiento', e.target.value)}
-                                        className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white [color-scheme:dark] focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
+                                        className="w-full bg-slate-950/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white scheme-dark focus:ring-2 focus:ring-blue-600/50 outline-none transition-all"
                                     />
                                 </div>
                             </div>
