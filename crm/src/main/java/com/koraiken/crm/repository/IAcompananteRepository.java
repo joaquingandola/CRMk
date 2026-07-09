@@ -16,6 +16,4 @@ public interface IAcompananteRepository extends JpaRepository<Acompanante, Long>
     // Todos los acompañantes de un viaje específico
     // (navegando por la relación ManyToMany)
     List<Acompanante> findByViajes_IdViaje(Long idViaje);
-
-    boolean existsByDni(Integer dni);
 }
