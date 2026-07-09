@@ -109,7 +109,6 @@ export function ViajeDetalle() {
                     </h1>
                     <p className="text-sm text-slate-400 mt-2">
                         {formatFechaInicioFin(viaje.fechaInicioViaje)} → {formatFechaInicioFin(viaje.fechaFinViaje)}
-                        {viaje.aerolinea && ` · ${viaje.aerolinea.aerolinea}`}
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -185,7 +184,7 @@ export function ViajeDetalle() {
                                 .map((d, i) => (
                                 <li key={d.idDestino} className="text-sm bg-slate-900/30 border border-slate-800 rounded-xl p-4">
                                     <div className="flex gap-4">
-                                        <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
+                                        <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                                             {i + 1}
                                         </span>
 
