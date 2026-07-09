@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { getViajePorId, cambiarEstadoViaje } from "../../api/viajes"
+import { getViajePorId, cambiarEstadoViaje, descargarPdfViaje } from "../../api/viajes"
 import type { ViajeResponseDTO, EstadoConcretoViaje } from "../../types"
 import { Spinner } from "../../components/ui/Spinner"
 import { Badge } from "../../components/ui/Badge"
@@ -20,6 +20,7 @@ export function ViajeDetalle() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState('')
     const [cambiandoEstado, setCambiandoEstado] = useState(false)
+    const [descargandoPdf, setDescargandoPdf] = useState(false)
 
     useEffect(() => {
         if (id) cargar(Number(id))
@@ -51,6 +52,35 @@ export function ViajeDetalle() {
             setError(err.response?.data?.mensaje ?? ' No se pudo cambiar el estado')
         } finally {
             setCambiandoEstado(false)
+        }
+    }
+
+    const handleDescargarPdf = async () => {
+        if (!viaje) return
+        setDescargandoPdf(true)
+        try {
+            const { data } = await descargarPdfViaje(viaje.idViaje)
+            const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' }))
+            const link = document.createElement('a')
+            link.href = url
+            link.download = `viaje-${viaje.idViaje}.pdf`
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+            window.URL.revokeObjectURL(url)
+        } catch (err: any) {
+            let mensaje = 'No se pudo generar el PDF'
+            if (err.response?.data instanceof Blob) {
+                try {
+                    const texto = await err.response.data.text()
+                    mensaje = JSON.parse(texto)?.mensaje ?? mensaje
+                } catch {
+                    // el cuerpo no era JSON, se mantiene el mensaje genérico
+                }
+            }
+            setError(mensaje)
+        } finally {
+            setDescargandoPdf(false)
         }
     }
 
@@ -116,6 +146,13 @@ export function ViajeDetalle() {
                     <span className="text-xl font-bold text-white">
                         {formatMonto(viaje.precio)}
                     </span>
+                    <button
+                        onClick={handleDescargarPdf}
+                        disabled={descargandoPdf}
+                        className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {descargandoPdf ? 'Generando...' : 'Descargar PDF'}
+                    </button>
                     <button
                         onClick={() => navigate(`/viajes/${viaje.idViaje}/editar`)}
                         className="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all border border-slate-700"

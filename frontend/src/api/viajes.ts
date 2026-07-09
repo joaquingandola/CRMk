@@ -31,3 +31,6 @@ export const agregarAcompananteAViaje = (idViaje: number, idAcompanante: number)
 
 export const quitarAcompananteDeViaje = (idViaje: number, idAcompanante: number) =>
     api.delete(`api/v1/viajes/${idViaje}/acompanantes/${idAcompanante}`)
+
+export const descargarPdfViaje = (id: number) =>
+    api.get<Blob>(`api/v1/viajes/${id}/pdf`, { responseType: 'blob' })
