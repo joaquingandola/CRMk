@@ -130,7 +130,17 @@ export interface DestinoCreateDTO {
     fechaSalida: string
 }
 
+export interface DestinoResponseDTO {
+    idDestino: number
+    ciudad: CiudadResponseDTO
+    fechaLlegada: string
+    fechaSalida: string
+    idViaje: number
+    hotel?: HotelResponseDTO | null
+}
+
 export interface DestinoFormData {
+    idDestino?: number
     ciudad : CiudadResponseDTO | null
     fechaLlegada : string
     fechaSalida : string
@@ -200,6 +210,7 @@ export interface ApiError {
 
 //formulario viaje
 export interface AcompananteFormData {
+    id?: number
     nombre: string
     apellido: string
     dni: string
