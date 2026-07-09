@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { getViajePorId, cambiarEstadoViaje, descargarPdfViaje } from "../../api/viajes"
+import { getViajePorId, getViajesPorCliente, cambiarEstadoViaje, descargarPdfViaje } from "../../api/viajes"
 import type { ViajeResponseDTO, EstadoConcretoViaje } from "../../types"
 import { Spinner } from "../../components/ui/Spinner"
 import { Badge } from "../../components/ui/Badge"
@@ -21,6 +21,7 @@ export function ViajeDetalle() {
     const [error, setError] = useState('')
     const [cambiandoEstado, setCambiandoEstado] = useState(false)
     const [descargandoPdf, setDescargandoPdf] = useState(false)
+    const [cantidadViajesCliente, setCantidadViajesCliente] = useState<number | null>(null)
 
     useEffect(() => {
         if (id) cargar(Number(id))
@@ -31,6 +32,13 @@ export function ViajeDetalle() {
         try {
             const { data } = await getViajePorId(viajeId)
             setViaje(data)
+
+            const { data: viajesCliente } = await getViajesPorCliente(data.idCliente)
+            const ordenados = [...viajesCliente].sort(
+                (a, b) => new Date(a.fechaInicioViaje).getTime() - new Date(b.fechaInicioViaje).getTime()
+            )
+            const posicion = ordenados.findIndex((v) => v.idViaje === data.idViaje)
+            setCantidadViajesCliente(posicion >= 0 ? posicion + 1 : null)
         } catch(err:any) {
             if(err.response?.status === 401 || err.response?.status === 403) {
                 navigate('/viajes', {replace: true})
@@ -61,9 +69,11 @@ export function ViajeDetalle() {
         try {
             const { data } = await descargarPdfViaje(viaje.idViaje)
             const url = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' }))
+            const nombreArchivo = viaje.nombreCliente.trim().toLowerCase().replace(/\s+/g, '-')
+            const numero = cantidadViajesCliente ?? viaje.idViaje
             const link = document.createElement('a')
             link.href = url
-            link.download = `viaje-${viaje.idViaje}.pdf`
+            link.download = `viaje-${nombreArchivo}-${numero}.pdf`
             document.body.appendChild(link)
             link.click()
             link.remove()
