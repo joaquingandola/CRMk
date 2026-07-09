@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,6 @@ public class PDFService {
 
     private static final DateTimeFormatter FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final DateTimeFormatter FECHA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    private static final SimpleDateFormat FECHA_DATE = new SimpleDateFormat("dd/MM/yyyy");
     private static final Color COLOR_HEADER = new Color(30, 41, 59);
 
     private static final Font FONT_TITULO = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
@@ -111,7 +111,10 @@ public class PDFService {
         agregarHeader(tabla, "#", "Ciudad", "País", "Fechas", "Hotel");
 
         List<DestinoEnViajeDTO> ordenados = destinos.stream()
-                .sorted(Comparator.comparing(DestinoEnViajeDTO::getFechaLlegada))
+                .sorted(Comparator.comparing(
+                        DestinoEnViajeDTO::getFechaLlegada,
+                        Comparator.nullsLast(Comparator.naturalOrder())
+                ))
                 .toList();
 
         int i = 1;
@@ -145,7 +148,7 @@ public class PDFService {
         for (AcompananteResponseDTO a : acompanantes) {
             tabla.addCell(celda(a.getNombre() + " " + a.getApellido()));
             tabla.addCell(celda(a.getDni() != null ? String.valueOf(a.getDni()) : "—"));
-            tabla.addCell(celda(a.getFechaNacimiento() != null ? FECHA_DATE.format(a.getFechaNacimiento()) : "—"));
+            tabla.addCell(celda(formatFechaNacimiento(a.getFechaNacimiento())));
         }
 
         document.add(tabla);
@@ -161,6 +164,11 @@ public class PDFService {
 
     private String formatFecha(LocalDate fecha) {
         return fecha != null ? fecha.format(FECHA) : "—";
+    }
+
+    private String formatFechaNacimiento(Date fecha) {
+        if (fecha == null) return "—";
+        return fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().format(FECHA);
     }
 
     private String formatMonto(Double precio) {

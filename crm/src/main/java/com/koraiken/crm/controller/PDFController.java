@@ -28,7 +28,7 @@ public class PDFController {
     @GetMapping("/{id}/pdf")
     public ResponseEntity<byte[]> exportarPdf(@PathVariable Long id) {
         ViajeResponseDTO viaje = viajeService.buscarPorId(id);
-        ClienteResponseDTO cliente = clienteService.buscarPorId(viaje.getIdCliente());
+        ClienteResponseDTO cliente = clienteService.buscarResumenParaPdf(viaje.getIdCliente());
 
         byte[] pdf = pdfService.generarPDF(viaje, cliente);
 

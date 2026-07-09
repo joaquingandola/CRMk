@@ -98,6 +98,20 @@ public class ClienteService {
         return ClienteMapper.toDTO(cliente);
     }
 
+    @Transactional(readOnly = true)
+    public ClienteResponseDTO buscarResumenParaPdf(Long id) {
+        Cliente cliente = obtenerClienteOExcepcion(id);
+        return ClienteResponseDTO.builder()
+                .idCliente(cliente.getIdCliente())
+                .idAgente(cliente.getAgente().getIdUsuario())
+                .nombre(cliente.getNombre())
+                .apellido(cliente.getApellido())
+                .dni(cliente.getDni())
+                .fechaNacimiento(cliente.getFechaNacimiento())
+                .nombreAgente(cliente.getAgente() != null ? cliente.getAgente().getNombreUsuario() : null)
+                .build();
+    }
+
     //buscar clientes activos
     @Transactional(readOnly = true)
     public List<ClienteResponseDTO> listarActivos() {
