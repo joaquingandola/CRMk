@@ -80,6 +80,13 @@ public class ViajeController {
 
     //------------acompanantes -------------------
     @PostMapping("{id}/acompanantes/{idAcompanante}")
+    public ResponseEntity<ViajeResponseDTO> agregarAcompanante(
+            @PathVariable Long id,
+            @PathVariable Long idAcompanante) {
+        return ResponseEntity.ok(viajeService.agregarAcompaniantes(id, idAcompanante));
+    }
+
+    @DeleteMapping("{id}/acompanantes/{idAcompanante}")
     public ResponseEntity<Void> quitarAcompanante(
             @PathVariable Long id,
             @PathVariable Long idAcompanante) {
