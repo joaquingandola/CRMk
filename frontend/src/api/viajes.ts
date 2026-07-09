@@ -25,3 +25,9 @@ export const cambiarEstadoViaje = (id: number, nuevo: EstadoConcretoViaje) =>
 
 export const historialEstados = (id: number) =>
     api.get<EstadoViajeResponseDTO[]>(`api/v1/viajes/${id}/estados`)
+
+export const agregarAcompananteAViaje = (idViaje: number, idAcompanante: number) =>
+    api.post<ViajeResponseDTO>(`api/v1/viajes/${idViaje}/acompanantes/${idAcompanante}`)
+
+export const quitarAcompananteDeViaje = (idViaje: number, idAcompanante: number) =>
+    api.delete(`api/v1/viajes/${idViaje}/acompanantes/${idAcompanante}`)
