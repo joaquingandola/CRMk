@@ -19,10 +19,6 @@ public class AcompananteService {
 
     @Transactional
     public AcompananteResponseDTO crearAcompanante(AcompananteCreateDTO dto) {
-        if(acompananteRepository.existsByDni(dto.getDni())) {
-            throw new RuntimeException("Ya existe un acompanante con dni: " + dto.getDni());
-        }
-
         Acompanante acompanante = new Acompanante();
         acompanante.setNombre(dto.getNombre());
         acompanante.setApellido(dto.getApellido());
