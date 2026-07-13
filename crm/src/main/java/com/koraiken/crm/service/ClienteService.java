@@ -103,7 +103,7 @@ public class ClienteService {
         Cliente cliente = obtenerClienteOExcepcion(id);
         return ClienteResponseDTO.builder()
                 .idCliente(cliente.getIdCliente())
-                .idAgente(cliente.getAgente().getIdUsuario())
+                .idAgente(cliente.getAgente() != null ? cliente.getAgente().getIdUsuario() : null)
                 .nombre(cliente.getNombre())
                 .apellido(cliente.getApellido())
                 .dni(cliente.getDni())

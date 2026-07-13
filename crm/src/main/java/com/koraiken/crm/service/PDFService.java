@@ -56,7 +56,6 @@ public class PDFService {
 
     private void agregarEncabezado(Document document, ViajeResponseDTO viaje) throws DocumentException {
         document.add(new Paragraph("Resumen de Viaje", FONT_TITULO));
-        document.add(new Paragraph("Viaje #" + viaje.getIdViaje(), FONT_GRIS));
         document.add(new Paragraph("Generado el " + LocalDate.now().format(FECHA), FONT_GRIS));
         document.add(espacio());
     }
