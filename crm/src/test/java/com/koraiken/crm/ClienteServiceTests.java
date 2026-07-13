@@ -51,7 +51,6 @@ class ClienteServiceTests {
         clienteExistente.setApellido("Gomez");
         clienteExistente.setDni(12345678);
         clienteExistente.setActivo(true);
-        clienteExistente.setEnViaje(true);
 
         dtoCrear = new ClienteCreateDTO();
         dtoCrear.setNombre("Maria");
