@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) //desactivamos CSRF porque usamos JWT
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() //LOGIN ES PUBLICO
+                        .requestMatchers("/actuator/health").permitAll() //healthcheck de docker
                         // solo admin
                         .requestMatchers("/api/v1/usuarios/me").authenticated()
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")

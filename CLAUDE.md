@@ -35,7 +35,7 @@ npm run preview   # preview production build
 ```bash
 docker compose up --build
 ```
-Reads `.env` at repo root for `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, `CLOUDINARY_*`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`. Backend on 8080, frontend on 80, Postgres exposed on host port 5433.
+Reads `.env` at repo root for `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DDL_AUTO`, `JWT_SECRET_KEY`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (see `.env.example`). Backend on 8080, frontend on 80, Postgres exposed on host port 5433. The frontend nginx container reverse-proxies `/api/**` and `/auth/**` to the backend over the compose network, so the browser only ever talks to the frontend's origin — no CORS involved in this path.
 
 ## Backend architecture (`crm/src/main/java/com/koraiken/crm/`)
 
@@ -67,4 +67,4 @@ Config in `src/main/resources/application.properties` pulls secrets from env var
 - `pages/<resource>/` — one folder per resource, generally with `<Resource>Page` (list), `<Resource>Detalle` (detail), `<Resource>Nuevo` (create), `<Resource>Editar` (edit) — follow this naming/file split when adding a new resource's screens.
 - Routing in `App.tsx`: everything except `/login` is nested under `PrivateRoute` → `Layout`.
 - Dashboard (`pages/dashboard/Dashboard.tsx`) and live map (`pages/dashboard/DashboardMap.tsx`, via `react-leaflet`) are separate pages/routes, backed by `api/dashboard.ts`.
-- `VITE_API_BASE_URL` env var points the frontend at the backend (defaults to `http://localhost:8080` in dev).
+- `VITE_API_BASE_URL` env var points the frontend at the backend. Defaults to `http://localhost:8080` in local `npm run dev` (via `frontend/.env.development`, since the backend runs separately on 8080 there); in the Docker build it's unset and `frontend/src/api/axios.ts` falls back to `window.location.origin`, so the Dockerized frontend calls its own nginx origin, which reverse-proxies to the backend.

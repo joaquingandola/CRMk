@@ -160,7 +160,7 @@ export function DashboardMap() {
             </div>
 
             {/* Métricas rápidas */}
-            <div className="grid grid-cols-2 gap-4 flex items-center max-w-xs">
+            <div className="grid-cols-2 gap-4 flex items-center max-w-xs">
                 <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-4">
                     <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">
                         Clientes

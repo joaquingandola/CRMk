@@ -291,6 +291,7 @@ export function DashboardPage() {
         {/* Ingresos anuales por agente */}
         <div className="bg-slate-800/30 border border-slate-800 rounded-2xl p-5 backdrop-blur-sm">
           <h2 className="text-sm font-semibold text-white mb-4"> Ingresos</h2>
+            <p className="text-2xl font-black text-center text-white"> Proximamente</p>
 
         </div>
         <DolarTracker />

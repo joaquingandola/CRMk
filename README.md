@@ -11,3 +11,7 @@ Los viajes contemplan la posibilidad de la existencia de acompanantes, registrad
 Se incluye un dashboard interactivo con data en tiempo real para la gestion de clientes en viaje, y que han viajado. Con estadisticas clave como destinos con mas viajes, viajes segun estado, ingresos por mes en el ultimo ano, y mucho mas.
 Tambien se dispone de un mapa interactivo que muestra en tiempo real la ubicacion de los clientes que estan en viaje. Esta es una herramienta muy simple pero a la vez muy valiosa, que con un par de clicks da la posibilidad de saber exactamente la actual situacion en la que se encuentran los clientes.
 
+## Correr el proyecto con Docker
+
+Ver [DOCKER.md](./DOCKER.md) para instrucciones de setup y troubleshooting.
+
