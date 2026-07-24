@@ -1,17 +1,61 @@
-# CRM DE Agencias de Viajes
+# CRMk — CRM para Agencias de Viajes
 
-## Funcionalidades del modulo:
+CRM pensado para agencias de viajes: centraliza clientes, viajes, destinos, acompañantes, aerolíneas y hoteles, con autenticación, roles, un dashboard con estadísticas y un mapa en vivo de clientes viajando.
 
-### Gestion de clientes y viajes: 
-CRMk permite la carga de clientes con toda su informacion personal para mantener un historial administrativo y comercial sobre la base de clientes de cada agente.
-Cada viaje incluye la posibilidad de manejar cualquier tipo de variacion de mas de 60,000 destinos diferentes alrededor de todo el mundo. Tambien se incluye la carga de aerolineas de todo tipo para mantener la auditoria de los viajes. 
-Los viajes contemplan la posibilidad de la existencia de acompanantes, registrados simplemente con numero de DNI, fecha de nacimiento y datos personales. Ademas, cada cliente puede tener observaciones, es decir, un registro de informacion que el agente crea relevante de cada cliente. Esto es muy importante, ya que se evita la necesidad de recordar datos especificos tanto de clientes recurrentes, como de clientes que viajaron con el agente hace meses o anos.
+Monorepo con dos apps y orquestación Docker:
+
+- **`crm/`** — Backend en Spring Boot (Java, Maven)
+- **`frontend/`** — Frontend en React + TypeScript (Vite)
+- **`docker-compose.yml`** — Postgres + backend + frontend
+
+## Funcionalidades
+
+### Gestión de clientes y viajes
+Carga de clientes con su información personal, generando un historial administrativo y comercial de la base de cada agente. Cada cliente puede tener **observaciones**: notas libres que el agente registra para no depender de la memoria en clientes recurrentes o que viajaron hace meses o años.
+
+Cada viaje puede incluir cualquier combinación de **destinos**, elegidos sobre un catálogo de más de 60.000 ciudades del mundo, y una **aerolínea** asociada para llevar auditoría del viaje. Las fechas de los destinos se validan para evitar solapamientos dentro de un mismo viaje o entre viajes de un mismo cliente.
+
+Los viajes tienen un estado (`COTIZADO`, `CONFIRMADO`, `PAGADO`, `CANCELADO`) con un historial completo de transiciones, y las transiciones inválidas quedan bloqueadas por el backend.
+
+También se pueden cargar **acompañantes** de cada viaje (DNI, fecha de nacimiento y datos personales) y **hoteles** de hospedaje.
+
+### Exportación a PDF
+Cada viaje puede exportarse como un PDF con el resumen del viaje y los datos del cliente, listo para compartir o archivar.
 
 ### Dashboard y mapa interactivo
-Se incluye un dashboard interactivo con data en tiempo real para la gestion de clientes en viaje, y que han viajado. Con estadisticas clave como destinos con mas viajes, viajes segun estado, ingresos por mes en el ultimo ano, y mucho mas.
-Tambien se dispone de un mapa interactivo que muestra en tiempo real la ubicacion de los clientes que estan en viaje. Esta es una herramienta muy simple pero a la vez muy valiosa, que con un par de clicks da la posibilidad de saber exactamente la actual situacion en la que se encuentran los clientes.
+Dashboard con estadísticas en tiempo real: destinos más visitados, viajes por estado, ingresos por mes durante el último año, y más. Incluye además un **mapa interactivo** que muestra en vivo dónde se encuentra cada cliente que está actualmente de viaje.
 
-## Correr el proyecto con Docker
+### Usuarios y roles
+Autenticación vía JWT, con dos roles: `AGENTE` y `ADMIN`. Los administradores pueden gestionar usuarios (listar, editar, desactivar/reactivar), dar de baja clientes y administrar aerolíneas, además de acceder a funciones exclusivas de administración.
 
-Ver [DOCKER.md](./DOCKER.md) para instrucciones de setup y troubleshooting.
+### Importación masiva de ciudades
+Los administradores pueden importar el catálogo de ciudades desde un archivo CSV (`worldcities.csv`), para poblar o actualizar el catálogo de destinos disponible en toda la app.
 
+## Stack técnico
+
+**Backend:** Spring Boot 4, Spring Security (JWT), Spring Data JPA, PostgreSQL (H2 para tests), OpenPDF, Apache Commons CSV.
+
+**Frontend:** React 19, TypeScript, Vite, React Router, Axios, Tailwind CSS, React Leaflet (mapa).
+
+## Cómo correr el proyecto
+
+### Con Docker (recomendado)
+```bash
+docker compose up --build
+```
+Ver [DOCKER.md](./DOCKER.md) para setup completo, variables de entorno y troubleshooting.
+
+### En local
+
+**Backend** (`crm/`):
+```bash
+./mvnw spring-boot:run   # API en http://localhost:8080
+./mvnw test              # correr tests (usa H2, no requiere Postgres)
+```
+
+**Frontend** (`frontend/`):
+```bash
+npm run dev       # http://localhost:5173
+npm run build
+npm run lint
+```
